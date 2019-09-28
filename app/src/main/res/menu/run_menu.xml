@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="跑步"
+        android:id="@+id/runMainFragment"
+        android:icon="@drawable/ic_run"/>
+    <item
+        android:title="統計"
+        android:id="@+id/runInquireFragment"
+        android:icon="@drawable/ic_inquire"/>
+    <item
+        android:title="社群"
+        android:id="@+id/runGroupFragment"
+        android:icon="@drawable/ic_group"/>
+    <item
+        android:title="成就"
+        android:id="@+id/runAchieveFragment"
+        android:icon="@drawable/ic_achieve"/>
+</menu>

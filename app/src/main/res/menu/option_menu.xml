@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/opRun"
+        android:icon="@drawable/icon_mainrun"
+        android:title="Run"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/opShop"
+        android:icon="@drawable/icon_mainshop"
+        android:title="Shop"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/opSetting"
+        android:icon="@drawable/icon_mainset"
+        android:title="Setting"
+        app:showAsAction="always" />
+</menu>

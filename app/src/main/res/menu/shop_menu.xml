@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="商店街"
+        android:id="@+id/shopMainFragment"
+        android:icon="@drawable/ic_shopmain"/>
+    <item
+        android:title="購物車"
+        android:id="@+id/shopCartFragment"
+        android:icon="@drawable/ic_shopcart"/>
+    <item
+        android:title="查詢訂單"
+        android:id="@+id/shopOrderFragment"
+        android:icon="@drawable/ic_order"/>
+    <item
+        android:title="聯繫客服"
+        android:id="@+id/shopServerFragment"
+        android:icon="@drawable/ic_server"/>
+</menu>
