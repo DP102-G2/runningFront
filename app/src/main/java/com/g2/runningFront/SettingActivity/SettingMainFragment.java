@@ -1,7 +1,5 @@
 package com.g2.runningFront.SettingActivity;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
