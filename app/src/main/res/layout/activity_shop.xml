@@ -19,7 +19,7 @@
         app:menu="@menu/shop_menu" />
 
     <fragment
-        android:id="@+id/fgNavigrath"
+        android:id="@+id/Shop_fgNavigrath"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"

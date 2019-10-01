@@ -9,16 +9,23 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
 import com.g2.runningFront.R;
 import com.g2.runningFront.RunActivity.MainActivity;
 import com.g2.runningFront.SettingActivity.SettingActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ShopActivity extends AppCompatActivity {
+    private BottomNavigationView btbShop;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop);
+        holdNavigraph();
         setTitle(R.string.shop_name);
     }
 
@@ -50,4 +57,12 @@ public class ShopActivity extends AppCompatActivity {
                 return true;
         }
         return true;    }
+
+
+    private void holdNavigraph() {
+        btbShop = findViewById(R.id.btbShop);
+        NavController navCtrShop = Navigation.findNavController(ShopActivity.this, R.id.Shop_fgNavigrath);
+        NavigationUI.setupWithNavController(btbShop, navCtrShop);
+
+    }
 }
