@@ -24,10 +24,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class RunMainFragment extends Fragment {
     Activity activity;
 
@@ -37,7 +33,6 @@ public class RunMainFragment extends Fragment {
     private static final int RC_SIGN_IN = 101;
     private static final String TAG = "Demo_Fragment";
     private View view;
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,7 +49,6 @@ public class RunMainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_run_main, container, false);
     }
 
@@ -66,10 +60,7 @@ public class RunMainFragment extends Fragment {
 
     }
 
-
-
     void ViewHolder() {
-
 
         textView = view.findViewById(R.id.tvTest);
         button = view.findViewById(R.id.btLogin);
