@@ -8,16 +8,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
-/* 除錯用 */
-import android.util.Log;
+
+import android.util.Log;// 除錯用
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-/* res 目錄 */
-import com.g2.runningFront.R;
-/* UI 元件 */
-import static android.view.View.GONE;
+import com.g2.runningFront.R;// res 目錄
+import static android.view.View.GONE;/// UI
 
 public class SettingMainFragment extends Fragment {
     private static final String TAG = "TAG_SETmain";

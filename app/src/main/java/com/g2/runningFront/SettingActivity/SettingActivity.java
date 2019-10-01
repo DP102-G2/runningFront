@@ -21,16 +21,13 @@ public class SettingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setting);
         setTitle(R.string.setting_name);
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.option_menu, menu);
         menu.removeItem(R.id.opSetting);
         return true;
-
     }
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         Intent intent;
@@ -46,12 +43,9 @@ public class SettingActivity extends AppCompatActivity {
                 this.finish();
                 return true;
             case R.id.opSetting:
-
                 return true;
 
         }
         return true;
     }
-
-
 }
