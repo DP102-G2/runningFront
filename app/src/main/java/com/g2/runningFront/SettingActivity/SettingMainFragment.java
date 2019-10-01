@@ -62,7 +62,7 @@ public class SettingMainFragment extends Fragment {
             public void onClick(View view) {
 
                 Intent googleSignInIntent = mGoogleSignInClient.getSignInIntent();
-                startActivity(googleSignInIntent, GOOGLE_SIGNIN);
+//                startActivity(googleSignInIntent, GOOGLE_SIGNIN);
 
             }
         });
