@@ -2,6 +2,7 @@ package com.g2.runningFront.RunActivity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         btbRun = findViewById(R.id.btbRun);
         NavController navCtrRun = Navigation.findNavController(MainActivity.this, R.id.fgNavigrath);
         NavigationUI.setupWithNavController(btbRun, navCtrRun);
+        int i = btbRun.getSelectedItemId();
 
     }
 }
