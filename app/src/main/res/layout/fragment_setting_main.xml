@@ -9,7 +9,7 @@
     /
 
     <EditText
-        android:id="@+id/etMail"
+        android:id="@+id/etId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -33,9 +33,9 @@
         android:hint="Password"
         android:inputType="textPassword"
         android:textSize="17sp"
-        app:layout_constraintEnd_toEndOf="@+id/etMail"
-        app:layout_constraintStart_toStartOf="@+id/etMail"
-        app:layout_constraintTop_toBottomOf="@+id/etMail" />
+        app:layout_constraintEnd_toEndOf="@+id/etId"
+        app:layout_constraintStart_toStartOf="@+id/etId"
+        app:layout_constraintTop_toBottomOf="@+id/etId" />
 
     <Button
         android:id="@+id/btSignIn"
