@@ -33,14 +33,43 @@
 
     <Button
         android:id="@+id/btSignIn"
-        android:layout_width="220dp"
-        android:layout_height="37dp"
+        android:layout_width="330dp"
+        android:layout_height="57dp"
         android:layout_marginBottom="32dp"
         android:background="@drawable/bt_normal_signin"
         app:layout_constraintBottom_toTopOf="@+id/btSignInGoogle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btgooSignIn"
+        android:layout_width="330dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="70dp"
+        android:background="@drawable/bt_google_signin"
+        app:layout_constraintEnd_toEndOf="@+id/btSignInGoogle"
+        app:layout_constraintStart_toStartOf="@+id/btSignInGoogle"
+        app:layout_constraintTop_toTopOf="@+id/textView" />
+
+    <Button
+        android:id="@+id/btSignUp"
+        android:layout_width="330dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="16dp"
+        android:foreground="@drawable/bt_signup"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="@+id/btgooSignIn"
+        app:layout_constraintStart_toStartOf="@+id/btgooSignIn"
+        app:layout_constraintTop_toBottomOf="@+id/btgooSignIn" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/btSignInGoogle"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/textView" />
 
     <EditText
         android:id="@+id/etPassword"
@@ -88,4 +117,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btSignInGoogle"
         tools:text="TextView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

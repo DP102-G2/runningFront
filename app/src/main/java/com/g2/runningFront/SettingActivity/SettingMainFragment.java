@@ -22,6 +22,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;// Google 登入
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
@@ -62,10 +63,13 @@ public class SettingMainFragment extends Fragment {
             public void onClick(View view) {
 
                 Intent googleSignInIntent = mGoogleSignInClient.getSignInIntent();
-//                startActivity(googleSignInIntent, GOOGLE_SIGNIN);
+                //startActivity(googleSignInIntent, GOOGLE_SIGNIN);
 
             }
         });
+
+        SignInButton signInButton = view.findViewById(R.id.sign_in_button);
+        signInButton.setSize(SignInButton.SIZE_WIDE);
 
         view.findViewById(R.id.btSignOut).setOnClickListener(new View.OnClickListener() {
             @Override
