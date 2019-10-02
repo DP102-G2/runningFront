@@ -9,7 +9,8 @@ public class Common {
     public static String URL_SERVER = "http://10.0.2.2:8080/RunningWeb/";
 
     public static boolean networkConnected(Activity activity) {
-        //連網
+
+        // 連網
         ConnectivityManager conManager =
                 (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = conManager != null ? conManager.getActiveNetworkInfo() : null;

@@ -6,82 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ShopMainFragment">
 
-    <Button
-        android:id="@+id/btSignInGoogle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="LOGIN GOOGLE"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />/
-
-    <Button
-        android:id="@+id/btSignOut"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:background="@android:color/holo_red_light"
-        android:text="LOGOUT"
-        android:textColor="@android:color/white"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/btSignIn"
-        android:layout_width="330dp"
-        android:layout_height="57dp"
-        android:layout_marginBottom="32dp"
-        android:background="@drawable/bt_normal_signin"
-        app:layout_constraintBottom_toTopOf="@+id/btSignInGoogle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/btgooSignIn"
-        android:layout_width="330dp"
-        android:layout_height="57dp"
-        android:layout_marginTop="70dp"
-        android:background="@drawable/bt_google_signin"
-        app:layout_constraintEnd_toEndOf="@+id/btSignInGoogle"
-        app:layout_constraintStart_toStartOf="@+id/btSignInGoogle"
-        app:layout_constraintTop_toTopOf="@+id/textView" />
-
-    <Button
-        android:id="@+id/btSignUp"
-        android:layout_width="330dp"
-        android:layout_height="57dp"
-        android:layout_marginTop="16dp"
-        android:foreground="@drawable/bt_signup"
-        android:text="Button"
-        app:layout_constraintEnd_toEndOf="@+id/btgooSignIn"
-        app:layout_constraintStart_toStartOf="@+id/btgooSignIn"
-        app:layout_constraintTop_toBottomOf="@+id/btgooSignIn" />
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@+id/btSignInGoogle"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/textView" />
-
-    <EditText
-        android:id="@+id/etPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="@+id/etMail"
-        app:layout_constraintStart_toStartOf="@+id/etMail"
-        app:layout_constraintTop_toBottomOf="@+id/etMail" />
+    /
 
     <EditText
         android:id="@+id/etMail"
@@ -93,29 +18,113 @@
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
+        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="@+id/etMail"
+        app:layout_constraintStart_toStartOf="@+id/etMail"
+        app:layout_constraintTop_toBottomOf="@+id/etMail" />
+
+    <Button
+        android:id="@+id/btSignIn"
+        android:layout_width="217dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bt_rec_bg"
+        android:text="一般登入"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPassword" />
+
+    <Button
+        android:id="@+id/btgooSignIn"
+        android:layout_width="217dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bt_rec_bg"
+        android:text="Google 登入"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/btSignIn"
+        app:layout_constraintStart_toStartOf="@+id/btSignIn"
+        app:layout_constraintTop_toBottomOf="@+id/btSignIn" />
+
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/ivGoogle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/googleg_standard_color_18"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
-        app:layout_constraintEnd_toStartOf="@+id/btSignInGoogle"
-        app:layout_constraintTop_toTopOf="@+id/btSignInGoogle" />
+        app:layout_constraintBottom_toBottomOf="@+id/btgooSignIn"
+        app:layout_constraintEnd_toStartOf="@+id/btgooSignIn"
+        app:layout_constraintTop_toTopOf="@+id/btgooSignIn"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/btSignUp"
+        android:layout_width="217dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bt_rec_bg"
+        android:text="註冊帳號"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/btgooSignIn"
+        app:layout_constraintStart_toStartOf="@+id/btgooSignIn"
+        app:layout_constraintTop_toBottomOf="@+id/btgooSignIn" />
+
+    <Button
+        android:id="@+id/btSignOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@color/colorAccent"
+        android:text="LOGOUT"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btSignInGoogle"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="TextView" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/btGSignIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/btSignUp"
+        app:layout_constraintStart_toStartOf="@+id/btSignUp"
+        app:layout_constraintTop_toBottomOf="@+id/btSignUp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

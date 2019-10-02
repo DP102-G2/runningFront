@@ -10,15 +10,15 @@ import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 
-import android.util.Log;// 除錯用
+import android.util.Log;// 除錯
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.g2.runningFront.R;// res 目錄
 import static android.view.View.GONE;/// UI
-
-import com.google.android.gms.auth.api.signin.GoogleSignIn;// Google 登入
+/* Google 登入 imports */
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -30,8 +30,8 @@ public class SettingMainFragment extends Fragment {
     private static final String TAG = "TAG_SETmain";
     private Activity activity;
     /* 宣告 GoogleSignInClient */
-    public GoogleSignInClient mGoogleSignInClient;
-    public static final int GOOGLE_SIGNIN = 5;
+    public GoogleSignInClient gooSignClient;
+    public static final int GSIGN_CODE = 10;
 
     private TextView textView;
 
@@ -43,7 +43,7 @@ public class SettingMainFragment extends Fragment {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(activity, gso);
+        gooSignClient = GoogleSignIn.getClient(activity, gso);
 
     }
     @Nullable
@@ -56,24 +56,34 @@ public class SettingMainFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, "onViewCreated");
 
-        view.findViewById(R.id.btSignInGoogle).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btGSignIn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent googleSignInIntent = mGoogleSignInClient.getSignInIntent();
-                //startActivity(googleSignInIntent, GOOGLE_SIGNIN);
+                Intent googleSignIntent = gooSignClient.getSignInIntent();
+                startActivityForResult(googleSignIntent, GSIGN_CODE);
 
             }
         });
 
-        SignInButton signInButton = view.findViewById(R.id.sign_in_button);
+        view.findViewById(R.id.btgooSignIn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent googleSignIntent = gooSignClient.getSignInIntent();
+                startActivityForResult(googleSignIntent, GSIGN_CODE);
+
+            }
+        });
+
+        SignInButton signInButton = view.findViewById(R.id.btGSignIn);
         signInButton.setSize(SignInButton.SIZE_WIDE);
 
         view.findViewById(R.id.btSignOut).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                gooSignClient.signOut();
                 view.setVisibility(GONE);
             }
         });
@@ -83,18 +93,20 @@ public class SettingMainFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == GOOGLE_SIGNIN){
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
+        if(requestCode == GSIGN_CODE){
+            Task<GoogleSignInAccount> gTask = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(gTask);
         }
 
     }
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask){
         try{
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            GoogleSignInAccount acct = completedTask.getResult(ApiException.class);
 
-            Log.d(TAG, "handleSignInResult getName: " + account.getDisplayName());
-            Log.d(TAG, "handleSignInResult getEmail: " + account.getEmail());
+            // getDisplayName Google 名稱
+            Log.d(TAG, "handleSignInResult getName: " + acct.getDisplayName());
+            Log.d(TAG, "handleSignInResult getEmail: " + acct.getEmail());
+            Log.d(TAG, "handleSignInResult getPhotoUrl: " + acct.getPhotoUrl());
 
         } catch (ApiException e){
             Log.w(TAG, "SignInResult: failed code = " + e.getStatusCode());
