@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.g2.runningFront.SettingFragment"
+        android:name="com.g2.runningFront.SettingActivity.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" />
 </navigation>

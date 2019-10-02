@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.g2.runningFront.R;// res 目錄
 import static android.view.View.GONE;// UI
@@ -59,7 +60,7 @@ public class SettingMainFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        activity.setTitle("登入頁面");
+        activity.setTitle("登入");
         return inflater.inflate(R.layout.fragment_setting_main, container, false);
     }
 
@@ -80,6 +81,7 @@ public class SettingMainFragment extends Fragment {
 
                 if(id.length()==0 || password.length()==0){
                     textView.setText("帳號密碼不能為空");
+                    return;
                 }
 
                 if (Common.networkConnected(activity)) {
@@ -94,11 +96,11 @@ public class SettingMainFragment extends Fragment {
 
                     try {
                         String strIn = loginTask.execute().get();
-                        JsonObject jsobIn = gson.fromJson(strIn, JsonObject.class);
-                        user = gson.fromJson(jsobIn.get("result").getAsString(), User.class);
+                        user = gson.fromJson(strIn, User.class);
 
                         if(user == null){
                             textView.setText("輸入之帳號或密碼不正確");
+                            Toast.makeText(activity, "輸入之帳號或密碼不正確", Toast.LENGTH_LONG);
                         } else{
                             Bundle bundle = new Bundle();
                             bundle.putSerializable("user", user);
@@ -113,6 +115,7 @@ public class SettingMainFragment extends Fragment {
             }
         });
 
+        /* Google 登入按鈕 */
         view.findViewById(R.id.btGSignIn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -168,7 +171,11 @@ public class SettingMainFragment extends Fragment {
             Log.d(TAG, "handleSignInResult getEmail: " + acct.getEmail());
             // getPhotoUrl Google 大頭照圖片連結
             Log.d(TAG, "handleSignInResult getPhotoUrl: " + acct.getPhotoUrl());
-            textView.setText("Google 登入成功");
+
+            Bundle bundle = new Bundle();
+            bundle.putString("image" ,String.valueOf(acct.getPhotoUrl()));
+            Navigation.findNavController(textView)
+                    .navigate(R.id.action_settingMainFragment_to_settingFragment, bundle);
 
         } catch (ApiException e){
             Log.w(TAG, "SignInResult: failed code = " + e.getStatusCode());
