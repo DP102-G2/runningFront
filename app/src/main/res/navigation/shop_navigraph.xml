@@ -17,7 +17,7 @@
         tools:layout="@layout/fragment_shop_order" />
     <fragment
         android:id="@+id/shopCartFragment"
-        android:name="com.g2.runningFront.ShopActivity.ShopCartFragment"
+        android:name="com.g2.runningFront.ShopActivity.ShopCart.ShopCartFragment"
         android:label="fragment_shop_cart"
         tools:layout="@layout/fragment_shop_cart" />
     <fragment
