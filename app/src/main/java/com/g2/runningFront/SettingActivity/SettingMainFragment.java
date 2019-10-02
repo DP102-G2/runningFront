@@ -40,7 +40,7 @@ public class SettingMainFragment extends Fragment {
     public GoogleSignInClient gooSignClient;
     public static final int GSIGN_CODE = 10;
 
-    private EditText etMail, etPassword;
+    private EditText etId, etPassword;
     private TextView textView;
     private Gson gson;
 
@@ -67,16 +67,16 @@ public class SettingMainFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        etMail = view.findViewById(R.id.etId);
+        etId = view.findViewById(R.id.etId);
         etPassword = view.findViewById(R.id.etPassword);
         textView = view.findViewById(R.id.textView);
 
         view.findViewById(R.id.btSignIn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String id = etMail.getText().toString().trim();
+                String id = etId.getText().toString().trim();
                 String password = etPassword.getText().toString().trim();
-                User mUser = new User(0, id , password);
+                User user = new User(0, id , password);
 
                 if(id.length()==0 || password.length()==0){
                     textView.setText("帳號密碼不能為空");
@@ -84,28 +84,27 @@ public class SettingMainFragment extends Fragment {
 
                 if (Common.networkConnected(activity)) {
                     String url = Common.URL_SERVER + "SettingServlet";
+
                     JsonObject jo = new JsonObject();
                     jo.addProperty("action", "signin");
-                    jo.addProperty("user", new Gson().toJson(mUser));//gson轉成json
+                    jo.addProperty("user", new Gson().toJson(user));
                     String outStr = jo.toString();
+
                     CommonTask loginTask = new CommonTask(url, outStr);
+
                     try {
                         String strIn = loginTask.execute().get();
-                        //JsonObject jsobIn = gson.fromJson(strIn, JsonObject.class);
+                        JsonObject jsobIn = gson.fromJson(strIn, JsonObject.class);
+                        user = gson.fromJson(jsobIn.get("result").getAsString(), User.class);
 
-                        /* ==================== Servlet 回傳 Json 轉成 User.class ==================== */
-                        //String resultStr = jsobIn.get("result").getAsString();
-                        mUser = gson.fromJson(strIn, User.class);
-                        /* ==================== Servlet 回傳 Json 轉成 User.class ==================== */
-
-                        if(mUser == null){
+                        if(user == null){
                             textView.setText("輸入之帳號或密碼不正確");
+                        } else{
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("user", user);
+                            Navigation.findNavController(textView)
+                                    .navigate(R.id.action_settingMainFragment_to_settingFragment, bundle);
                         }
-
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("user", mUser);
-                        Navigation.findNavController(textView)
-                                .navigate(R.id.action_settingMainFragment_to_settingFragment, bundle);
 
                     } catch (Exception e) {
                         Log.e(TAG, e.getMessage());
@@ -141,6 +140,7 @@ public class SettingMainFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 gooSignClient.signOut();
+                textView.setText("Google 已登出");
                 view.setVisibility(GONE);
             }
         });
@@ -156,8 +156,10 @@ public class SettingMainFragment extends Fragment {
         }
 
     }
+
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask){
         try{
+
             GoogleSignInAccount acct = completedTask.getResult(ApiException.class);
 
             // getDisplayName Google 名稱
@@ -166,6 +168,7 @@ public class SettingMainFragment extends Fragment {
             Log.d(TAG, "handleSignInResult getEmail: " + acct.getEmail());
             // getPhotoUrl Google 大頭照圖片連結
             Log.d(TAG, "handleSignInResult getPhotoUrl: " + acct.getPhotoUrl());
+            textView.setText("Google 登入成功");
 
         } catch (ApiException e){
             Log.w(TAG, "SignInResult: failed code = " + e.getStatusCode());
