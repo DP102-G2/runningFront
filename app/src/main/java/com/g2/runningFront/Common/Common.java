@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.widget.Toast;
 
 public class Common {
 
@@ -15,6 +16,14 @@ public class Common {
                 (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = conManager != null ? conManager.getActiveNetworkInfo() : null;
         return networkInfo != null && networkInfo.isConnected();
+    }
+
+    public static void toastShow(Activity activity ,String optSt){
+        Toast.makeText(activity,optSt,Toast.LENGTH_LONG).show();
+    }
+
+    public static void toastShow(Activity activity ,int optSt){
+        Toast.makeText(activity,optSt,Toast.LENGTH_LONG).show();
     }
 
 }
