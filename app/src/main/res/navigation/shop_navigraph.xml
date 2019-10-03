@@ -23,7 +23,11 @@
         android:id="@+id/shopCartFragment"
         android:name="com.g2.runningFront.ShopActivity.ShopCart.ShopCartFragment"
         android:label="fragment_shop_cart"
-        tools:layout="@layout/fragment_shop_cart" />
+        tools:layout="@layout/fragment_shop_cart" >
+        <action
+            android:id="@+id/action_shopCartFragment_to_shopCartFillFragment"
+            app:destination="@id/shopCartFillFragment" />
+    </fragment>
     <fragment
         android:id="@+id/shopServerFragment"
         android:name="com.g2.runningFront.ShopActivity.ShopServerFragment"
@@ -34,4 +38,13 @@
         android:name="com.g2.runningFront.ShopActivity.ProductFragment"
         android:label="fragment_product"
         tools:layout="@layout/fragment_product" />
+    <fragment
+        android:id="@+id/shopCartFillFragment"
+        android:name="com.g2.runningFront.ShopActivity.ShopCart.ShopCartFillFragment"
+        android:label="fragment_shop_cart_fill"
+        tools:layout="@layout/fragment_shop_cart_fill" >
+        <action
+            android:id="@+id/action_shopCartFillFragment_to_shopCartFragment"
+            app:destination="@id/shopCartFragment" />
+    </fragment>
 </navigation>
