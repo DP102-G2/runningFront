@@ -18,8 +18,12 @@ public class Common {
         return networkInfo != null && networkInfo.isConnected();
     }
 
-    public static void toast(Context context, String message){
-        Toast.makeText(context, message, Toast.LENGTH_SHORT);
+    public static void toastShow(Activity activity ,String optSt){
+        Toast.makeText(activity,optSt,Toast.LENGTH_LONG).show();
+    }
+
+    public static void toastShow(Activity activity ,int optSt){
+        Toast.makeText(activity,optSt,Toast.LENGTH_LONG).show();
     }
 
 }

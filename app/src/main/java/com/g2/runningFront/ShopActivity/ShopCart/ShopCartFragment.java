@@ -3,17 +3,22 @@ package com.g2.runningFront.ShopActivity.ShopCart;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -22,9 +27,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.g2.runningFront.Common.Common;
+import com.g2.runningFront.Common.CommonTask;
+import com.g2.runningFront.Common.ImageTask;
 import com.g2.runningFront.R;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +52,27 @@ public class ShopCartFragment extends Fragment {
     int sumTotal = 0;
     List<ShopCart> mList = new ArrayList<>();
     List<Boolean> isCheckedList = new ArrayList<>();
+    CommonTask shopCartGetAllTask;
+    ImageTask shopCartImageTask;
+    private static final String url = Common.URL_SERVER + "ShopCartServlet";
+    private static final String TAG = "TAG_SHOPCART";
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.option_menu, menu);
+
+        // This does not work, compiles and runs fine, but has no visible effect
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        // This does work
+        MenuItem someMenuItem = menu.findItem(R.menu.option_menu);
+        someMenuItem.setVisible(false);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,13 +110,13 @@ public class ShopCartFragment extends Fragment {
 
                 SharedPreferences pref = activity.getSharedPreferences("example", MODE_PRIVATE);
                 try {
-                    pref.edit().putString("ShopCartList", new Gson().toJson(mList)).putInt("SumTotal",sumTotal).apply();
+                    pref.edit().putString("ShopCartList", new Gson().toJson(mList)).putInt("SumTotal", sumTotal).apply();
                     // 檔案到底去哪惹？
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Log.d("TAG",String.valueOf(sumTotal));
+                Log.d("TAG", String.valueOf(sumTotal));
                 Log.d("TAG", new Gson().toJson(mList));
             }
         });
@@ -95,10 +126,12 @@ public class ShopCartFragment extends Fragment {
     private class CartViewAdapter extends RecyclerView.Adapter<CartViewAdapter.myViewHolder> {
         private LayoutInflater layoutInflater;
         List<ShopCart> shopCarts;
+        private int imageSize;
 
         public CartViewAdapter(Context context, List<ShopCart> shopCartList) {
             layoutInflater = LayoutInflater.from(context);
             shopCarts = shopCartList;
+            imageSize = getResources().getDisplayMetrics().widthPixels / 5;
 
         }
 
@@ -121,6 +154,11 @@ public class ShopCartFragment extends Fragment {
             final ShopCart shopCart = shopCarts.get(index);
 
             int Qty = shopCart.getQty();
+
+            if (holder.ivProImage == null) {
+                shopCartImageTask = new ImageTask(url, shopCart.getNo(), imageSize, holder.ivProImage);
+                shopCartImageTask.execute();
+            }
 
             holder.tvProName.setText(shopCart.getName());
             holder.tvProDesc.setText(shopCart.getDesc());
@@ -177,13 +215,6 @@ public class ShopCartFragment extends Fragment {
             setSumTotal(shopCarts);
         }
 
-        public void setShopCarts(List<ShopCart> shopCarts) {
-            this.shopCarts = shopCarts;
-        }
-
-        public List<ShopCart> getShopCarts() {
-            return shopCarts;
-        }
 
         private class myViewHolder extends RecyclerView.ViewHolder {
             CheckBox cbSelect;
@@ -218,11 +249,30 @@ public class ShopCartFragment extends Fragment {
     private List<ShopCart> getShopCartList() {
 
         List<ShopCart> shopCarts = new ArrayList<>();
-        shopCarts.add(new ShopCart("神奇寶貝球", "史上最厲害", 20, 100, 100));
-        shopCarts.add(new ShopCart("神奇寶貝球", "史上最厲害", 10, 120, 200));
-        shopCarts.add(new ShopCart("神奇寶貝球", "史上最厲害", 15, 200, 100));
-        shopCarts.add(new ShopCart("神奇寶貝球", "史上最厲害", 5, 90, 100));
-        shopCarts.add(new ShopCart("神奇寶貝球", "史上最厲害", 3, 200, 120));
+        if (Common.networkConnected(activity)) {
+
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("action", "getAll");
+            jsonObject.addProperty("user_no", 1);
+            String jsonOut = jsonObject.toString();
+            shopCartGetAllTask = new CommonTask(url, jsonOut);
+            try {
+
+                String jsonIn = shopCartGetAllTask.execute().get();
+                Type listTpye = new TypeToken<List<ShopCart>>() {
+                }.getType();
+                shopCarts = new Gson().fromJson(jsonIn, listTpye);
+
+            } catch (Exception e) {
+                Log.e(TAG, e.toString());
+            }
+
+        } else {
+
+            Common.toastShow(activity, "no network connection available");
+
+
+        }
 
         for (ShopCart a : shopCarts) {
             isCheckedList.add(true);
@@ -236,7 +286,7 @@ public class ShopCartFragment extends Fragment {
         sumTotal = 0;
         mList.clear();
 
-        for (int i = 0; i <= isCheckedList.size()-1; i++) {
+        for (int i = 0; i <= isCheckedList.size() - 1; i++) {
 
             if (isCheckedList.get(i)) {
                 sumTotal += shopCarts.get(i).getTotal();
@@ -247,4 +297,51 @@ public class ShopCartFragment extends Fragment {
         tvSumTotal.setText(String.valueOf(sumTotal));
     }
 
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        new AlertDialog.Builder(activity)
+                /* 設定標題 */
+                .setTitle("是否要儲存購物車？")
+                /* 設定圖示 */
+                .setIcon(R.drawable.ic_shopcart)
+                /* 設定訊息文字 */
+                .setMessage("你好好考慮清楚")
+                /* 設定positive與negative按鈕上面的文字與點擊事件監聽器 */
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        /* 結束此Activity頁面 */
+                        if (Common.networkConnected(activity)) {
+
+                            JsonObject jsonObject = new JsonObject();
+                            jsonObject.addProperty("action", "saveShopCart");
+                            jsonObject.addProperty("user_no", 1);
+                            jsonObject.addProperty("ShopCart", new Gson().toJson(mList));
+                            String jsonOut = jsonObject.toString();
+                            shopCartGetAllTask = new CommonTask(url, jsonOut);
+                            try {
+                                String jsonIn = shopCartGetAllTask.execute().get();
+                                Common.toastShow(activity, jsonIn);
+
+                            } catch (Exception e) {
+                                Log.e(TAG, e.toString());
+                            }
+
+                        } else {
+
+                            Common.toastShow(activity, "no network connection available");
+                        }
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        /* 關閉對話視窗 */
+                        dialog.cancel();
+                    }
+                })
+                .show();
+    }
 }
