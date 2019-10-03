@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void holdNavigraph() {
         btbRun = findViewById(R.id.btbRun);
-        NavController navCtrRun = Navigation.findNavController(MainActivity.this, R.id.fgNavigrath);
+        NavController navCtrRun = Navigation.findNavController(this, R.id.fgNavigrath);
         NavigationUI.setupWithNavController(btbRun, navCtrRun);
 
     }
