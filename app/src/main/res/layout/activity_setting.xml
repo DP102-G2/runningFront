@@ -16,4 +16,16 @@
         app:navGraph="@navigation/setting_navigraph"
         tools:layout_editor_absoluteX="98dp"
         tools:layout_editor_absoluteY="414dp" />
+
+    <Button
+        android:id="@+id/set_btLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="156dp"
+        android:layout_marginEnd="156dp"
+        android:layout_marginBottom="160dp"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/fragment"
+        app:layout_constraintStart_toEndOf="@+id/fragment" />
 </androidx.constraintlayout.widget.ConstraintLayout>

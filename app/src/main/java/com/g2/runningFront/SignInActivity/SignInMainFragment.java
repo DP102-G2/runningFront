@@ -1,31 +1,25 @@
-package com.g2.runningFront.SettingActivity;
+package com.g2.runningFront.SignInActivity;
 
 import android.app.Activity;
-import android.content.Intent;// Intent
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-
+import android.util.Log;
 import android.view.LayoutInflater;
-
-import android.util.Log;// 除錯
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.g2.runningFront.R;// res 目錄
-import static android.view.View.GONE;// UI
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
-import com.g2.runningFront.Common.*;// Common
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
-/* Google 登入 imports */
+import com.g2.runningFront.Common.Common;
+import com.g2.runningFront.Common.CommonTask;
+import com.g2.runningFront.Common.User;
+import com.g2.runningFront.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -33,8 +27,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
-public class SettingMainFragment extends Fragment {
+import static android.view.View.GONE;
+
+/* Google 登入 imports */
+
+public class SignInMainFragment extends Fragment {
     private static final String TAG = "TAG_SETmain";
     private Activity activity;
     /* 宣告 GoogleSignInClient */
@@ -59,17 +59,13 @@ public class SettingMainFragment extends Fragment {
     }
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         activity.setTitle("登入");
-        return inflater.inflate(R.layout.fragment_setting_main,
-                container, false);
+        return inflater.inflate(R.layout.fragment_signin_main, container, false);
     }
 
     @Override
-    public void onViewCreated(@NonNull View view,
-                              @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         etId = view.findViewById(R.id.etId);
