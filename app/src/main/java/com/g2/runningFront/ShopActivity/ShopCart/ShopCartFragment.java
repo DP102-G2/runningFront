@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -54,6 +56,7 @@ public class ShopCartFragment extends Fragment {
     List<Boolean> isCheckedList = new ArrayList<>();
     CommonTask shopCartGetAllTask;
     ImageTask shopCartImageTask;
+    boolean Confirl =false;
     private static final String url = Common.URL_SERVER + "ShopCartServlet";
     private static final String TAG = "TAG_SHOPCART";
 
@@ -108,10 +111,13 @@ public class ShopCartFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                Confirl=true;
+
                 SharedPreferences pref = activity.getSharedPreferences("example", MODE_PRIVATE);
                 try {
                     pref.edit().putString("ShopCartList", new Gson().toJson(mList)).putInt("SumTotal", sumTotal).apply();
                     // 檔案到底去哪惹？
+                    Navigation.findNavController(view).navigate(R.id.action_shopCartFragment_to_shopCartFillFragment);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -301,47 +307,51 @@ public class ShopCartFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        new AlertDialog.Builder(activity)
-                /* 設定標題 */
-                .setTitle("是否要儲存購物車？")
-                /* 設定圖示 */
-                .setIcon(R.drawable.ic_shopcart)
-                /* 設定訊息文字 */
-                .setMessage("你好好考慮清楚")
-                /* 設定positive與negative按鈕上面的文字與點擊事件監聽器 */
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        /* 結束此Activity頁面 */
-                        if (Common.networkConnected(activity)) {
 
-                            JsonObject jsonObject = new JsonObject();
-                            jsonObject.addProperty("action", "saveShopCart");
-                            jsonObject.addProperty("user_no", 1);
-                            jsonObject.addProperty("ShopCart", new Gson().toJson(mList));
-                            String jsonOut = jsonObject.toString();
-                            shopCartGetAllTask = new CommonTask(url, jsonOut);
-                            try {
-                                String jsonIn = shopCartGetAllTask.execute().get();
-                                Common.toastShow(activity, jsonIn);
+        if (!Confirl) {
 
-                            } catch (Exception e) {
-                                Log.e(TAG, e.toString());
+            new AlertDialog.Builder(activity)
+                    /* 設定標題 */
+                    .setTitle("是否要儲存購物車？")
+                    /* 設定圖示 */
+                    .setIcon(R.drawable.ic_shopcart)
+                    /* 設定訊息文字 */
+                    .setMessage("你好好考慮清楚")
+                    /* 設定positive與negative按鈕上面的文字與點擊事件監聽器 */
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            /* 結束此Activity頁面 */
+                            if (Common.networkConnected(activity)) {
+
+                                JsonObject jsonObject = new JsonObject();
+                                jsonObject.addProperty("action", "saveShopCart");
+                                jsonObject.addProperty("user_no", 1);
+                                jsonObject.addProperty("ShopCart", new Gson().toJson(mList));
+                                String jsonOut = jsonObject.toString();
+                                shopCartGetAllTask = new CommonTask(url, jsonOut);
+                                try {
+                                    String jsonIn = shopCartGetAllTask.execute().get();
+                                    Common.toastShow(activity, jsonIn);
+
+                                } catch (Exception e) {
+                                    Log.e(TAG, e.toString());
+                                }
+
+                            } else {
+
+                                Common.toastShow(activity, "no network connection available");
                             }
-
-                        } else {
-
-                            Common.toastShow(activity, "no network connection available");
                         }
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        /* 關閉對話視窗 */
-                        dialog.cancel();
-                    }
-                })
-                .show();
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            /* 關閉對話視窗 */
+                            dialog.cancel();
+                        }
+                    })
+                    .show();
+        }
     }
 }
