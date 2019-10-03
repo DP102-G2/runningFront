@@ -3,6 +3,13 @@
     <string name="setting_name">設定</string>
     <string name="run_name">跑步</string>
     <string name="shop_name">購物商城</string>
+    <string-array name="textOrderArray">
+        <item>全部</item>
+        <item>未出貨</item>
+        <item>已出貨</item>
+        <item>未送達</item>
+        <item>已送達</item>
+    </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

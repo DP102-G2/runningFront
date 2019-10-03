@@ -1,17 +1,31 @@
 package com.g2.runningFront.ShopActivity.ShopCart;
 
-public class ShopCart {
+import java.io.Serializable;
+import java.util.List;
+
+public class ShopCart implements Serializable {
 
     String name;
     String desc;
-    int num;
+    int qty;
     int price;
+    int stock;
+    int total;
 
-    public ShopCart(String name, String desc, int num, int price) {
+
+
+    public ShopCart(String name, String desc, int qty, int price, int stock) {
         this.name = name;
         this.desc = desc;
-        this.num = num;
+        this.qty = qty;
         this.price = price;
+        this.stock = stock;
+    }
+
+    public int getTotal(){
+        total=qty*price;
+
+        return total;
     }
 
     public String getName() {
@@ -30,12 +44,12 @@ public class ShopCart {
         this.desc = desc;
     }
 
-    public int getNum() {
-        return num;
+    public int getQty() {
+        return qty;
     }
 
-    public void setNum(int num) {
-        this.num = num;
+    public void setQty(int qty) {
+        this.qty = qty;
     }
 
     public int getPrice() {
@@ -45,4 +59,21 @@ public class ShopCart {
     public void setPrice(int price) {
         this.price = price;
     }
+
+
+    public void setTotal(int total) {
+        this.total = total;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+
+
+
 }
