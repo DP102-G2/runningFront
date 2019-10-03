@@ -50,6 +50,26 @@ public class RunStart extends Fragment {
         runstart_tvDistance.setText("0.0");
         runstart_tvSpeed.setText("0.0");
 
+         Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                time += 1;//累積的總秒數
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        int seconds = ((int ) time)%60;
+                        int minutes = (((int ) time)/60)%60;
+                        int hours = ((int ) time)/3600;
+
+                        runstart_tvTime.setText(hours+":"+minutes+":"+seconds);
+
+                    }
+                });
+            }
+        }, 0,1000);
+
+
         runstart_btStart = view.findViewById(R.id.runstart_btStart);
         runstart_btStart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,24 +77,9 @@ public class RunStart extends Fragment {
                 activity.setTitle("目前運動狀態");
                 runstart_btStart.setText("完成");
 
-                Timer timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        time += 1;//累積的總秒數
-                        activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                int seconds = ((int ) time)%60;
-                                int minutes = (((int ) time)/60)%60;
-                                int hours = ((int ) time)/3600;
 
-                                runstart_tvTime.setText(hours+":"+minutes+":"+seconds);
 
-                            }
-                        });
-                    }
-                }, 0,1000);
+
 
             }
         });
