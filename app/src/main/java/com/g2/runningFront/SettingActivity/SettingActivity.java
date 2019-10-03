@@ -26,7 +26,7 @@ public class SettingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setting);
         setTitle(R.string.setting_name);
 
-        button=findViewById(R.id.set_btLogin);
+        button = findViewById(R.id.set_btLogin);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -35,7 +35,7 @@ public class SettingActivity extends AppCompatActivity {
                 intent = new Intent(SettingActivity.this, SignInActivity.class);
                 startActivity(intent);
 
-//                SettingActivity.this.finish();
+                //SettingActivity.this.finish();
                 //前面區塊，根據要關閉的activity做更換
 
             }
@@ -50,13 +50,11 @@ public class SettingActivity extends AppCompatActivity {
         return true;
     }
 
-
-
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         Intent intent;
         switch (item.getItemId()) {
+
             case R.id.opShop:
                 intent = new Intent(this, ShopActivity.class);
                 startActivity(intent);

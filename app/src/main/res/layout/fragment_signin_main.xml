@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ShopMainFragment">
 
-    /
 
     <EditText
         android:id="@+id/etId"
