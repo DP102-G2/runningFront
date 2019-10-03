@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ripple xmlns:android="http://schemas.android.com/apk/res/android" android:color="@color/colorAccent">
+<ripple xmlns:android="http://schemas.android.com/apk/res/android" android:color="@color/colorMain">
 
     <!--  按壓時  -->
     <item android:state_pressed="true">
@@ -15,11 +15,10 @@
     </item>
 
     <!--  預設時  -->
-    <item android:color="@android:color/black">
+    <item android:color="@color/colorPrimary">
         <shape android:shape="rectangle"  >
             <corners android:radius="15dip" />
-            <stroke android:width="1dip" android:color="#071E54" />
-            <gradient android:angle="-90" android:startColor="#0E2252" android:endColor="#1D2C50"  />
+            <gradient android:angle="-90" android:startColor="@color/colorPrimary" android:endColor="@color/colorMain"  />
         </shape>
     </item>
 
