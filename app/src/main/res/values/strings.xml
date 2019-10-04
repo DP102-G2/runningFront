@@ -11,6 +11,9 @@
     <string name="shopping">瀏覽商品</string>
 
 
+
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string-array name="textOrderArray">
         <item>全部</item>
@@ -19,4 +22,26 @@
         <item>未送達</item>
         <item>已送達</item>
     </string-array>
+
+
+
+    <!--  TapPay區塊  -->
+    <string name="textConfirmPay">確認付款</string>
+
+    <!--  找對應的資料來做填寫  -->
+    <!-- 填上TapPay Portal上註冊的資料 -->
+    <!--  另外要在開發者->系統環境設定-開發者的後台ip限制改成1.2.3.4/0，此為官方文件建議的預設值  -->
+    <!-- 開發者 > 應用程式 -->
+    <string name="TapPay_AppID">15083</string>
+    <string name="TapPay_AppKey">app_uK9iuLSI8MmwVQ7uD4KCHMPVWkGGX7RP0FknZyxHCmoU7L1yNGLLSEJ0f1tQ</string>
+
+    <!-- 帳戶資訊 -->
+    <string name="TapPay_PartnerKey">partner_hzBSTbg7J9JklPg9MBBhYGHSJh7AkNHnNW6aZH4Lw491QfitNHwuyapk</string>
+
+    <!-- 商家管理 -->
+    <string name="TapPay_MerchantName">TW_TAISHIN</string>
+    <string name="TapPay_MerchantID">a10033135_TAISHIN</string>
+    <string name="textCannotUseGPay">Cannot use Google Pay</string>
+    <string name="textCanceled">Canceled by the user.</string>
+
 </resources>

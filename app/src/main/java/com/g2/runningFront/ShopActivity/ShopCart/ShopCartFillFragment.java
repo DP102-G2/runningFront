@@ -21,6 +21,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.g2.runningFront.Common.Common;
+import com.g2.runningFront.Common.CommonTask;
+import com.g2.runningFront.Common.ImageTask;
 import com.g2.runningFront.R;
 import com.google.gson.Gson;
 
@@ -47,6 +49,8 @@ public class ShopCartFillFragment extends Fragment {
     String receiverPhone;
     int receiverPayment = -1;
     TextView textView;
+
+
 
     private final static String DEFAULT_ERROR = "null";
     private final static String PREFERENCES_NAME = "preferences";

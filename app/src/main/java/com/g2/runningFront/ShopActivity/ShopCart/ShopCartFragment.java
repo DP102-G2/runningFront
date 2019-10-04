@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -56,9 +57,12 @@ public class ShopCartFragment extends Fragment {
     List<Boolean> isCheckedList = new ArrayList<>();
     CommonTask shopCartGetAllTask;
     ImageTask shopCartImageTask;
-    boolean Confirl =false;
+    boolean Confirl = false;
+
     private static final String url = Common.URL_SERVER + "ShopCartServlet";
     private static final String TAG = "TAG_SHOPCART";
+    private final static String PREFERENCES_NAME = "preferences";
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -111,9 +115,9 @@ public class ShopCartFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Confirl=true;
+                Confirl = true;
 
-                SharedPreferences pref = activity.getSharedPreferences("example", MODE_PRIVATE);
+                SharedPreferences pref = activity.getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
                 try {
                     pref.edit().putString("ShopCartList", new Gson().toJson(mList)).putInt("SumTotal", sumTotal).apply();
                     // 檔案到底去哪惹？
@@ -161,10 +165,8 @@ public class ShopCartFragment extends Fragment {
 
             int Qty = shopCart.getQty();
 
-            if (holder.ivProImage == null) {
-                shopCartImageTask = new ImageTask(url, shopCart.getNo(), imageSize, holder.ivProImage);
-                shopCartImageTask.execute();
-            }
+            shopCartImageTask = new ImageTask(url, shopCart.getNo(), imageSize, holder.ivProImage);
+            shopCartImageTask.execute();
 
             holder.tvProName.setText(shopCart.getName());
             holder.tvProDesc.setText(shopCart.getDesc());
@@ -182,13 +184,15 @@ public class ShopCartFragment extends Fragment {
                     int nQty = shopCart.getQty();
                     if (v.getId() == R.id.cart_ivPlus) {
                         nQty += 1;
-                    } else if (v.getId() == R.id.cart_ivMinus) {
+                    } else if (v.getId() == R.id.cart_ivMinus && nQty >= 1) {
                         nQty -= 1;
+                        Common.toastShow(activity, "Cant DO it");
                     }
                     shopCart.setQty(nQty);
                     shopCarts.set(index, shopCart);
-                    notifyDataSetChanged();
-                    // 提醒改變資料
+                    holder.etProNum.setText(String.valueOf(nQty));
+                    holder.tvTotal.setText("小計： " + shopCart.getTotal());
+                    setSumTotal(shopCarts);
                 }
             };
 
@@ -214,7 +218,7 @@ public class ShopCartFragment extends Fragment {
                         isCheckedList.set(index, true);
                     }
                     shopCarts.set(index, shopCart);
-                    notifyDataSetChanged();
+                    setSumTotal(shopCarts);
                 }
             });
 
@@ -278,7 +282,9 @@ public class ShopCartFragment extends Fragment {
             Common.toastShow(activity, "no network connection available");
 
 
+            Location
         }
+        isCheckedList.clear();
 
         for (ShopCart a : shopCarts) {
             isCheckedList.add(true);

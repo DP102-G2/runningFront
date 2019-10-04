@@ -14,6 +14,24 @@ public class OrderReceiver {
         Payment = payment;
     }
 
+    public String getPaymentText(){
+        String paymentText=null;
+
+        switch (Payment){
+            case -1:
+                paymentText = "未選擇";
+                break;
+            case 0:
+                paymentText ="信用卡支付";
+                break;
+            case 1:
+                paymentText = "行動支付";
+                break;
+        }
+
+        return paymentText;
+    }
+
     public String getName() {
         return Name;
     }
