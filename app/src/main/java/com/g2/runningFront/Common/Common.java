@@ -2,9 +2,16 @@ package com.g2.runningFront.Common;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
+
+import com.g2.runningFront.SignInActivity.SignInActivity;
+
+import static android.content.Context.MODE_PRIVATE;
+
 
 public class Common {
 
@@ -34,4 +41,47 @@ public class Common {
         Toast.makeText(activity, optSt, Toast.LENGTH_LONG).show();
     }
 
+    public final static String PREF = "preference";
+
+    /**
+     *
+     * @param activity 目前使用的 Activity
+     */
+    public static void signIn(Activity activity) {
+        boolean isSignIn = false;
+        /* 取得當前偏好設定                  .getSharedPreferences */
+        SharedPreferences pref  = activity.getSharedPreferences(Common.PREF, MODE_PRIVATE);
+        try {
+            isSignIn = pref.getBoolean("isSignIn", false);
+        } catch (ClassCastException c) {
+            c.printStackTrace();
+        } finally {
+            if (!isSignIn) {
+                /* 檢查到未登入，將切換至登入頁 */
+                Intent signInIntent = new Intent(activity, SignInActivity.class);
+
+                /* 請求登入頁面的結果（登入成功/登入失敗）
+                 * startActivityForResult(Intent, 請求代碼); */
+                activity.startActivity(signInIntent);
+                //activity.startActivityForResult(signInIntent, Common.REQ_SIGNIN);
+                return;
+            }
+        }
+    }
+
+    public static void signIn(Activity activity, int requestCode) {
+        boolean isSignIn = false;
+        SharedPreferences pref  = activity.getSharedPreferences(Common.PREF, MODE_PRIVATE);
+        try {
+            isSignIn = pref.getBoolean("isSignIn", false);
+        } catch (ClassCastException c) {
+            c.printStackTrace();
+        } finally {
+            if (!isSignIn) {
+                Intent signInIntent = new Intent(activity, SignInActivity.class);
+                activity.startActivityForResult(signInIntent, requestCode);
+                return;
+            }
+        }
+    }
 }

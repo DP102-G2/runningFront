@@ -65,7 +65,7 @@ public class SignInActivity extends AppCompatActivity {
         if (isSignIn) {
 
             setResult(RESULT_OK);
-            Log.d(TAG, "onStart 檢查已登入，此頁結束。");
+            Log.d(TAG, "onStart 檢查已經登入，此頁不會出現。");
             finish();
 
         } else {
@@ -98,7 +98,7 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                /* 隱藏/顯示輸入鍵盤 */
+                /* 隱藏 OR 顯示輸入鍵盤 */
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
 

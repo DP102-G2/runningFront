@@ -1,6 +1,5 @@
 package com.g2.runningFront.ShopActivity;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.media.tv.TvView;
@@ -147,7 +146,6 @@ public class ShopOrderFragment extends Fragment {
 
         return orders;
     }
-        }
 
 
-
+}
