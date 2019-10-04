@@ -5,6 +5,14 @@ public class OrderReceiver {
     String Name;
     String Address;
     String Phone;
+    int Payment;
+
+    public OrderReceiver(String name, String address, String phone, int payment) {
+        Name = name;
+        Address = address;
+        Phone = phone;
+        Payment = payment;
+    }
 
     public String getName() {
         return Name;
@@ -30,12 +38,11 @@ public class OrderReceiver {
         Phone = phone;
     }
 
-    public OrderReceiver(String name, String address, String phone) {
-        Name = name;
-        Address = address;
-        Phone = phone;
+    public int getPayment() {
+        return Payment;
     }
 
-
-
+    public void setPayment(int payment) {
+        Payment = payment;
+    }
 }

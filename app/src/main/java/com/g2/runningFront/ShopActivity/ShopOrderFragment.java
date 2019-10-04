@@ -46,8 +46,6 @@ public class ShopOrderFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_shop_order, container, false);
 
-
-
     }
 
     @Override

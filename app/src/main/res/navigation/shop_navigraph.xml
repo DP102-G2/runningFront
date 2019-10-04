@@ -46,5 +46,21 @@
         <action
             android:id="@+id/action_shopCartFillFragment_to_shopCartFragment"
             app:destination="@id/shopCartFragment" />
+        <action
+            android:id="@+id/action_shopCartFillFragment_to_shopCartAcpayFragment"
+            app:destination="@id/shopCartAcpayFragment" />
+        <action
+            android:id="@+id/action_shopCartFillFragment_to_shopCartCeditPayFragment"
+            app:destination="@id/shopCartCeditPayFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/shopCartAcpayFragment"
+        android:name="com.g2.runningFront.ShopActivity.ShopCart.ShopCartAcpayFragment"
+        android:label="fragment_shop_cart_acpay"
+        tools:layout="@layout/fragment_shop_cart_acpay" />
+    <fragment
+        android:id="@+id/shopCartCeditPayFragment"
+        android:name="com.g2.runningFront.ShopActivity.ShopCart.ShopCartCeditPayFragment"
+        android:label="fragment_shop_cart_cedit_pay"
+        tools:layout="@layout/fragment_shop_cart_cedit_pay" />
 </navigation>

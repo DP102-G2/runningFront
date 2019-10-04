@@ -3,13 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/running_navigraph"
-    app:startDestination="@id/runMainFragment">
+    app:startDestination="@id/runInput">
 
     <fragment
-        android:id="@+id/runMainFragment"
-        android:name="com.g2.runningFront.RunActivity.RunMainFragment"
-        android:label="fragment_run_main"
-        tools:layout="@layout/fragment_run_main" />
+        android:id="@+id/runInput"
+        android:name="com.g2.runningFront.RunActivity.RunInput"
+        android:label="fragment_run_input"
+        tools:layout="@layout/fragment_run_input">
+        <action
+            android:id="@+id/action_runInput_to_bmiResult"
+            app:destination="@id/bmiResult" />
+    </fragment>
     <fragment
         android:id="@+id/runInquireFragment"
         android:name="com.g2.runningFront.RunActivity.RunInquireFragment"
@@ -25,4 +29,32 @@
         android:name="com.g2.runningFront.RunActivity.RunAchieveFragment"
         android:label="fragment_run_achieve"
         tools:layout="@layout/fragment_run_achieve" />
+    <fragment
+        android:id="@+id/bmiResult"
+        android:name="com.g2.runningFront.BmiResult"
+        android:label="fragment_bmi_Result"
+        tools:layout="@layout/fragment_bmi_result">
+        <action
+            android:id="@+id/action_bmiResult_to_runMain"
+            app:destination="@id/runMain" />
+    </fragment>
+    <fragment
+        android:id="@+id/runMain"
+        android:name="com.g2.runningFront.RunMain"
+        android:label="fragment_run_Main"
+        tools:layout="@layout/fragment_run_main">
+        <action
+            android:id="@+id/action_runMain_to_runStart"
+            app:destination="@id/runStart" />
+    </fragment>
+    <fragment
+        android:id="@+id/runStart"
+        android:name="com.g2.runningFront.RunStart"
+        android:label="fragment_run_Start"
+        tools:layout="@layout/fragment_run_start"/>
+    <fragment
+        android:id="@+id/runResult"
+        android:name="com.g2.runningFront.RunResult"
+        android:label="fragment_run_Result"
+        tools:layout="@layout/fragment_run_result" />
 </navigation>

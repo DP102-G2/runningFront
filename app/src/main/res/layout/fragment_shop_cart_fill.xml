@@ -95,17 +95,17 @@
         app:layout_constraintTop_toBottomOf="@+id/cartfill_tvPayment">
 
         <RadioButton
-            android:id="@+id/radioButton"
+            android:id="@+id/cartfill_rbCredit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="RadioButton"
+            android:text="信用卡"
             android:textSize="17sp" />
 
         <RadioButton
-            android:id="@+id/radioButton2"
+            android:id="@+id/cartfill_rbAcPay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="RadioButton"
+            android:text="行動支付"
             android:textSize="17sp" />
 
     </RadioGroup>
