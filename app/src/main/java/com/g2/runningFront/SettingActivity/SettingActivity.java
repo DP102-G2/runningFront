@@ -42,6 +42,7 @@ public class SettingActivity extends AppCompatActivity {
         });
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -71,4 +72,5 @@ public class SettingActivity extends AppCompatActivity {
         }
         return true;
     }
+
 }

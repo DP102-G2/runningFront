@@ -10,7 +10,10 @@ public class Common {
 
     public static String URL_SERVER = "http://10.0.2.2:8080/RunningWeb/";
 
-    // 確認連網
+    /**
+     * 確認連網
+     * @param activity 目前使用的 Activity
+     */
     public static boolean networkConnected(Activity activity) {
         ConnectivityManager conManager =
                 (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -18,12 +21,17 @@ public class Common {
         return networkInfo != null && networkInfo.isConnected();
     }
 
-    public static void toastShow(Activity activity ,String optSt){
-        Toast.makeText(activity,optSt,Toast.LENGTH_LONG).show();
+    /**
+     * Toast 提示訊息
+     * @param activity 目前使用的 Activity
+     * @param string 想要提示的文字內容
+     */
+    public static void toastShow(Activity activity ,String string){
+        Toast.makeText(activity, string, Toast.LENGTH_LONG).show();
     }
 
     public static void toastShow(Activity activity ,int optSt){
-        Toast.makeText(activity,optSt,Toast.LENGTH_LONG).show();
+        Toast.makeText(activity, optSt, Toast.LENGTH_LONG).show();
     }
 
 }

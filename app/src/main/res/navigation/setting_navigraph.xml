@@ -9,7 +9,7 @@
         android:id="@+id/settingMainFragment"
         android:name="com.g2.runningFront.SettingActivity.SettingMainFragment"
         android:label="fragment_setting_main"
-        tools:layout="@layout/fragment_signin_main" >
+        tools:layout="@layout/fragment_setting_main">
         <action
             android:id="@+id/action_settingMainFragment_to_settingFragment"
             app:destination="@id/settingFragment" />
