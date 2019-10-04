@@ -281,8 +281,6 @@ public class ShopCartFragment extends Fragment {
 
             Common.toastShow(activity, "no network connection available");
 
-
-            Location
         }
         isCheckedList.clear();
 
