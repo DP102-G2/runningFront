@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.g2.runningFront.SignInActivity.SignInActivity;
 
+import tech.cherri.tpdirect.api.TPDCard;
+
 import static android.content.Context.MODE_PRIVATE;
 
 
@@ -84,4 +86,11 @@ public class Common {
             }
         }
     }
+
+    public static final TPDCard.CardType[] CARD_TYPES = new TPDCard.CardType[]{
+            TPDCard.CardType.Visa
+            , TPDCard.CardType.MasterCard
+            , TPDCard.CardType.JCB
+            , TPDCard.CardType.AmericanExpress
+    };
 }

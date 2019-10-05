@@ -119,9 +119,12 @@ public class ShopCartFragment extends Fragment {
 
                 SharedPreferences pref = activity.getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
                 try {
-                    pref.edit().putString("ShopCartList", new Gson().toJson(mList)).putInt("SumTotal", sumTotal).apply();
+                    pref.edit().putString("ShopCartList", new Gson().toJson(mList)).apply();
                     // 檔案到底去哪惹？
-                    Navigation.findNavController(view).navigate(R.id.action_shopCartFragment_to_shopCartFillFragment);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("SumTotal",sumTotal);
+                    Navigation.findNavController(view).navigate(R.id.action_shopCartFragment_to_shopCartFillFragment,bundle);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -276,12 +279,12 @@ public class ShopCartFragment extends Fragment {
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
             }
-
         } else {
 
             Common.toastShow(activity, "no network connection available");
 
         }
+
         isCheckedList.clear();
 
         for (ShopCart a : shopCarts) {

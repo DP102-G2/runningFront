@@ -25,13 +25,7 @@
 
 
 
-    <!--  TapPay區塊  -->
-    <string name="textConfirmPay">確認付款</string>
 
-    <!--  找對應的資料來做填寫  -->
-    <!-- 填上TapPay Portal上註冊的資料 -->
-    <!--  另外要在開發者->系統環境設定-開發者的後台ip限制改成1.2.3.4/0，此為官方文件建議的預設值  -->
-    <!-- 開發者 > 應用程式 -->
     <string name="TapPay_AppID">15083</string>
     <string name="TapPay_AppKey">app_uK9iuLSI8MmwVQ7uD4KCHMPVWkGGX7RP0FknZyxHCmoU7L1yNGLLSEJ0f1tQ</string>
 
@@ -45,3 +39,4 @@
     <string name="textCanceled">Canceled by the user.</string>
 
 </resources>
+

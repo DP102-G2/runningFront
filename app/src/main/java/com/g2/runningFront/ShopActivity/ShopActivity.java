@@ -13,13 +13,18 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import com.g2.runningFront.Common.Common;
 import com.g2.runningFront.R;
 import com.g2.runningFront.RunActivity.MainActivity;
 import com.g2.runningFront.SettingActivity.SettingActivity;
+import com.g2.runningFront.ShopActivity.ShopCart.TapPay.ShopCartAcpayFragment;
+import com.google.android.gms.wallet.PaymentData;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ShopActivity extends AppCompatActivity {
     private BottomNavigationView btbShop;
+    private PaymentData paymentData;
+    public static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 101;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,6 +41,27 @@ public class ShopActivity extends AppCompatActivity {
         menu.removeItem(R.id.opShop);
         return true;
 
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == LOAD_PAYMENT_DATA_REQUEST_CODE) {
+            switch (resultCode) {
+                case RESULT_OK:
+                    Common.toastShow(this, "OK");
+                    paymentData = PaymentData.getFromIntent(data);
+                    ShopCartAcpayFragment.paymentData = paymentData;
+                    break;
+                case RESULT_CANCELED:
+                    Common.toastShow(this, "CANCEL");
+                    break;
+                default:
+                    Common.toastShow(this, "ERROR");
+                    break;
+            }
+        }
     }
 
     @Override
@@ -56,7 +82,8 @@ public class ShopActivity extends AppCompatActivity {
                 this.finish();
                 return true;
         }
-        return true;    }
+        return true;
+    }
 
 
     private void holdNavigraph() {

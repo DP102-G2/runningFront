@@ -21,8 +21,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.g2.runningFront.Common.Common;
-import com.g2.runningFront.Common.CommonTask;
-import com.g2.runningFront.Common.ImageTask;
 import com.g2.runningFront.R;
 import com.google.gson.Gson;
 
@@ -35,6 +33,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class ShopCartFillFragment extends Fragment {
 
     Activity activity;
+    Bundle bundle;
 
     View view;
     EditText etReceiver;
@@ -50,6 +49,8 @@ public class ShopCartFillFragment extends Fragment {
     int receiverPayment = -1;
     TextView textView;
 
+    int sumTotal;
+
 
 
     private final static String DEFAULT_ERROR = "null";
@@ -57,12 +58,13 @@ public class ShopCartFillFragment extends Fragment {
 
     private SharedPreferences pref;
     String orderReceiver;
-    OrderReceiver or;
+    CartOrder co;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = getActivity();
+        bundle = getArguments();
     }
 
     @Override
@@ -96,12 +98,15 @@ public class ShopCartFillFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                sumTotal = bundle.getInt("SumTotal");
+
                 receiverName = etReceiver.getText().toString();
                 receiverAddress = etAddress.getText().toString();
                 receiverPhone = etPhone.getText().toString();
+                CartOrder or = new CartOrder(1,receiverName, receiverAddress, receiverPhone, receiverPayment,0,sumTotal);
+                // 未來要補上USERNO
 
-                OrderReceiver or = new OrderReceiver(receiverName, receiverAddress, receiverPhone, receiverPayment);
-                pref.edit().putString("OrderReceiver", new Gson().toJson(or)).apply();
+                pref.edit().putString("CartOrder", new Gson().toJson(or)).apply();
 
                 if (receiverName.equals("") || receiverAddress.equals("") || receiverPhone.equals("")) {
                     Common.toastShow(activity, "Please Set Your Receiver ? ");
@@ -149,16 +154,16 @@ public class ShopCartFillFragment extends Fragment {
     }
 
     private void getPref() {
-        orderReceiver = pref.getString("OrderReceiver", DEFAULT_ERROR);
+        orderReceiver = pref.getString("CartOrder", DEFAULT_ERROR);
 
         if (!orderReceiver.equals(DEFAULT_ERROR)) {
-            or = new Gson().fromJson(orderReceiver, OrderReceiver.class);
-            if (!or.Name.equals("")) {
+            co = new Gson().fromJson(orderReceiver, CartOrder.class);
+            if (!co.Name.equals("")) {
                 cbReview.setChecked(true);
-                etReceiver.setText(or.getName());
-                etAddress.setText(or.getAddress());
-                etPhone.setText(or.getPhone());
-                switch (or.getPayment()) {
+                etReceiver.setText(co.getName());
+                etAddress.setText(co.getAddress());
+                etPhone.setText(co.getPhone());
+                switch (co.getPayment()) {
                     case -1:
                         rgPayment.clearCheck();
                         break;

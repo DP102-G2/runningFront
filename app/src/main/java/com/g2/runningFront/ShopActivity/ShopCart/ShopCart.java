@@ -76,5 +76,11 @@ public class ShopCart implements Serializable {
         return total;
     }
 
+    public String getDetail() {
+        String detail = name + " x " + qty + " , ";
+
+        return detail;
+    }
+
 
 }

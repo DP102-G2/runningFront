@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.g2.runningFront.Common.CommonTask;
 import com.g2.runningFront.R;
 
 import java.util.ArrayList;

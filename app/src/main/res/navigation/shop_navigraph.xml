@@ -55,9 +55,13 @@
     </fragment>
     <fragment
         android:id="@+id/shopCartAcpayFragment"
-        android:name="com.g2.runningFront.ShopActivity.ShopCart.ShopCartAcpayFragment"
+        android:name="com.g2.runningFront.ShopActivity.ShopCart.TapPay.ShopCartAcpayFragment"
         android:label="fragment_shop_cart_acpay"
-        tools:layout="@layout/fragment_shop_cart_acpay" />
+        tools:layout="@layout/fragment_shop_cart_acpay" >
+        <action
+            android:id="@+id/action_shopCartAcpayFragment_to_shopMainFragment"
+            app:destination="@id/shopMainFragment" />
+    </fragment>
     <fragment
         android:id="@+id/shopCartCeditPayFragment"
         android:name="com.g2.runningFront.ShopActivity.ShopCart.ShopCartCeditPayFragment"
