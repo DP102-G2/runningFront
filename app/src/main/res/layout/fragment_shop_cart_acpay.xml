@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="34dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="291dp"
         android:text="訂單明細："
         android:textSize="17sp"
@@ -73,17 +73,6 @@
         app:layout_constraintStart_toStartOf="@+id/AcPay_tvAddress"
         app:layout_constraintTop_toBottomOf="@+id/AcPay_tvAddress" />
 
-    <include
-        android:id="@+id/AcPay_btGPay"
-        layout="@layout/buy_with_googlepay_button"
-        android:layout_width="254dp"
-        android:layout_height="57dp"
-        android:layout_marginTop="28dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.541"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/AcPay_tvSumTotal" />
-
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="match_parent"
@@ -99,14 +88,29 @@
             <Button
                 android:id="@+id/AcPay_btConfirm"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:background="@drawable/bt_style"
                 android:text="確認結帳"
+                android:textColor="#ffffff"
                 android:textSize="17sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/AcPay_btGPay"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <include
+                android:id="@+id/AcPay_btGPay"
+                layout="@layout/buy_with_googlepay_button"
+                android:layout_width="0dp"
+                android:layout_height="57dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/AcPay_btConfirm"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                android:background="@drawable/bt_style"
-                android:textColor="#ffffff"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -119,8 +123,9 @@
         android:layout_marginTop="16dp"
         app:layout_constraintBottom_toTopOf="@+id/cardView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/AcPay_btGPay"
+        app:layout_constraintTop_toBottomOf="@+id/AcPay_tvSumTotal"
         app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

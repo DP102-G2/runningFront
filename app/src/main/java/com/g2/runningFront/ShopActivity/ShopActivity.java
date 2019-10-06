@@ -50,15 +50,15 @@ public class ShopActivity extends AppCompatActivity {
         if (requestCode == LOAD_PAYMENT_DATA_REQUEST_CODE) {
             switch (resultCode) {
                 case RESULT_OK:
-                    Common.toastShow(this, "OK");
+                    Common.toastShow(this, "GPAY 成功登陸資料");
                     paymentData = PaymentData.getFromIntent(data);
                     ShopCartAcpayFragment.paymentData = paymentData;
                     break;
                 case RESULT_CANCELED:
-                    Common.toastShow(this, "CANCEL");
+                    Common.toastShow(this, "GPAY 取消");
                     break;
                 default:
-                    Common.toastShow(this, "ERROR");
+                    Common.toastShow(this, "GPAY 錯誤");
                     break;
             }
         }

@@ -103,14 +103,14 @@ public class ShopCartFillFragment extends Fragment {
                 receiverName = etReceiver.getText().toString();
                 receiverAddress = etAddress.getText().toString();
                 receiverPhone = etPhone.getText().toString();
-                CartOrder or = new CartOrder(1,receiverName, receiverAddress, receiverPhone, receiverPayment,0,sumTotal);
-                // 未來要補上USERNO
 
-                pref.edit().putString("CartOrder", new Gson().toJson(or)).apply();
 
                 if (receiverName.equals("") || receiverAddress.equals("") || receiverPhone.equals("")) {
-                    Common.toastShow(activity, "Please Set Your Receiver ? ");
+                    Common.toastShow(activity, "請填寫你的收件人資料");
                 } else {
+                    CartOrder or = new CartOrder(1,receiverName, receiverAddress, receiverPhone, receiverPayment,0,sumTotal);
+                    // 未來要補上USERNO
+                    pref.edit().putString("CartOrder", new Gson().toJson(or)).apply();
                     switch (receiverPayment) {
                         case -1:
                             Common.toastShow(activity, "Please Choice How to Pay ? ");

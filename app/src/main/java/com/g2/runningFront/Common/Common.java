@@ -1,6 +1,7 @@
 package com.g2.runningFront.Common;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -93,4 +94,5 @@ public class Common {
             , TPDCard.CardType.JCB
             , TPDCard.CardType.AmericanExpress
     };
+
 }

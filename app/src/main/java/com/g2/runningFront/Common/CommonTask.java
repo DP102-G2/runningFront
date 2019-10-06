@@ -1,6 +1,8 @@
 package com.g2.runningFront.Common;
 
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -67,6 +69,8 @@ public class CommonTask extends AsyncTask<String, Integer, String> {
 
         return inStr.toString();
     }
+
+
 
 
 }

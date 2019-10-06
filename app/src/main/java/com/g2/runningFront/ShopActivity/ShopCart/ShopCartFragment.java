@@ -2,6 +2,7 @@ package com.g2.runningFront.ShopActivity.ShopCart;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -65,26 +66,10 @@ public class ShopCartFragment extends Fragment {
 
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.option_menu, menu);
-
-        // This does not work, compiles and runs fine, but has no visible effect
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-
-        // This does work
-        MenuItem someMenuItem = menu.findItem(R.menu.option_menu);
-        someMenuItem.setVisible(false);
-    }
-
-    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = getActivity();
+        activity.setTitle("購物車");
     }
 
     @Override
@@ -115,10 +100,15 @@ public class ShopCartFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                if(sumTotal==0){
+                    Common.toastShow(activity,"您無選擇商品，請選擇商品");
+                    return;
+                }
                 Confirl = true;
 
                 SharedPreferences pref = activity.getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
                 try {
+                    updateShopCart();
                     pref.edit().putString("ShopCartList", new Gson().toJson(mList)).apply();
                     // 檔案到底去哪惹？
 
@@ -189,7 +179,8 @@ public class ShopCartFragment extends Fragment {
                         nQty += 1;
                     } else if (v.getId() == R.id.cart_ivMinus && nQty >= 1) {
                         nQty -= 1;
-                        Common.toastShow(activity, "Cant DO it");
+                    }else {
+                        Common.toastShow(activity, "商品數量已經為零，無法在減少數量。");
                     }
                     shopCart.setQty(nQty);
                     shopCarts.set(index, shopCart);
@@ -328,27 +319,7 @@ public class ShopCartFragment extends Fragment {
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            /* 結束此Activity頁面 */
-                            if (Common.networkConnected(activity)) {
-
-                                JsonObject jsonObject = new JsonObject();
-                                jsonObject.addProperty("action", "saveShopCart");
-                                jsonObject.addProperty("user_no", 1);
-                                jsonObject.addProperty("ShopCart", new Gson().toJson(mList));
-                                String jsonOut = jsonObject.toString();
-                                shopCartGetAllTask = new CommonTask(url, jsonOut);
-                                try {
-                                    String jsonIn = shopCartGetAllTask.execute().get();
-                                    Common.toastShow(activity, jsonIn);
-
-                                } catch (Exception e) {
-                                    Log.e(TAG, e.toString());
-                                }
-
-                            } else {
-
-                                Common.toastShow(activity, "no network connection available");
-                            }
+                            updateShopCart();
                         }
                     })
                     .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -359,6 +330,32 @@ public class ShopCartFragment extends Fragment {
                         }
                     })
                     .show();
+        }
+    }
+
+    public void updateShopCart(){
+        /* 結束此Activity頁面 */
+        if (Common.networkConnected(activity)) {
+
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("action", "saveShopCart");
+            jsonObject.addProperty("user_no", 1);
+            // 需更改USER
+
+            jsonObject.addProperty("ShopCart", new Gson().toJson(mList));
+            String jsonOut = jsonObject.toString();
+            shopCartGetAllTask = new CommonTask(url, jsonOut);
+            try {
+                String jsonIn = shopCartGetAllTask.execute().get();
+                Common.toastShow(activity, "成功");
+
+            } catch (Exception e) {
+                Log.e(TAG, e.toString());
+            }
+
+        } else {
+
+            Common.toastShow(activity, "no network connection available");
         }
     }
 }

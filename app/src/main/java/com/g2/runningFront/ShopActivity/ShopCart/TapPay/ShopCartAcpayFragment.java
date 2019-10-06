@@ -2,8 +2,10 @@ package com.g2.runningFront.ShopActivity.ShopCart.TapPay;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -60,7 +62,7 @@ public class ShopCartAcpayFragment extends Fragment {
 
     TPDGooglePay tpdGooglepay;
     public static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 101;
-    public static PaymentData paymentData;
+    public static PaymentData paymentData = null;
 
     CartOrder co;
     String receiverName, receiverPayment, receiverAddress, receiverPhone;
@@ -83,7 +85,7 @@ public class ShopCartAcpayFragment extends Fragment {
 
     private final static String DEFAULT_ERROR = "null";
     private final static String PREFERENCES_NAME = "preferences";
-
+    ProgressDialog mProgressDialog;
 
 
     @Override
@@ -114,9 +116,9 @@ public class ShopCartAcpayFragment extends Fragment {
 
     private StringBuilder getOrderDetail() {
 
-        orderDetail.append("訂單編號："+OrderNo+",");
+        orderDetail.append("訂單編號：" + OrderNo + ",");
 
-        for (ShopCart a :shopCarts){
+        for (ShopCart a : shopCarts) {
             orderDetail.append(a.getDetail());
         }
 
@@ -149,10 +151,13 @@ public class ShopCartAcpayFragment extends Fragment {
                         // 設定幣別
                         .setCurrencyCode("TWD")
                         .build(), LOAD_PAYMENT_DATA_REQUEST_CODE);
-                        //我們預設的值，代碼就是101
+                //我們預設的值，代碼就是101
+
+                if (paymentData != null) {
+                    btConfirm.setVisibility(View.VISIBLE);
+                }
             }
         });
-
 
         btConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,7 +189,7 @@ public class ShopCartAcpayFragment extends Fragment {
             tvPayment.setText("付款方式： " + receiverPayment);
             tvAddress.setText("收件地址： " + receiverAddress);
             tvPhone.setText("聯絡電話： " + co.getPhone());
-            tvSumTotal.setText("訂單總金額： " + receiverPhone);
+            tvSumTotal.setText("訂單總金額： " + sumToatal);
         }
     }
 
@@ -290,7 +295,7 @@ public class ShopCartAcpayFragment extends Fragment {
         tpdGooglepay.isGooglePayAvailable(new TPDGooglePayListener() {
             @Override
             public void onReadyToPayChecked(boolean isReadyToPay, String s) {
-                Common.toastShow(activity,"Success Ready to Pay!!");
+                Common.toastShow(activity, "Success Ready to Pay!!");
 
             }
         });
@@ -313,38 +318,39 @@ public class ShopCartAcpayFragment extends Fragment {
             public void onFailure(int i, String s) {
                 Log.d(TAG, s);
 
-                Common.toastShow(activity, "Bad");
+                Common.toastShow(activity, "請先點選'Buy With GPay'輸入付款資料");
             }
         });
 
     }
 
-    private void orderComplete(){
+    private void orderComplete() {
         co.setOrdStatus(1);
         co.setOrderNo(OrderNo);
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("action","CompleteOrder");
-        jsonObject.addProperty("CartOrder",new Gson().toJson(co));
-        commonTask = new CommonTask(url,jsonObject.toString());
+        jsonObject.addProperty("action", "OrderComplete");
+        jsonObject.addProperty("CartOrder", new Gson().toJson(co));
+        commonTask = new CommonTask(url, jsonObject.toString());
 
-        Log.d(TAG,jsonObject.toString());
+        Log.d(TAG, jsonObject.toString());
 
         try {
             String Complete = commonTask.execute().get();
-            Common.toastShow(activity,"Complete");
+            Common.toastShow(activity, "訂購成功");
+            Navigation.findNavController(view).navigate(R.id.action_shopCartAcpayFragment_to_shopMainFragment);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-    private void getOrderNo(){
+    private void getOrderNo() {
 
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("action","insertOrder");
-        jsonObject.addProperty("CartOrder",new Gson().toJson(co));
-        jsonObject.addProperty("ShopCart",new Gson().toJson(shopCarts));
-        commonTask = new CommonTask(url,jsonObject.toString());
+        jsonObject.addProperty("action", "insertOrder");
+        jsonObject.addProperty("CartOrder", new Gson().toJson(co));
+        jsonObject.addProperty("ShopCart", new Gson().toJson(shopCarts));
+        commonTask = new CommonTask(url, jsonObject.toString());
 
         Log.d(TAG, jsonObject.toString());
 
@@ -352,13 +358,14 @@ public class ShopCartAcpayFragment extends Fragment {
             String getOrderNo = commonTask.execute().get();
             Log.d(TAG, getOrderNo);
 
-            OrderNo=Integer.parseInt(getOrderNo);
-            Common.toastShow(activity,getOrderNo);
+            OrderNo = Integer.parseInt(getOrderNo);
+            Common.toastShow(activity, getOrderNo);
             tvAddress.setText(getOrderNo);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
 }
 
