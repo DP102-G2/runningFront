@@ -11,9 +11,6 @@
     <string name="shopping">瀏覽商品</string>
 
 
-
-
-
     <!-- TODO: Remove or change this placeholder text -->
     <string-array name="textOrderArray">
         <item>全部</item>
@@ -22,8 +19,6 @@
         <item>未送達</item>
         <item>已送達</item>
     </string-array>
-
-
 
 
     <string name="TapPay_AppID">15083</string>

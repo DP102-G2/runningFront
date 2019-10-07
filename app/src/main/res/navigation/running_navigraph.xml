@@ -7,12 +7,15 @@
 
     <fragment
         android:id="@+id/runInput"
-        android:name="com.g2.runningFront.RunActivity.RunInput"
+        android:name="com.g2.runningFront.RunActivity.Run.RunInputFragment"
         android:label="fragment_run_input"
         tools:layout="@layout/fragment_run_input">
         <action
             android:id="@+id/action_runInput_to_bmiResult"
             app:destination="@id/bmiResult" />
+        <action
+            android:id="@+id/action_runInput_to_testFragment"
+            app:destination="@id/testFragment" />
     </fragment>
     <fragment
         android:id="@+id/runInquireFragment"
@@ -31,16 +34,19 @@
         tools:layout="@layout/fragment_run_achieve" />
     <fragment
         android:id="@+id/bmiResult"
-        android:name="com.g2.runningFront.BmiResult"
+        android:name="com.g2.runningFront.RunActivity.Run.BmiResultFragment"
         android:label="fragment_bmi_Result"
         tools:layout="@layout/fragment_bmi_result">
         <action
             android:id="@+id/action_bmiResult_to_runMain"
             app:destination="@id/runMain" />
+        <action
+            android:id="@+id/action_bmiResult_to_runInput"
+            app:destination="@id/runInput" />
     </fragment>
     <fragment
         android:id="@+id/runMain"
-        android:name="com.g2.runningFront.RunMain"
+        android:name="com.g2.runningFront.RunActivity.Run.RunMainFragment"
         android:label="fragment_run_Main"
         tools:layout="@layout/fragment_run_main">
         <action
@@ -49,12 +55,24 @@
     </fragment>
     <fragment
         android:id="@+id/runStart"
-        android:name="com.g2.runningFront.RunStart"
+        android:name="com.g2.runningFront.RunActivity.Run.RunStartFragment"
         android:label="fragment_run_Start"
         tools:layout="@layout/fragment_run_start"/>
     <fragment
-        android:id="@+id/runResult"
-        android:name="com.g2.runningFront.RunResult"
-        android:label="fragment_run_Result"
-        tools:layout="@layout/fragment_run_result" />
+        android:id="@+id/testFragment"
+        android:name="com.g2.runningFront.TestFragment"
+        android:label="fragment_test"
+        tools:layout="@layout/fragment_test" >
+        <action
+            android:id="@+id/action_testFragment_to_runInquireFragment"
+            app:destination="@id/runInquireFragment" />
+        <action
+            android:id="@+id/action_testFragment_to_test2Fragment"
+            app:destination="@id/test2Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/test2Fragment"
+        android:name="com.g2.runningFront.Test2Fragment"
+        android:label="fragment_test2"
+        tools:layout="@layout/fragment_test2" />
 </navigation>

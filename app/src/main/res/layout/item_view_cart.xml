@@ -115,15 +115,28 @@
             android:id="@+id/cart_tvTotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="44dp"
             android:layout_marginTop="8dp"
             android:fontFamily="sans-serif-medium"
             android:hint="Total"
             android:textColor="#FF0000"
             android:textColorHint="#FF0000"
             android:textSize="15sp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cart_tvStock"
             app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+        <TextView
+            android:id="@+id/cart_tvStock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:fontFamily="sans-serif-medium"
+            android:hint="Stock"
+            android:textColor="#FF0000"
+            android:textColorHint="#FF0000"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/cart_tvTotal" />
 
         <Button
             android:id="@+id/cart_btDelete"

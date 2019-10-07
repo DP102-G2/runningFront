@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
         btbRun = findViewById(R.id.btbRun);
         NavController navCtrRun = Navigation.findNavController(this, R.id.fgNavigrath);
         NavigationUI.setupWithNavController(btbRun, navCtrRun);
-        int i = btbRun.getSelectedItemId();
 
     }
 }
