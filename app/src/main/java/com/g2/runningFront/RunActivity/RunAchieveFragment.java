@@ -18,6 +18,7 @@ import com.g2.runningFront.R;
 public class RunAchieveFragment extends Fragment {
 
 
+
     public RunAchieveFragment() {
         // Required empty public constructor
     }

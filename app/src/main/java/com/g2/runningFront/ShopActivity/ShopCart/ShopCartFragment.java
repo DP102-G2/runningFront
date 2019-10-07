@@ -48,21 +48,34 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class ShopCartFragment extends Fragment {
     Activity activity;
-    View view;
-    RecyclerView rv;
-    Button btConfirm;
-    TextView tvSumTotal;
-    List<ShopCart> shopCartList;
-    int sumTotal = 0;
-    List<ShopCart> mList = new ArrayList<>();
-    List<Boolean> isCheckedList = new ArrayList<>();
-    CommonTask shopCartGetAllTask;
-    ImageTask shopCartImageTask;
-    boolean Confirl = false;
 
     private static final String url = Common.URL_SERVER + "ShopCartServlet";
     private static final String TAG = "TAG_SHOPCART";
     private final static String PREFERENCES_NAME = "preferences";
+    // 偏好設定的名稱
+
+    // VIEW
+    View view;
+    RecyclerView rv;
+    Button btConfirm;
+    TextView tvSumTotal;
+
+    List<ShopCart> shopCartList;
+    // 存放一開始載入的清單
+
+    List<ShopCart> mList = new ArrayList<>();
+    // 存放實際被勾選的清單
+
+    List<Boolean> isCheckedList = new ArrayList<>();
+    // 存放每個項目是否被勾選
+
+    int sumTotal = 0;
+    // 購物車的總值
+
+    CommonTask shopCartGetAllTask;
+    ImageTask shopCartImageTask;
+    boolean Confirl = false;
+    // 判斷是否為唐突離開
 
 
     @Override
@@ -83,38 +96,43 @@ public class ShopCartFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
         shopCartList = getShopCartList();
+        // 一開始取伺服器的購物車資料
         holdView();
         setSumTotal(shopCartList);
+        // 根據取購物車結果，計算總計的數值
     }
 
     private void holdView() {
         btConfirm = view.findViewById(R.id.cart_btConfirm);
         tvSumTotal = view.findViewById(R.id.cart_tvSumTotal);
+
         rv = view.findViewById(R.id.cart_rv);
         rv.setLayoutManager(new LinearLayoutManager(activity));
         final CartViewAdapter cartViewAdapter = new CartViewAdapter(activity, shopCartList);
-
         rv.setAdapter(cartViewAdapter);
 
+        // 確認結帳的按鈕
         btConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(sumTotal==0){
-                    Common.toastShow(activity,"您無選擇商品，請選擇商品");
+                if (sumTotal == 0) {
+                    Common.toastShow(activity, "您無選擇商品，請選擇商品");
                     return;
                 }
                 Confirl = true;
 
+                // 將資料存入到偏好設定
                 SharedPreferences pref = activity.getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
                 try {
                     updateShopCart();
+                    // 同時將購物車篩選結果存入網路
                     pref.edit().putString("ShopCartList", new Gson().toJson(mList)).apply();
                     // 檔案到底去哪惹？
 
                     Bundle bundle = new Bundle();
-                    bundle.putInt("SumTotal",sumTotal);
-                    Navigation.findNavController(view).navigate(R.id.action_shopCartFragment_to_shopCartFillFragment,bundle);
+                    bundle.putInt("SumTotal", sumTotal);
+                    Navigation.findNavController(view).navigate(R.id.action_shopCartFragment_to_shopCartFillFragment, bundle);
+                    // 將計算成果帶到下一頁，才能儲存入訂單
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -147,7 +165,6 @@ public class ShopCartFragment extends Fragment {
         @Override
         public CartViewAdapter.myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View itemView = layoutInflater.inflate(R.layout.item_view_cart, parent, false);
-
             return new myViewHolder(itemView);
         }
 
@@ -171,6 +188,7 @@ public class ShopCartFragment extends Fragment {
             holder.etProNum.setText(String.valueOf(Qty));
             holder.tvTotal.setText("小計： " + shopCart.getTotal());
 
+            // 按加減時的指令碼
             View.OnClickListener chageQty = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -179,14 +197,18 @@ public class ShopCartFragment extends Fragment {
                         nQty += 1;
                     } else if (v.getId() == R.id.cart_ivMinus && nQty >= 1) {
                         nQty -= 1;
-                    }else {
+                    } else {
                         Common.toastShow(activity, "商品數量已經為零，無法在減少數量。");
                     }
                     shopCart.setQty(nQty);
+                    // 根據加減結果顯示數量
                     shopCarts.set(index, shopCart);
+                    // 上面只是修改顯示的本筆資料，現在要修改購物車list內的實際資料
+
                     holder.etProNum.setText(String.valueOf(nQty));
                     holder.tvTotal.setText("小計： " + shopCart.getTotal());
                     setSumTotal(shopCarts);
+                    // 重新計算總價
                 }
             };
 
@@ -198,11 +220,15 @@ public class ShopCartFragment extends Fragment {
                 public void onClick(View v) {
                     shopCarts.remove(index);
                     isCheckedList.remove(index);
+                    // 刪除兩個LIST
+
                     setSumTotal(shopCarts);
                     notifyDataSetChanged();
+                    // 重新計算總價＋重製整個RV
                 }
             });
 
+            // 點選CHECKBOX時，更改clecklist裡的資料(計算時不要計算到)
             holder.cbSelect.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -250,6 +276,7 @@ public class ShopCartFragment extends Fragment {
     }
 
 
+    // 一開始抓取伺服器的資料
     private List<ShopCart> getShopCartList() {
 
         List<ShopCart> shopCarts = new ArrayList<>();
@@ -258,6 +285,8 @@ public class ShopCartFragment extends Fragment {
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("action", "getAll");
             jsonObject.addProperty("user_no", 1);
+            // 屆時要更換成抓取偏好設定裡的使用者編號
+
             String jsonOut = jsonObject.toString();
             shopCartGetAllTask = new CommonTask(url, jsonOut);
             try {
@@ -271,11 +300,10 @@ public class ShopCartFragment extends Fragment {
                 Log.e(TAG, e.toString());
             }
         } else {
-
             Common.toastShow(activity, "no network connection available");
-
         }
 
+        // 這邊要根據抓下來的list數量，創建同樣數量的LIST稱載是否被勾選
         isCheckedList.clear();
 
         for (ShopCart a : shopCarts) {
@@ -287,6 +315,7 @@ public class ShopCartFragment extends Fragment {
     }
 
     private void setSumTotal(List<ShopCart> shopCarts) {
+        //計算總價
         sumTotal = 0;
         mList.clear();
 
@@ -302,6 +331,7 @@ public class ShopCartFragment extends Fragment {
     }
 
 
+    // 離開始顯示提醒事項
     @Override
     public void onPause() {
         super.onPause();
@@ -333,7 +363,9 @@ public class ShopCartFragment extends Fragment {
         }
     }
 
-    public void updateShopCart(){
+    public void updateShopCart() {
+        //更新購物車
+
         /* 結束此Activity頁面 */
         if (Common.networkConnected(activity)) {
 

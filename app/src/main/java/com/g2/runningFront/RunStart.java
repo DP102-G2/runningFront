@@ -50,7 +50,7 @@ public class RunStart extends Fragment {
         runstart_tvDistance.setText("0.0");
         runstart_tvSpeed.setText("0.0");
 
-         Timer timer = new Timer();
+        Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -76,10 +76,6 @@ public class RunStart extends Fragment {
             public void onClick(View view) {
                 activity.setTitle("目前運動狀態");
                 runstart_btStart.setText("完成");
-
-
-
-
 
             }
         });

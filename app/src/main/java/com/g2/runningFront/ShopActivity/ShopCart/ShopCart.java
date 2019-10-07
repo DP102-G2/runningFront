@@ -70,12 +70,14 @@ public class ShopCart implements Serializable {
         this.stock = stock;
     }
 
+    // 計算購物車內某單價商品的小計
     public int getTotal() {
         total = qty * price;
 
         return total;
     }
 
+    // 為配合傳送資料至TapPay而造
     public String getDetail() {
         String detail = name + " x " + qty + " , ";
 

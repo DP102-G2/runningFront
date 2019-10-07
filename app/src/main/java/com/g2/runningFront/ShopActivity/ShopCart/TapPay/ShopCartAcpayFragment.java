@@ -60,33 +60,35 @@ import static com.g2.runningFront.Common.Common.CARD_TYPES;
 
 public class ShopCartAcpayFragment extends Fragment {
 
+    // GPAY
     TPDGooglePay tpdGooglepay;
     public static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 101;
+    // 判斷gpay的請求代碼，會轉換到MAINACTIVITY
     public static PaymentData paymentData = null;
+
+    private static final String url = Common.URL_SERVER + "ShopCartServlet";
+    private final static String PREFERENCES_NAME = "preferences";
 
     CartOrder co;
     String receiverName, receiverPayment, receiverAddress, receiverPhone;
     int sumToatal;
     int OrderNo;
 
+    // 載入偏好設定檔案及購物車清單
+    private SharedPreferences pref;
+    List<ShopCart> shopCarts = new ArrayList<>();
+
+    // VIEW
+    Activity activity;
     StringBuilder orderDetail = new StringBuilder();
     View view;
     RelativeLayout btGPay;
     Button btConfirm;
     TextView tvReceiver, tvAddress, tvPhone, tvPayment, tvSumTotal;
     RecyclerView rvList;
-    List<ShopCart> shopCarts = new ArrayList<>();
-    private SharedPreferences pref;
-    Activity activity;
 
     ImageTask shopCartImageTask;
     CommonTask commonTask;
-    private static final String url = Common.URL_SERVER + "ShopCartServlet";
-
-    private final static String DEFAULT_ERROR = "null";
-    private final static String PREFERENCES_NAME = "preferences";
-    ProgressDialog mProgressDialog;
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -104,14 +106,22 @@ public class ShopCartAcpayFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        pref = activity.getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
-        shopCarts = getShopCarts();
         this.view = view;
+        pref = activity.getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
+        // 抓取偏好設定
+
+        shopCarts = getShopCarts();
+        // 第一次抓取購物清單
+
         holdView();
         setTPDCard();
+        // 設定TPAY的初始偏好設定
         setReceiver();
+        // 根據得到的資料顯示訂購資料
         getOrderNo();
+        // 第一次上傳至伺服器建構訂單資料，得到訂單編號(流水號)
         orderDetail = getOrderDetail();
+        // 將資料存入訂單明細，才能訂單明細資料給TPAY存入
     }
 
     private StringBuilder getOrderDetail() {
@@ -124,6 +134,13 @@ public class ShopCartAcpayFragment extends Fragment {
 
         return orderDetail;
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
 
     public void holdView() {
 
@@ -139,6 +156,17 @@ public class ShopCartAcpayFragment extends Fragment {
         rvList.setLayoutManager(new LinearLayoutManager(activity));
         rvList.setAdapter(new myCartAdapter(activity, shopCarts));
 
+        /**
+         *
+         * 這邊抓不到
+         * 1. 找專門針對FRAGMENT的api
+         * 2. 抓FRAGMENT的實體在存入的資料
+         * 3. 存入偏好設定
+         * 4. STATIC耗費記憶體資源，離開時要記得清除
+         *
+         */
+
+
         btGPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,6 +180,8 @@ public class ShopCartAcpayFragment extends Fragment {
                         .setCurrencyCode("TWD")
                         .build(), LOAD_PAYMENT_DATA_REQUEST_CODE);
                 //我們預設的值，代碼就是101
+
+
 
                 if (paymentData != null) {
                     btConfirm.setVisibility(View.VISIBLE);
@@ -169,7 +199,7 @@ public class ShopCartAcpayFragment extends Fragment {
 
     }
 
-
+    // 拿偏好設定檔裡的訂單資料
     public void setReceiver() {
 
         String listStr = pref.getString("CartOrder", "Error");
@@ -177,7 +207,6 @@ public class ShopCartAcpayFragment extends Fragment {
         if (!listStr.equals("Error") && sumToatal != -1) {
 
             co = new Gson().fromJson(listStr, CartOrder.class);
-
 
             receiverName = co.getName();
             receiverPayment = co.getPaymentText();
@@ -193,6 +222,7 @@ public class ShopCartAcpayFragment extends Fragment {
         }
     }
 
+    // 到偏好設定檔裡拿購物車清單
     public List<ShopCart> getShopCarts() {
 
         List<ShopCart> shopCartList = new ArrayList<>();
@@ -213,7 +243,6 @@ public class ShopCartAcpayFragment extends Fragment {
         Context context;
         LayoutInflater layoutInflater;
         int imageSize = 0;
-
 
         public myCartAdapter(Context context, List<ShopCart> shopCartList) {
             this.shopCartList = shopCartList;
@@ -265,6 +294,7 @@ public class ShopCartAcpayFragment extends Fragment {
 
     }
 
+    // TAPPAY的api
     private void setTPDCard() {
 
         TPDSetup.initInstance(activity.getApplicationContext(),//CONTEXT物件都可以擺放，如果是MAINACTIVITY的話放THIS也可以
@@ -302,6 +332,7 @@ public class ShopCartAcpayFragment extends Fragment {
 
     }
 
+    //按下結帳就會送至TAPAY伺服器
     private void sendTapPay() {
         tpdGooglepay.getPrime(paymentData, new TPDTokenSuccessCallback() {
             @Override
@@ -324,6 +355,7 @@ public class ShopCartAcpayFragment extends Fragment {
 
     }
 
+    // 完成訂單時要做的事情，並把訂單狀態改為已完成付款狀態
     private void orderComplete() {
         co.setOrdStatus(1);
         co.setOrderNo(OrderNo);
@@ -344,8 +376,8 @@ public class ShopCartAcpayFragment extends Fragment {
 
     }
 
+    // 將目前資料上傳新增訂單，但預設訂單狀態為尚未完成付款
     private void getOrderNo() {
-
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", "insertOrder");
         jsonObject.addProperty("CartOrder", new Gson().toJson(co));
