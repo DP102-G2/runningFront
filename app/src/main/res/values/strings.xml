@@ -33,6 +33,9 @@
     <string name="TapPay_MerchantID">a10033135_TAISHIN</string>
     <string name="textCannotUseGPay">Cannot use Google Pay</string>
     <string name="textCanceled">Canceled by the user.</string>
+    <string name="btFirst">全國排行</string>
+    <string name="btLast">好友排行</string>
+    <string name="lbName">Name</string>
 
 </resources>
 
