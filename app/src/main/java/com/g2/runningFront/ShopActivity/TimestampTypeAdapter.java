@@ -1,5 +1,12 @@
 package com.g2.runningFront.ShopActivity;
 
+import java.lang.reflect.Type;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -8,31 +15,24 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-import java.lang.reflect.Type;
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
 public class TimestampTypeAdapter implements JsonSerializer<Timestamp>, JsonDeserializer<Timestamp> {
-    private final DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    public JsonElement serialize(Timestamp src, Type arg1, JsonSerializationContext arg2) {
-        String dateFormatAsString = format.format(new Date(src.getTime()));
-        return new JsonPrimitive(dateFormatAsString);
+    private final DateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+
+    public JsonElement serialize(Timestamp ts, Type t, JsonSerializationContext jsc) {
+        String dfString = format.format(new Date(ts.getTime()));
+        return new JsonPrimitive(dfString);
     }
 
-    public Timestamp deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public Timestamp deserialize(JsonElement json, Type t, JsonDeserializationContext jsc) throws JsonParseException {
         if (!(json instanceof JsonPrimitive)) {
             throw new JsonParseException("The date should be a string value");
         }
 
         try {
-            Date date = (Date) format.parse(json.getAsString());
+            Date date = format.parse(json.getAsString());
             return new Timestamp(date.getTime());
         } catch (ParseException e) {
             throw new JsonParseException(e);
         }
     }
-
 }

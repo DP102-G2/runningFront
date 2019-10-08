@@ -53,6 +53,7 @@ public class ShopOrderFragment extends Fragment {
     private CommonTask spotDeleteTask;
     private static final String TAG = "TAG_OrdertListFragment";
     private Spinner spOrder;
+    List<Order> sporders;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,9 +74,10 @@ public class ShopOrderFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.recyclerView);
-        spOrder=view.findViewById(R.id.spOrder);
+        spOrder = view.findViewById(R.id.spOrder);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         showAll();
+
 
     }
 
@@ -91,12 +93,16 @@ public class ShopOrderFragment extends Fragment {
                     String jsonOut = jsonObject.toString();
                     orderGetAllTask = new CommonTask(url, jsonOut);
                     String jsonIn = orderGetAllTask.execute().get();
-                    Common.toastShow(activity,jsonIn);
+                    Common.toastShow(activity, jsonIn);
                     Log.d(TAG, jsonIn);
 //                    Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd hh:mm:ss.S").create();
-                    Gson gson = new GsonBuilder()
-                            .registerTypeAdapter(Timestamp.class,new TimestampTypeAdapter()).setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-                    // timestamp 解碼？
+//                    Gson gson = new GsonBuilder()
+////                            .registerTypeAdapter(Timestamp.class,new TimestampTypeAdapter()).setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+////                    // timestamp 解碼？
+                    GsonBuilder gsonBuilder = new GsonBuilder();
+                    gsonBuilder.setDateFormat("yyyyMMddHHmmss");
+                    gsonBuilder.registerTypeAdapter(Timestamp.class, new TimestampTypeAdapter());
+                    Gson gson = gsonBuilder.create();
 
                     Type listType = new TypeToken<List<Order>>() {
                     }.getType();
@@ -115,6 +121,11 @@ public class ShopOrderFragment extends Fragment {
                 Common.toastShow(activity, R.string.textNoNetwork);
             }
         }
+    }
+
+    public void spcon() {
+        spOrder=getView().findViewById(R.id.spOrder);
+
     }
 
 
@@ -193,20 +204,19 @@ public class ShopOrderFragment extends Fragment {
             viewHolder.tvorderno.setText("訂單標號:" + order.getOrder_no());
             viewHolder.tvorderdate.setText("訂單日期:" + order.getOrder_date());
             viewHolder.tvpaymentmathon.setText("付款方式:" + order.getPayment_methon());
-            viewHolder.tvordermoney.setText("金額:" + order.getOrder_money());
+            viewHolder.tvordermoney.setText("金額:" + order.getOrder_money() + " ");
             viewHolder.tvorderstatus.setText("訂單狀態:" + order.getOrder_status());
             viewHolder.tvProduct.setText(order.getProduct_no());
-            viewHolder.tvShop_quantity.setText(order.getQty());
-            viewHolder.tvProduct_price.setText(order.getOrder_price());
-
-        }
-
-
+            viewHolder.tvShop_quantity.setText(order.getQty() + " ");
+            viewHolder.tvProduct_price.setText(order.getOrder_price() + " ");
 
         }
 
 
     }
+
+
+}
 
 
 
