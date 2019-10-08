@@ -1,19 +1,53 @@
 package com.g2.runningFront.ShopActivity;
 
-public class Order {
+import java.io.Serializable;
+
+public class Order implements Serializable {
     private String order_no;
     private String order_date;
     private String payment_methon;
     private String order_money;
     private String order_status;
-    public Order(String order_no,String order_date,String payment_methon,String order_money,String order_status){
+    private String p;
+    private String pp;
+    private String ppp;
+
+    public Order(String order_no,String order_date,String payment_methon,String order_money,String order_status,String p,String pp,String ppp){
         this.order_no=order_no;
         this.order_date=order_date;
         this.payment_methon=payment_methon;
         this.order_money=order_money;
         this.order_status=order_status;
+        this.p=p;
+        this.pp=pp;
+        this.ppp=ppp;
 
 
+
+    }
+
+    public String getP() {
+        return p;
+    }
+
+    public void setP(String p) {
+        this.p = p;
+    }
+
+    public String getPp() {
+        return pp;
+    }
+
+    public void setPp(String pp) {
+        this.pp = pp;
+    }
+
+    public String getPpp() {
+        return ppp;
+    }
+
+    public void setPpp(String ppp) {
+        this.ppp = ppp;
     }
 
     public String getOrder_no() {

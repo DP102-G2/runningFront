@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="15dp"
     android:foreground="?selectableItemBackground"
-    app:cardBackgroundColor="#FDFFC1C1"
+    app:cardBackgroundColor="#ffffff"
     app:cardCornerRadius="20dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,37 +18,34 @@
 
         <ImageView
             android:id="@+id/cart_ProImage"
-            android:layout_width="140dp"
-            android:layout_height="140dp"
-            android:layout_marginStart="60dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginStart="48dp"
             android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
             app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
             tools:srcCompat="@tools:sample/avatars" />
 
         <CheckBox
             android:id="@+id/cart_cbSelect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/cart_ProImage"
-            app:layout_constraintHorizontal_bias="0.571"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.384"
-            android:checked="true"/>
+            app:layout_constraintVertical_bias="0.384" />
 
         <ImageView
             android:id="@+id/cart_ivPlus"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginStart="16dp"
             android:layout_marginBottom="24dp"
             app:layout_constraintBottom_toTopOf="@+id/guideline"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/cart_etProNum"
             tools:srcCompat="@tools:sample/avatars" />
 
@@ -56,8 +53,11 @@
             android:id="@+id/cart_ivMinus"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginStart="13dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/cart_ivPlus"
+            app:layout_constraintEnd_toStartOf="@+id/cart_etProNum"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/cart_ProImage"
             tools:srcCompat="@tools:sample/avatars" />
 
@@ -65,7 +65,8 @@
             android:id="@+id/cart_etProNum"
             android:layout_width="51dp"
             android:layout_height="48dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="24dp"
             android:layout_marginBottom="16dp"
             android:ems="10"
             android:gravity="center"
@@ -73,6 +74,7 @@
             android:inputType="number"
             android:textSize="17sp"
             app:layout_constraintBottom_toTopOf="@+id/guideline"
+            app:layout_constraintEnd_toStartOf="@+id/cart_ivPlus"
             app:layout_constraintStart_toEndOf="@+id/cart_ivMinus" />
 
         <TextView
@@ -92,7 +94,7 @@
             android:id="@+id/cart_tvDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="28dp"
             android:hint="pro_desc"
             android:textColor="#FF0000"
@@ -113,24 +115,43 @@
             android:id="@+id/cart_tvTotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="76dp"
+            android:layout_marginStart="44dp"
             android:layout_marginTop="8dp"
+            android:fontFamily="sans-serif-medium"
             android:hint="Total"
+            android:textColor="#FF0000"
+            android:textColorHint="#FF0000"
+            android:textSize="15sp"
+            app:layout_constraintStart_toEndOf="@+id/cart_tvStock"
+            app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+        <TextView
+            android:id="@+id/cart_tvStock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:fontFamily="sans-serif-medium"
+            android:hint="Stock"
+            android:textColor="#FF0000"
+            android:textColorHint="#FF0000"
             android:textSize="15sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline" />
+            app:layout_constraintTop_toTopOf="@+id/cart_tvTotal" />
 
         <Button
             android:id="@+id/cart_btDelete"
             android:layout_width="78dp"
             android:layout_height="23dp"
+            android:layout_marginEnd="32dp"
             android:background="#00FFFFFF"
             android:hint="Delete"
+            android:textColor="#FF0000"
+            android:textColorHint="#FF0000"
             android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@+id/cart_tvTotal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.73"
-            app:layout_constraintStart_toEndOf="@+id/cart_tvTotal"
-            app:layout_constraintTop_toTopOf="@+id/cart_tvTotal" />
+            app:layout_constraintTop_toTopOf="@+id/cart_tvTotal"
+            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

@@ -5,6 +5,5 @@
     <color name="colorAccent">#0091A1</color>
     <color name="colorBackground">#F4F5F9</color>
     <color name="colorMain">#36C2CF</color>
-    <color name="no_track">#36C2CF</color>
-    <color name="track">#94A5A6</color>
+    <color name="colorRed">#FE4365</color>
 </resources>

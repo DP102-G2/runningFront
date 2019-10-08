@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cartConfirm_cdView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="15dp"
+    android:foreground="?selectableItemBackground"
+    app:cardBackgroundColor="#ffffff"
+    app:cardCornerRadius="20dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="380dp"
+        android:layout_height="201dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/cartConfirm_Image"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="28dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_shopcart" />
+
+        <TextView
+            android:id="@+id/cartConfirm_tvName"
+            android:layout_width="123dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="47dp"
+            android:layout_marginEnd="60dp"
+            android:ems="10"
+            android:hint="pro_Name"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cartConfirm_Image"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/cartConfirm_tvSumPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="84dp"
+            android:hint="proSumTotal"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/cartConfirm_tvQty"
+            app:layout_constraintTop_toBottomOf="@+id/cartConfirm_tvQty" />
+
+        <TextView
+            android:id="@+id/cartConfirm_tvQty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="112dp"
+            android:hint="pro_Qty"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/cartConfirm_tvName"
+            app:layout_constraintTop_toBottomOf="@+id/cartConfirm_tvName" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

@@ -3,7 +3,7 @@
     package="com.g2.runningFront">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="false"
@@ -13,6 +13,15 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
+
+
         <activity android:name=".RunActivity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,12 +30,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".ShopActivity.ShopActivity">
 
         </activity>
 
         <activity android:name=".SettingActivity.SettingActivity">
 
+        </activity>
+
+        <activity android:name=".SignInActivity.SignInActivity">
 
         </activity>
 

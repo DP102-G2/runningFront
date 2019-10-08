@@ -5,6 +5,7 @@ import java.util.List;
 
 public class ShopCart implements Serializable {
 
+    String no;
     String name;
     String desc;
     int qty;
@@ -12,20 +13,12 @@ public class ShopCart implements Serializable {
     int stock;
     int total;
 
-
-
-    public ShopCart(String name, String desc, int qty, int price, int stock) {
-        this.name = name;
-        this.desc = desc;
-        this.qty = qty;
-        this.price = price;
-        this.stock = stock;
+    public String getNo() {
+        return no;
     }
 
-    public int getTotal(){
-        total=qty*price;
-
-        return total;
+    public void setNo(String no) {
+        this.no = no;
     }
 
     public String getName() {
@@ -60,11 +53,6 @@ public class ShopCart implements Serializable {
         this.price = price;
     }
 
-
-    public void setTotal(int total) {
-        this.total = total;
-    }
-
     public int getStock() {
         return stock;
     }
@@ -73,7 +61,28 @@ public class ShopCart implements Serializable {
         this.stock = stock;
     }
 
+    public ShopCart(String no, String name, String desc, int qty, int price, int stock) {
+        this.no = no;
+        this.name = name;
+        this.desc = desc;
+        this.qty = qty;
+        this.price = price;
+        this.stock = stock;
+    }
 
+    // 計算購物車內某單價商品的小計
+    public int getTotal() {
+        total = qty * price;
+
+        return total;
+    }
+
+    // 為配合傳送資料至TapPay而造
+    public String getDetail() {
+        String detail = name + " x " + qty + " , ";
+
+        return detail;
+    }
 
 
 }

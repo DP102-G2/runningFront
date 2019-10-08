@@ -4,22 +4,11 @@
     <string name="run_name">跑步</string>
     <string name="shop_name">購物商城</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="textId">ID</string>
-    <string name="textName">Name</string>
-    <string name="textFriend">個人頁面</string>
-    <string name="lbphone">phone</string>
-    <string name="lbtotal_time">lbyotal_time</string>
-    <string name="lbcalories">lbcalories</string>
-    <string name="lbtotal_distance">lbtotal_distance</string>
-    <string name="lblove">lblove</string>
-    <string name="lbspeed">lbspeed</string>
-    <string name="ibjoin">lbjoin</string>
-    <string name="lbjoin">lbjoin</string>
-    <string name="btyes">button</string>
-    <string name="textFirst">1</string>
-    <string name="textLast">2</string>
-    <string name="btFirst">全國排行</string>
-    <string name="btLast">好友排行</string>
+    <string name="tveveryday">每日好康</string>
+    <string name="textProductNotFound">Product Not Found</string>
+    <string name="textNoNetwork">No Net Work</string>
+    <string name="ProductIntroduction">商品簡介</string>
+    <string name="shopping">瀏覽商品</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -32,4 +21,17 @@
     </string-array>
 
 
+    <string name="TapPay_AppID">15083</string>
+    <string name="TapPay_AppKey">app_uK9iuLSI8MmwVQ7uD4KCHMPVWkGGX7RP0FknZyxHCmoU7L1yNGLLSEJ0f1tQ</string>
+
+    <!-- 帳戶資訊 -->
+    <string name="TapPay_PartnerKey">partner_hzBSTbg7J9JklPg9MBBhYGHSJh7AkNHnNW6aZH4Lw491QfitNHwuyapk</string>
+
+    <!-- 商家管理 -->
+    <string name="TapPay_MerchantName">TW_TAISHIN</string>
+    <string name="TapPay_MerchantID">a10033135_TAISHIN</string>
+    <string name="textCannotUseGPay">Cannot use Google Pay</string>
+    <string name="textCanceled">Canceled by the user.</string>
+
 </resources>
+
