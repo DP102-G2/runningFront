@@ -3,6 +3,26 @@
     <string name="setting_name">設定</string>
     <string name="run_name">跑步</string>
     <string name="shop_name">購物商城</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="textId">ID</string>
+    <string name="textName">Name</string>
+    <string name="textFriend">個人頁面</string>
+    <string name="lbphone">phone</string>
+    <string name="lbtotal_time">lbyotal_time</string>
+    <string name="lbcalories">lbcalories</string>
+    <string name="lbtotal_distance">lbtotal_distance</string>
+    <string name="lblove">lblove</string>
+    <string name="lbspeed">lbspeed</string>
+    <string name="ibjoin">lbjoin</string>
+    <string name="lbjoin">lbjoin</string>
+    <string name="btyes">button</string>
+    <string name="textFirst">1</string>
+    <string name="textLast">2</string>
+    <string name="btFirst">全國排行</string>
+    <string name="btLast">好友排行</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
     <string-array name="textOrderArray">
         <item>全部</item>
         <item>未出貨</item>
@@ -11,6 +31,5 @@
         <item>已送達</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
