@@ -2,114 +2,21 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".SignInActivity.SignInActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".SignInActivity.SignInActivity">
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvAt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textColor="@color/colorRed"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="activity.signin.xml" />
+    <fragment
+        android:id="@+id/fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
 
-    <Button
-        android:id="@+id/btSignIn"
-        android:layout_width="217dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/bt_rec_bg"
-        android:text="一般登入"
-        android:textColor="@android:color/white"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPassword" />
+        app:defaultNavHost="true"
 
-    <Button
-        android:id="@+id/btSignUp"
-        android:layout_width="217dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/bt_rec_bg"
-        android:text="註冊帳號"
-        android:textColor="@android:color/white"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/btSignIn"
-        app:layout_constraintStart_toStartOf="@+id/btSignIn"
-        app:layout_constraintTop_toBottomOf="@+id/btSignIn" />
-
-    <Button
-        android:id="@+id/btSignOut"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:background="@color/colorRed"
-        android:text="LOGOUT"
-        android:textColor="@android:color/white"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/etId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:ems="10"
-        android:hint="Id"
-        android:inputType="textEmailAddress"
-        android:textSize="17sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/etPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:textSize="17sp"
-        app:layout_constraintEnd_toEndOf="@+id/etId"
-        app:layout_constraintStart_toStartOf="@+id/etId"
-        app:layout_constraintTop_toBottomOf="@+id/etId" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:textColor="@color/colorRed"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="@+id/btGSignIn"
-        app:layout_constraintStart_toStartOf="@+id/btGSignIn"
-        app:layout_constraintTop_toBottomOf="@+id/btGSignIn"
-        tools:text="登入訊息文字" />
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/btGSignIn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="@+id/btSignUp"
-        app:layout_constraintStart_toStartOf="@+id/btSignUp"
-        app:layout_constraintTop_toBottomOf="@+id/btSignUp" />
+        app:navGraph="@navigation/signin_navigraph"
+        tools:layout_editor_absoluteX="119dp"
+        tools:layout_editor_absoluteY="80dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

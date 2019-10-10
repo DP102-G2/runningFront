@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/signin_navigraph"
+    app:startDestination="@id/signinMainFragment">
+
+    <fragment
+        android:id="@+id/signinMainFragment"
+        android:name="com.g2.runningFront.SignInActivity.SignInMainFragment"
+        android:label="fragment_signin_main"
+        tools:layout="@layout/fragment_signin_main">
+    </fragment>
+</navigation>

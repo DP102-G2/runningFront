@@ -1,12 +1,16 @@
 package com.g2.runningFront.SignInActivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,19 +34,23 @@ import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
 import static android.view.View.GONE;
 
 /* Google 登入 imports */
 
 public class SignInMainFragment extends Fragment {
-    private static final String TAG = "TAG_SETmain";
+    private static final String TAG = "TAG_SignIn_Main";
     private Activity activity;
-    /* 宣告 GoogleSignInClient */
-    public GoogleSignInClient gooSignClient;
-    public static final int GSIGN_CODE = 10;
+
+    /* Google 登入宣告 */
+    private GoogleSignInClient googleSignInClient;
+    private static final int GSIGN_CODE = 101;
 
     private EditText etId, etPassword;
     private TextView textView;
+
     private Gson gson;
 
     @Override
@@ -55,8 +63,9 @@ public class SignInMainFragment extends Fragment {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
-        gooSignClient = GoogleSignIn.getClient(activity, gso);
+        googleSignInClient = GoogleSignIn.getClient(activity, gso);
     }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -75,14 +84,15 @@ public class SignInMainFragment extends Fragment {
         view.findViewById(R.id.btSignIn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String id = etId.getText().toString().trim();
-                String password = etPassword.getText().toString().trim();
-                User user = new User(0, id , password);
 
-                if(id.length() <= 0 || password.length() <= 0){
-                    textView.setText("帳號密碼不能為空");
-                    return;
-                }
+                /* 隱藏 OR 顯示輸入鍵盤 */
+                /*InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);*/
+                hideKeyboard(activity);
+
+                String id = etId.getText().toString().trim();
+                String password = etId.getText().toString().trim();
+                User user = new User(0, id, password);
 
                 if (Common.networkConnected(activity)) {
                     String url = Common.URL_SERVER + "SettingServlet";
@@ -92,47 +102,67 @@ public class SignInMainFragment extends Fragment {
                     jo.addProperty("user", new Gson().toJson(user));
                     String outStr = jo.toString();
 
-                    CommonTask loginTask = new CommonTask(url, outStr);
+                    CommonTask signInTask = new CommonTask(url, outStr);
 
                     try {
-                        String strIn = loginTask.execute().get();
+
+                        String strIn = signInTask.execute().get();
                         user = gson.fromJson(strIn, User.class);
 
                         if(user == null){
                             textView.setText("輸入之帳號或密碼不正確");
-                            Toast.makeText(activity, "輸入之帳號或密碼不正確", Toast.LENGTH_LONG);
+                            Common.toastShow(activity, "輸入之帳號或密碼不正確");
                         } else {
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable("user", user);
-                            Navigation.findNavController(textView)
-                                    .navigate(R.id.action_settingMainFragment_to_settingUpadteFragment, bundle);
+
+                            textView.setText("一般登入成功\n"+"User_ID:\t\t"+user.getId()
+                                    +"\nUser_PW:\t\t"+user.getPassword()
+                                    +"\nUser_No:\t\t"+user.getNo());
+                            Common.toastShow(activity,"一般登入成功");
+
+                            /* 將登入資料存入偏好設定 */
+                            SharedPreferences pref = activity.getSharedPreferences("preference",
+                                    MODE_PRIVATE);
+                            pref.edit()
+                                    .putInt("user_no", user.getNo())
+                                    .putString("user_id", user.getId())
+                                    .putBoolean("isSignIn", true)
+                                    .apply();
+
+//                            /* 回應成功代碼（傳回去發出 Intent 的頁面） */
+//                            setResult(RESULT_OK);
+
+                            /* 延時執行 */
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    Log.d(TAG, "登入成功，此頁消失");
+                                    activity.finish();// finish() 讓視窗（Activity）消失
+                                }
+                            },2000);// 延後2秒
                         }
 
                     } catch (Exception e) {
                         Log.e(TAG, e.getMessage());
                     }
                 }
+
             }
         });
 
+        /*============================== Google 登入程式碼 ==============================*/
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
 
+        googleSignInClient = GoogleSignIn.getClient(activity, gso);
 
         /* Google 登入按鈕 */
         view.findViewById(R.id.btGSignIn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent googleSignIntent = gooSignClient.getSignInIntent();
-                startActivityForResult(googleSignIntent, GSIGN_CODE);
-
-            }
-        });
-
-        view.findViewById(R.id.btgooSignIn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent googleSignIntent = gooSignClient.getSignInIntent();
+                Intent googleSignIntent = googleSignInClient.getSignInIntent();
                 startActivityForResult(googleSignIntent, GSIGN_CODE);
 
             }
@@ -141,16 +171,17 @@ public class SignInMainFragment extends Fragment {
         SignInButton signInButton = view.findViewById(R.id.btGSignIn);
         signInButton.setSize(SignInButton.SIZE_WIDE);
 
+        /* 登出按鈕 */
         view.findViewById(R.id.btSignOut).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                gooSignClient.signOut();
+                googleSignInClient.signOut();
                 textView.setText("Google 已登出");
-                view.setVisibility(GONE);
             }
         });
     }
 
+    /* 承接 Google 登入結果 */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -167,6 +198,9 @@ public class SignInMainFragment extends Fragment {
 
             GoogleSignInAccount acct = completedTask.getResult(ApiException.class);
 
+            // 取得使用者的資料，取得後再看你想要對這些資料做什麼用途
+            // getId 21位 Google帳戶編號
+            Log.d(TAG, "handleSignInResult getId:\n" + acct.getId());
             // getDisplayName Google 名稱
             Log.d(TAG, "handleSignInResult getName: " + acct.getDisplayName());
             // getEmail Google 信箱
@@ -183,4 +217,14 @@ public class SignInMainFragment extends Fragment {
             Log.w(TAG, "SignInResult: failed code = " + e.getStatusCode());
         }
     }
+
+    /* 隱藏鍵盤方法 */
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) activity.getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(
+                activity.getCurrentFocus().getWindowToken(),0);
+    }
+
 }
