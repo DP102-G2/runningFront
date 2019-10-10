@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
         menu.removeItem(R.id.opRun);
 
         return true;
-
     }
 
     @Override

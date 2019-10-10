@@ -3,6 +3,7 @@ package com.g2.runningFront.SignInActivity;
 /* 有關於隱藏/顯示輸入鍵盤 */
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -136,6 +137,7 @@ public class SignInActivity extends AppCompatActivity {
                                     +"\nUser_No:\t\t"+user.getNo());
                             Common.toastShow(SignInActivity.this, "一般登入成功");
 
+                            /* 將登入資料存入偏好設定 */
                             SharedPreferences pref = getSharedPreferences("preference",
                                     MODE_PRIVATE);
                             pref.edit()
@@ -147,8 +149,15 @@ public class SignInActivity extends AppCompatActivity {
                             /* 回應成功代碼（傳回去發出 Intent 的頁面） */
                             setResult(RESULT_OK);
 
-                            Log.d(TAG, "登入成功，此頁消失");
-                            SignInActivity.this.finish();// finish() 讓視窗（頁面）消失
+                            /* 延時執行 */
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    Log.d(TAG, "登入成功，此頁消失");
+                                    SignInActivity.this.finish();// finish() 讓視窗（頁面）消失
+                                }
+                            },2000);// 延後2秒
                         }
 
                     } catch (Exception e) {

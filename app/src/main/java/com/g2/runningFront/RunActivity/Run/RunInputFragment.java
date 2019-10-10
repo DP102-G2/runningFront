@@ -96,7 +96,7 @@ public class RunInputFragment extends Fragment {
 //                Navigation.findNavController(view)
 //                        .navigate(R.id.action_runInput_to_bmiResult, bundle);
                 Navigation.findNavController(view)
-                        .navigate(R.id.action_runInput_to_testFragment);
+                        .navigate(R.id.action_runInput_to_bmiResult);
 
             }
         });

@@ -79,7 +79,7 @@ public class SignInMainFragment extends Fragment {
                 String password = etPassword.getText().toString().trim();
                 User user = new User(0, id , password);
 
-                if(id.length()==0 || password.length()==0){
+                if(id.length() <= 0 || password.length() <= 0){
                     textView.setText("帳號密碼不能為空");
                     return;
                 }
@@ -105,7 +105,7 @@ public class SignInMainFragment extends Fragment {
                             Bundle bundle = new Bundle();
                             bundle.putSerializable("user", user);
                             Navigation.findNavController(textView)
-                                    .navigate(R.id.action_settingMainFragment_to_settingFragment, bundle);
+                                    .navigate(R.id.action_settingMainFragment_to_settingUpadteFragment, bundle);
                         }
 
                     } catch (Exception e) {
@@ -114,6 +114,8 @@ public class SignInMainFragment extends Fragment {
                 }
             }
         });
+
+
 
         /* Google 登入按鈕 */
         view.findViewById(R.id.btGSignIn).setOnClickListener(new View.OnClickListener() {
@@ -175,7 +177,7 @@ public class SignInMainFragment extends Fragment {
             Bundle bundle = new Bundle();
             bundle.putString("image" ,String.valueOf(acct.getPhotoUrl()));
             Navigation.findNavController(textView)
-                    .navigate(R.id.action_settingMainFragment_to_settingFragment, bundle);
+                    .navigate(R.id.action_settingMainFragment_to_settingUpadteFragment, bundle);
 
         } catch (ApiException e){
             Log.w(TAG, "SignInResult: failed code = " + e.getStatusCode());

@@ -10,10 +10,9 @@
         android:id="@+id/runstart_btStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="470dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="24dp"
         android:text="開始"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,20 +20,8 @@
         android:id="@+id/runstart_tvTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="24dp"
         android:text="TextView"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/runstart_textView13"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="104dp"
-        android:text="總時長"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -42,79 +29,109 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/runstart_textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="總時長"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@+id/runstart_tvTime"
+        app:layout_constraintStart_toStartOf="@+id/runstart_tvTime"
+        app:layout_constraintTop_toBottomOf="@+id/runstart_tvTime" />
+
+    <TextView
         android:id="@+id/runstart_tvCalories"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="165dp"
         android:text="TextView"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/runstart_textView13"
+        app:layout_constraintStart_toStartOf="@+id/runstart_textView13"
+        app:layout_constraintTop_toTopOf="@+id/runstart_tvSpeed" />
 
     <TextView
         android:id="@+id/runstart_tvDistance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="165dp"
         android:text="TextView"
         android:textSize="24sp"
-        app:layout_constraintEnd_toStartOf="@+id/tvCalories"
+        app:layout_constraintEnd_toEndOf="@+id/runstart_textView23"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/runstart_tvCalories" />
 
     <TextView
         android:id="@+id/runstart_tvSpeed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="165dp"
-        android:layout_marginEnd="56dp"
+        android:layout_marginTop="116dp"
+        android:layout_marginEnd="28dp"
         android:text="TextView"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/tvCalories"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/runstart_textView24"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/runstart_textView22"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
         android:text="卡路里"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/runstart_tvCalories"
+        app:layout_constraintStart_toStartOf="@+id/runstart_tvCalories"
+        app:layout_constraintTop_toTopOf="@+id/runstart_textView24" />
 
     <TextView
         android:id="@+id/runstart_textView23"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="56dp"
-        android:layout_marginTop="200dp"
         android:layout_marginEnd="100dp"
         android:text="距離(公里)"
         android:textSize="24sp"
         app:layout_constraintEnd_toStartOf="@+id/runstart_textView22"
+        app:layout_constraintHorizontal_bias="0.224"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/runstart_textView22" />
 
     <TextView
         android:id="@+id/runstart_textView24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="95dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="164dp"
         android:layout_marginEnd="56dp"
         android:text="平均時速"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.688"
         app:layout_constraintStart_toEndOf="@+id/runstart_textView22"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/runstart_Complete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="48dp"
+        android:text="complete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/runstart_btStart"
+        app:layout_constraintTop_toTopOf="@+id/runstart_btStart" />
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/runstart_mapView"
+        android:layout_width="415dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/runstart_textView22"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
