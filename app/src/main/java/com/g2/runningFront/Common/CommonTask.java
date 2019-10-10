@@ -70,7 +70,4 @@ public class CommonTask extends AsyncTask<String, Integer, String> {
         return inStr.toString();
     }
 
-
-
-
 }

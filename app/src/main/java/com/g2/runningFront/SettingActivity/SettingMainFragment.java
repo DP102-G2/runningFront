@@ -2,6 +2,7 @@ package com.g2.runningFront.SettingActivity;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,14 +10,17 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.g2.runningFront.Common.Common;
-import com.g2.runningFront.Common.ImageTask;
+import com.g2.runningFront.Common.*;
+//import com.g2.runningFront.Common.Common;
+//import com.g2.runningFront.Common.CommonTask;
+//import com.g2.runningFront.Common.ImageTask;
 import com.g2.runningFront.R;
 
 
@@ -34,6 +38,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.g2.runningFront.SignInActivity.SignInActivity;
+import com.google.gson.JsonObject;
+
+import java.io.BufferedInputStream;
 
 
 public class SettingMainFragment extends Fragment {
@@ -135,17 +142,27 @@ public class SettingMainFragment extends Fragment {
         /* 在 onRusume 先檢查登入狀態 */
         Common.signIn(activity);
 
+        /* 取得會員大頭貼圖像 */
         int no = activity.getSharedPreferences(Common.PREF,MODE_PRIVATE).getInt("user_no",0);
         Log.d(TAG,"onResume 檢查到會員編號：" + no);
-        Bitmap bitmap = null;
 
-        // 規範圖片尺寸
-        //int imageSize = getResources().getDisplayMetrics().widthPixels / 3;
+        JsonObject jo = new JsonObject();
+        jo.addProperty("action","getImage");
+        jo.addProperty("user_no", no);
+
         String url = Common.URL_SERVER + "SettingServlet";
+        CommonTask imageTask = new CommonTask(url, jo.toString());
+
+        Bitmap bitmap = null;
 
         try {
 
-            bitmap = new ImageTask(url, no).execute().get();
+            /* ==================== ⬇️正在施工區域⬇️ ==================== */
+
+            /* 用 Base64 解碼 Servlet 端 編碼而成的文字變成 byte[]
+             * 再用 BitmapFactory 把 byte[] 換成 bitmap 以供 UI 元件貼圖 */
+            byte[] image = Base64.decode(imageTask.execute().get(), Base64.DEFAULT);
+            bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
 
         } catch (Exception e) {
             Log.e(TAG, e.toString());
