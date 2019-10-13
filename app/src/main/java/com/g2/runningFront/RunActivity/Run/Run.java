@@ -1,10 +1,10 @@
 package com.g2.runningFront.RunActivity.Run;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.concurrent.SynchronousQueue;
 
-public class Run  {
-
+public class Run implements Serializable {
     int runNo;
     int userNo;
     byte[] route;
@@ -23,7 +23,8 @@ public class Run  {
         this.speed = speed;
     }
 
-    public Run(int runNo, int userNo, byte[] route, Timestamp run_date, double time, double distance, double calorie, double speed) {
+
+    public Run(int userNo,int runNo,  byte[] route, Timestamp run_date, double time, double distance, double calorie, double speed) {
         this.runNo = runNo;
         this.userNo = userNo;
         this.route = route;
@@ -36,6 +37,25 @@ public class Run  {
 
     public Run(int userNo, double time, double distance, double calorie, double speed) {
         this.userNo = userNo;
+        this.time = time;
+        this.distance = distance;
+        this.calorie = calorie;
+        this.speed = speed;
+    }
+
+    public Run(int run_no,Timestamp run_date, double time, double distance, double calorie, double speed) {
+        this.runNo = run_no;
+        this.run_date = run_date;
+        this.time = time;
+        this.distance = distance;
+        this.calorie = calorie;
+        this.speed = speed;
+    }
+
+    public Run(int userNo,int run_no,Timestamp run_date, double time, double distance, double calorie, double speed) {
+        this.userNo = userNo;
+        this.runNo = run_no;
+        this.run_date = run_date;
         this.time = time;
         this.distance = distance;
         this.calorie = calorie;
@@ -105,6 +125,5 @@ public class Run  {
     public void setSpeed(double speed) {
         this.speed = speed;
     }
-
 
 }

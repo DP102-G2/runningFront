@@ -124,14 +124,13 @@
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/runstart_mapView"
-        android:layout_width="415dp"
-        android:layout_height="0dp"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
         android:layout_marginTop="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/runstart_textView22"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/runstart_textView22" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    tools:context=".RunActivity.RunInquireFragment">
+    tools:context=".RunActivity.runInquire.RunInquireFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -37,23 +37,13 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/inquire_rv"
         android:layout_width="415dp"
-        android:layout_height="454dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginBottom="56dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inquire_btClick" />
-
-    <Button
-        android:id="@+id/inquire_btClick"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="23dp"
-        android:text="查詢"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inquire_etInputTime" />
 
