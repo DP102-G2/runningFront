@@ -45,19 +45,19 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/etHeight"
+        android:id="@+id/rip_etHeight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="160dp"
         android:ems="10"
         android:inputType="numberDecimal"
         android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="@+id/etAge"
-        app:layout_constraintStart_toStartOf="@+id/etAge"
+        app:layout_constraintEnd_toEndOf="@+id/rip_etAge"
+        app:layout_constraintStart_toStartOf="@+id/rip_etAge"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/etWeight"
+        android:id="@+id/rip_etWeight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="112dp"
@@ -69,19 +69,19 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/etAge"
+        android:id="@+id/rip_etAge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="112dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
         android:inputType="numberDecimal"
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etHeight" />
+        app:layout_constraintTop_toBottomOf="@+id/rip_etWeight" />
 
     <RadioGroup
-        android:id="@+id/radioGroup"
+        android:id="@+id/rip_rgGender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -94,7 +94,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <RadioButton
-            android:id="@+id/btnMan"
+            android:id="@+id/rip_rbMan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
@@ -102,7 +102,7 @@
             android:textColorLink="@color/common_google_signin_btn_text_dark_focused" />
 
         <RadioButton
-            android:id="@+id/btnWoman"
+            android:id="@+id/rip_rbWoman"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="女"
@@ -110,7 +110,7 @@
     </RadioGroup>
 
     <TextView
-        android:id="@+id/runinout_textView2"
+        android:id="@+id/rip_textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="67dp"

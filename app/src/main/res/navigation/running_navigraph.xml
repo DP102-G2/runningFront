@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/running_navigraph"
-    app:startDestination="@id/runInput">
+    app:startDestination="@id/runMain">
 
     <fragment
         android:id="@+id/runInput"
@@ -50,6 +50,9 @@
         <action
             android:id="@+id/action_runMain_to_runStart"
             app:destination="@id/runStart" />
+        <action
+            android:id="@+id/action_runMain_to_runInput"
+            app:destination="@id/runInput" />
     </fragment>
     <fragment
         android:id="@+id/runStart"
@@ -67,10 +70,8 @@
         tools:layout="@layout/fragment_run_detail" >
         <action
             android:id="@+id/action_runDetailFragment_to_runInquireFragment"
-            app:destination="@id/runInquireFragment" />
+            app:destination="@id/runInquireFragment" /><![CDATA[
         tools:layout="@layout/fragment_run_start">
-        <action
-            android:id="@+id/action_runStart_to_runMain"
-            app:destination="@id/runMain" />
+        ]]>
     </fragment>
 </navigation>

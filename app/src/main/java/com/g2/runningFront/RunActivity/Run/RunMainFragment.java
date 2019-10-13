@@ -2,6 +2,7 @@ package com.g2.runningFront.RunActivity.Run;
 
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,10 +10,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.g2.runningFront.Common.Common;
@@ -29,18 +32,29 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.Context.MODE_PRIVATE;
+
 // 取偏好設定，如果沒有就跳到最前面
 
 public class RunMainFragment extends Fragment {
     private Activity activity;
     private Button btStartRun;
-    TextView tvTime, tvDistance, tvCalorie;
+    TextView tvTime, tvDistance, tvCalorie, tvBMI;
+    ImageView ivEditBMI;
     View view;
+
+    UserBasic userBasic;
+
     List<Run> runList = new ArrayList<>();
-    CommonTask runTask;
     String formatTime;
     int wDistance = 0, wTime = 0, wCalorie = 0;
+
+    CommonTask runTask;
+    CommonTask uDataTask;
     private static final String url = Common.URL_SERVER + "RunServlet";
+
+    SharedPreferences pref;
+    private final static String PREFERENCES_NAME = "UserBasic";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,12 +73,20 @@ public class RunMainFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
+        pref = activity.getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
         runList = getRun();
+        getUserBasic();
         if (runList != null) {
             getWeekData();
             holdView();
         }
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getUserBasic();
     }
 
     private void holdView() {
@@ -81,10 +103,20 @@ public class RunMainFragment extends Fragment {
         tvTime = view.findViewById(R.id.rm_tvTime);
         tvCalorie = view.findViewById(R.id.rm_tvCalorie);
         tvDistance = view.findViewById(R.id.rm_tvDistance);
+        tvBMI = view.findViewById(R.id.rm_tvBMI);
 
         tvTime.setText(formatTime);
         tvDistance.setText(String.valueOf(wDistance / 1000) + " km ");
         tvCalorie.setText(String.valueOf(wCalorie) + " 卡 ");
+        tvBMI.setText(userBasic.getBMISuggest());
+
+        ivEditBMI = view.findViewById(R.id.rm_ivEditBMI);
+        ivEditBMI.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(view).navigate(R.id.action_runMain_to_runInput);
+            }
+        });
     }
 
     private List<Run> getRun() {
@@ -94,6 +126,7 @@ public class RunMainFragment extends Fragment {
         gsonBuilder.setDateFormat("yyyyMMddhhmmss");
         gsonBuilder.registerTypeAdapter(Timestamp.class, new TimestampTypeAdapter());
         Gson gson = gsonBuilder.create();
+
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", "getWeekRunList");
@@ -133,6 +166,34 @@ public class RunMainFragment extends Fragment {
 
         formatTime = hours + " 小時 , " + minutes + " 分鐘  ";
 
+    }
+
+    private void getUserBasic() {
+
+        try {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("action", "getUserBasic");
+            jsonObject.addProperty("userNo", 1);
+            uDataTask = new CommonTask(url, jsonObject.toString());
+            String ubStr = uDataTask.execute().get();
+            Log.d("ubStr", ubStr);
+            userBasic = new Gson().fromJson(ubStr, UserBasic.class);
+            pref.edit().putString("UserBasic", new Gson().toJson(userBasic)).apply();
+
+            if (userBasic.getHeight() == 0 | userBasic.getGender() == 0 | userBasic.getAge() == 0) {
+                Navigation.findNavController(view).navigate(R.id.action_runMain_to_runInput);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        String ubPrefStr = pref.getString("UserBasic", "noData");
+        if (ubPrefStr.equals("noData")) {
+            Navigation.findNavController(view).navigate(R.id.action_runMain_to_runInput);
+        } else {
+            userBasic = new Gson().fromJson(ubPrefStr, UserBasic.class);
+        }
     }
 
 
