@@ -2,11 +2,13 @@ package com.g2.runningFront.ShopActivity;
 
 
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,10 +17,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 
 import com.g2.runningFront.Common.Common;
 import com.g2.runningFront.Common.CommonTask;
@@ -41,6 +46,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShopOrderFragment extends Fragment {
@@ -48,12 +54,14 @@ public class ShopOrderFragment extends Fragment {
     private Activity activity;
     private int j;
     Button btoOrder_detail;
-    List<Order> orders;
+    List<Order> orders = new ArrayList<>();
+    List<Order> orders_spinner = new ArrayList<>();
+
     private CommonTask orderGetAllTask;
     private CommonTask spotDeleteTask;
     private static final String TAG = "TAG_OrdertListFragment";
     private Spinner spOrder;
-    List<Order> sporders;
+    TextView tvorderstatus;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,6 +85,7 @@ public class ShopOrderFragment extends Fragment {
         spOrder = view.findViewById(R.id.spOrder);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         showAll();
+        spcon();
 
 
     }
@@ -86,7 +95,6 @@ public class ShopOrderFragment extends Fragment {
             if (Common.networkConnected(activity)) {
                 Timestamp t = new Timestamp(System.currentTimeMillis());
                 String url = Common.URL_SERVER + "OrderServlet";
-                List<Order> order = null;
                 try {
                     JsonObject jsonObject = new JsonObject();
                     jsonObject.addProperty("action", "getAll");
@@ -106,16 +114,16 @@ public class ShopOrderFragment extends Fragment {
 
                     Type listType = new TypeToken<List<Order>>() {
                     }.getType();
-                    order = gson.fromJson(jsonIn, listType);
+                    orders = gson.fromJson(jsonIn, listType);
 
                 } catch (Exception e) {
                     Log.e(TAG, e.toString());
                 }
-                if (order == null || order.isEmpty()) {
+                if (orders == null || orders.isEmpty()) {
                     Common.toastShow(activity, R.string.textNoNewsFound);
                 } else {
                     Common.toastShow(activity, "Complete");
-                    recyclerView.setAdapter(new OrderAdapter(activity, order));
+                    recyclerView.setAdapter(new OrderAdapter(activity, orders));
                 }
             } else {
                 Common.toastShow(activity, R.string.textNoNetwork);
@@ -124,7 +132,92 @@ public class ShopOrderFragment extends Fragment {
     }
 
     public void spcon() {
-        spOrder=getView().findViewById(R.id.spOrder);
+        spOrder = getView().findViewById(R.id.spOrder);
+
+        spOrder.setSelection(0, true);
+        spOrder.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                orders_spinner.clear();
+                switch (position) {
+                    case 0:
+                        orders_spinner.clear();
+                        for (Order order : orders) {
+                            {
+                                orders_spinner.add(order);
+                            }
+                        }
+
+                        OrderAdapter adapter = (OrderAdapter) recyclerView.getAdapter();
+                        adapter.setOrders(orders_spinner);
+                        adapter.notifyDataSetChanged();
+
+
+                        break;
+                    case 1:
+                        orders_spinner.clear();
+                        for (Order order : orders) {
+                            if (order.getOrder_status().equals("1")) {
+                                orders_spinner.add(order);
+                            }
+                        }
+                        adapter = (OrderAdapter) recyclerView.getAdapter();
+                        adapter.setOrders(orders_spinner);
+                        adapter.notifyDataSetChanged();
+
+                        break;
+                    case 2:
+                        orders_spinner.clear();
+                        for (Order order : orders) {
+                            if (order.getOrder_status().equals("2")) {
+                                orders_spinner.add(order);
+
+                            }
+                        }
+                        adapter = (OrderAdapter) recyclerView.getAdapter();
+                        adapter.setOrders(orders_spinner);
+                        adapter.notifyDataSetChanged();
+
+
+                        break;
+                    case 3:
+                        orders_spinner.clear();
+                        for (Order order : orders) {
+                            if (order.getOrder_status().equals("3")) {
+                                orders_spinner.add(order);
+
+                            }
+                        }
+                        adapter = (OrderAdapter) recyclerView.getAdapter();
+                        adapter.setOrders(orders_spinner);
+                        adapter.notifyDataSetChanged();
+
+                        break;
+                    case 4:
+                        orders_spinner.clear();
+                        for (Order order : orders) {
+                            if (order.getOrder_status().equals("0")) {
+                                orders_spinner.add(order);
+
+                            }
+                        }
+                        adapter = (OrderAdapter) recyclerView.getAdapter();
+                        adapter.setOrders(orders_spinner);
+                        adapter.notifyDataSetChanged();
+
+                        break;
+
+
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
     }
 
@@ -141,12 +234,17 @@ public class ShopOrderFragment extends Fragment {
             this.orders = orders;
         }
 
+        public void setOrders(List<Order> orders) {
+            this.orders = orders;
+
+        }
+
         @Override
         public int getItemCount() {
             return orders.size();
         }
 
-        private class ViewHolder extends RecyclerView.ViewHolder {
+        public class ViewHolder extends RecyclerView.ViewHolder {
             LinearLayout list_Detail;
             TextView tvorderno, tvorderdate, tvpaymentmathon, tvordermoney, tvorderstatus, tvProduct, tvShop_quantity, tvProduct_price;
 
