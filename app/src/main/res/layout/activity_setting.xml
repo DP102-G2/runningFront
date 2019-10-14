@@ -2,28 +2,19 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".SettingActivity.SettingActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <Button
-        android:id="@+id/set_btLogin"
-        android:layout_width="240dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="160dp"
-        android:background="@color/colorMain"
-        android:text="Sign In Page"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <fragment
         android:id="@+id/fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         app:defaultNavHost="true"
+
         app:navGraph="@navigation/setting_navigraph"
         tools:layout_editor_absoluteX="119dp"
         tools:layout_editor_absoluteY="80dp" />

@@ -61,7 +61,6 @@ public class CartOrder {
 
     public String getPaymentText(){
         String paymentText=null;
-
         switch (Payment){
             case -1:
                 paymentText = "未選擇";

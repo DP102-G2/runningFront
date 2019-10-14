@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/running_navigraph"
-    app:startDestination="@id/runInput">
+    app:startDestination="@id/runMain">
 
     <fragment
         android:id="@+id/runInput"
@@ -13,36 +13,21 @@
         <action
             android:id="@+id/action_runInput_to_bmiResult"
             app:destination="@id/bmiResult" />
-        <action
-            android:id="@+id/action_runInput_to_testFragment"
-            app:destination="@id/testFragment" />
     </fragment>
     <fragment
         android:id="@+id/runInquireFragment"
-        android:name="com.g2.runningFront.RunActivity.RunInquireFragment"
+        android:name="com.g2.runningFront.RunActivity.runInquire.RunInquireFragment"
         android:label="fragment_run_inquire"
-        tools:layout="@layout/fragment_run_inquire" />
+        tools:layout="@layout/fragment_run_inquire" >
+        <action
+            android:id="@+id/action_runInquireFragment_to_runDetailFragment"
+            app:destination="@id/runDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/runGroupFragment"
-        android:name="com.g2.runningFront.RunActivity.Group.RunGroupFragment"
-        android:label="fragment_run_Group"
-        tools:layout="@layout/fragment_run_group" >
-        <action
-            android:id="@+id/action_runGroupFragment_to_friendFragment"
-            app:destination="@id/friendFragment" />
-        <action
-            android:id="@+id/action_runGroupFragment_to_nationalFragment"
-            app:destination="@id/nationalFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/nationalFragment"
-        android:name="com.g2.runningFront.RunActivity.Group.NationalFragment"
-        android:label="NationalFragment"
-        tools:layout="@layout/fragment_national" >
-        <action
-            android:id="@+id/action_nationalFragment_to_friendFragment"
-            app:destination="@id/friendFragment" />
-    </fragment>
+        android:name="com.g2.runningFront.RunActivity.Group.GroupFragment"
+        android:label="fragment_run_group"
+        tools:layout="@layout/fragment_run_group" />
     <fragment
         android:id="@+id/runAchieveFragment"
         android:name="com.g2.runningFront.RunActivity.RunAchieveFragment"
@@ -56,9 +41,6 @@
         <action
             android:id="@+id/action_bmiResult_to_runMain"
             app:destination="@id/runMain" />
-        <action
-            android:id="@+id/action_bmiResult_to_runInput"
-            app:destination="@id/runInput" />
     </fragment>
     <fragment
         android:id="@+id/runMain"
@@ -68,33 +50,28 @@
         <action
             android:id="@+id/action_runMain_to_runStart"
             app:destination="@id/runStart" />
+        <action
+            android:id="@+id/action_runMain_to_runInput"
+            app:destination="@id/runInput" />
     </fragment>
     <fragment
         android:id="@+id/runStart"
         android:name="com.g2.runningFront.RunActivity.Run.RunStartFragment"
         android:label="fragment_run_Start"
-        tools:layout="@layout/fragment_run_start"/>
-    <fragment
-        android:id="@+id/testFragment"
-        android:name="com.g2.runningFront.TestFragment"
-        android:label="fragment_test"
-        tools:layout="@layout/fragment_test" >
+        tools:layout="@layout/fragment_run_start">
         <action
-            android:id="@+id/action_testFragment_to_runInquireFragment"
-            app:destination="@id/runInquireFragment" />
-        <action
-            android:id="@+id/action_testFragment_to_test2Fragment"
-            app:destination="@id/test2Fragment" />
+            android:id="@+id/action_runStart_to_runMain"
+            app:destination="@id/runMain" />
     </fragment>
     <fragment
-        android:id="@+id/test2Fragment"
-        android:name="com.g2.runningFront.Test2Fragment"
-        android:label="fragment_test2"
-        tools:layout="@layout/fragment_test2" />
-    <fragment
-        android:id="@+id/friendFragment"
-        android:name="com.g2.runningFront.RunActivity.Group.FriendFragment"
-        android:label="fragment_friend"
-        tools:layout="@layout/fragment_friend" />
-
+        android:id="@+id/runDetailFragment"
+        android:name="com.g2.runningFront.RunActivity.runInquire.RunDetailFragment"
+        android:label="fragment_run_detail"
+        tools:layout="@layout/fragment_run_detail" >
+        <action
+            android:id="@+id/action_runDetailFragment_to_runInquireFragment"
+            app:destination="@id/runInquireFragment" /><![CDATA[
+        tools:layout="@layout/fragment_run_start">
+        ]]>
+    </fragment>
 </navigation>

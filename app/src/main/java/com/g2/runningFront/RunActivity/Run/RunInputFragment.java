@@ -2,6 +2,7 @@ package com.g2.runningFront.RunActivity.Run;
 
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,35 +10,46 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
+import com.g2.runningFront.Common.Common;
 import com.g2.runningFront.R;
 import com.g2.runningFront.RunActivity.Bmi;
+import com.google.gson.Gson;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
-import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 
 public class RunInputFragment extends Fragment {
     private Activity activity;
-    private EditText etHeight, etWeight, etAge;
-    private Button runinput_btConfirm;
-    private RadioGroup sex;
+
+    UserBasic userBasic;
+
+    View view;
+    EditText etHeight, etWeight, etAge;
+    Button btConfirm;
+    RadioGroup rgGender;
+    RadioButton rbMan, rbWoman;
+
+    int height, weight, age, gender = 1;
+
+    SharedPreferences pref;
+    final private static String PREFERENCES_NAME = "UserBasic";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = getActivity();
+        pref = activity.getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
     }
 
     @Override
@@ -51,64 +63,89 @@ public class RunInputFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        sex = view.findViewById(R.id.radioGroup);//sex用radiogroup還是radiobutton
-        etHeight = view.findViewById(R.id.etHeight);
-        etWeight = view.findViewById(R.id.etWeight);
-        etAge = view.findViewById(R.id.etAge);
-        runinput_btConfirm = view.findViewById(R.id.runinput_btConfirm);
-        runinput_btConfirm.setOnClickListener(new View.OnClickListener() {
+        getUserBasic();
+        this.view = view;
+        holdView();
+    }
+
+    private void holdView() {
+
+        rgGender = view.findViewById(R.id.rip_rgGender);
+        rbMan = view.findViewById(R.id.rip_rbMan);
+        rbWoman = view.findViewById(R.id.rip_rbWoman);
+
+        rgGender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.rip_rbMan:
+                        gender = 1;
+                        break;
+                    case R.id.rip_rbWoman:
+                        gender = 0;
+                        break;
+                }
+            }
+        });
+
+
+        etHeight = view.findViewById(R.id.rip_etHeight);
+        etWeight = view.findViewById(R.id.rip_etWeight);
+        etAge = view.findViewById(R.id.rip_etAge);
+        btConfirm = view.findViewById(R.id.runinput_btConfirm);
+
+        if (userBasic.getHeight() != 0 & userBasic.getGender() != 0 & userBasic.getAge() != 0) {
+
+            etHeight.setText(String.valueOf(userBasic.getHeight()));
+            etWeight.setText(String.valueOf(userBasic.getWeight()));
+            etAge.setText(String.valueOf(userBasic.getAge()));
+
+            switch (userBasic.getGender()){
+                case 0:
+                    rbMan.setChecked(false);
+                    rbWoman.setChecked(true);
+                    break;
+                case 1:
+                    rbMan.setChecked(true);
+                    rbWoman.setChecked(false);
+                    break;
+
+            }
+
+        }
+
+
+        btConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String height_length = etHeight.getText().toString().trim();
-                String weight_length = etWeight.getText().toString().trim();
-                String age_length = etAge.getText().toString().trim();
-
-//                if (height_length.length() <= 0||weight_length.length() <=0 || age_length.length() <=0) {
-//                    Toast.makeText(getActivity(), "輸入資訊不可空白 ",Toast.LENGTH_LONG).show();
-//                    return;
-//                }
-
-//                double height = Double.valueOf(etHeight.getText().toString().trim());
-//                double weight = Double.valueOf(etWeight.getText().toString().trim());
-//                int age = Integer.valueOf(etAge.getText().toString().trim());
-//                Bmi bmi = new Bmi(height, weight);
-//                Bundle bundle = new Bundle();
-//                //sex要用什麼型別
-//                int s = 0;
-//                switch (sex.getCheckedRadioButtonId()) {
-//                    case R.id.btnMan:
-//                        s = 1;
-//                        break;
-//                    case R.id.btnWoman:
-//                        s = 0;
-//                        break;
-//                }
-//                bundle.putInt("sex", s);
-//                bundle.putSerializable("BMI", bmi);
-//                bundle.putInt("age", age);
 
 
-//                try {
-//                    saveBmi(bmi);
-//                } catch (IOException e) {
-//                    Log.e(TAG, e.toString());
-//                }
-//                Navigation.findNavController(view)
-//                        .navigate(R.id.action_runInput_to_bmiResult, bundle);
+                if (etAge.getText().toString().trim().equals("") || etHeight.getText().toString().trim().equals("") || etWeight.getText().toString().trim().equals("")) {
+                    Common.toastShow(activity, "輸入資訊不可空白 ");
+                    return;
+                }
+
+                height = Integer.parseInt(etHeight.getText().toString().trim());
+                weight = Integer.parseInt(etWeight.getText().toString().trim());
+                age = Integer.parseInt(etAge.getText().toString().trim());
+
+                userBasic = new UserBasic(height, weight, age, gender);
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("UserBasic", userBasic);
+
                 Navigation.findNavController(view)
-                        .navigate(R.id.action_runInput_to_testFragment);
+                        .navigate(R.id.action_runInput_to_bmiResult, bundle);
 
             }
         });
     }
 
-
-    private void saveBmi(Bmi bmi) throws IOException {
-        FileOutputStream fos = activity.openFileOutput("BMI", MODE_PRIVATE);
-        ObjectOutputStream out = new ObjectOutputStream(fos);
-        out.writeObject(bmi);
-        out.close();
+    private void getUserBasic() {
+        String obStr = pref.getString("UserBasic", "No Data");
+        if (obStr != null) {
+            userBasic = new Gson().fromJson(obStr, UserBasic.class);
+        }
     }
-
 
 }

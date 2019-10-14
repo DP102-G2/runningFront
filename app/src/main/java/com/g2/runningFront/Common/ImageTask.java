@@ -50,6 +50,7 @@ public class ImageTask extends AsyncTask<Object, Integer, Bitmap> {
         jsonObject.addProperty("action", "getImage");
         jsonObject.addProperty("id", id);
         jsonObject.addProperty("pro_no",pro_no);
+        jsonObject.addProperty("follow_no", id);
         jsonObject.addProperty("imageSize", imageSize);
         return getRemoteImage(url, jsonObject.toString());
     }
@@ -92,7 +93,8 @@ public class ImageTask extends AsyncTask<Object, Integer, Bitmap> {
         if (bitmap != null) {
             imageView.setImageBitmap(bitmap);
         } else {
-            imageView.setImageResource(R.drawable.pro_image);
+            //imageView.setImageResource(R.drawable.pro_image);
+            imageView.setImageResource(R.drawable.user_no_image);
         }
 
     }

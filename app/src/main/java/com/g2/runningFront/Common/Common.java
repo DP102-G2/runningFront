@@ -47,7 +47,7 @@ public class Common {
     public final static String PREF = "preference";
 
     /**
-     *
+     * 登入（檢查登入情形）
      * @param activity 目前使用的 Activity
      */
     public static void signIn(Activity activity) {

@@ -2,6 +2,8 @@ package com.g2.runningFront.RunActivity.Run;
 
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,23 +18,37 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.g2.runningFront.Common.Common;
+import com.g2.runningFront.Common.CommonTask;
 import com.g2.runningFront.R;
-import com.g2.runningFront.RunActivity.Bmi;
-
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
-
-import static android.content.ContentValues.TAG;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 public class BmiResultFragment extends Fragment {
 
     private Activity activity;
-    private TextView tvBMI;
-    private Button bmi_btConfirm;
+    private Bundle bundle;
+
+    View view;
+    TextView tvBMI, tvSuggest;
+    Button btConfirm;
+
+    UserBasic userBasic;
+    int bmi, height, weight, gender, age;
+    String bmiSuggest;
+
+    SharedPreferences pref;
+    final private static String PREFERENCES_NAME = "UserBasic";
+
+    CommonTask commonTask;
+    private static final String url = Common.URL_SERVER + "RunServlet";
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = getActivity();
+        bundle = getArguments();
+        pref = activity.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -45,33 +61,63 @@ public class BmiResultFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        this.view = view;
+        setUserBasic();
+        holdView();
 
-        tvBMI = view.findViewById(R.id.tvBMI);
-        Bmi bmi = null;
-        try{
-            bmi = loadBmi();
-        }catch (Exception e) {
-            Log.e(TAG, e.toString());
-        }
-        String text = bmi == null ? "" : bmi.toString();
-        tvBMI.setText(text);
 
-        bmi_btConfirm = view.findViewById(R.id.bmi_btConfirm);
-        bmi_btConfirm.setOnClickListener(new View.OnClickListener() {
+    }
+
+    private void holdView() {
+        tvBMI = view.findViewById(R.id.bmi_tvBMI);
+        tvBMI.setText(String.valueOf(bmi));
+
+        tvSuggest = view.findViewById(R.id.bmi_tvSuggest);
+        tvSuggest.setText(bmiSuggest);
+
+        btConfirm = view.findViewById(R.id.bmi_btConfirm);
+        btConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                try {
+                    JsonObject jsonObject = new JsonObject();
+                    jsonObject.addProperty("action", "UpdateUserBasic");
+                    jsonObject.addProperty("UserNo", 1);
+                    jsonObject.addProperty("UserBasic", new Gson().toJson(userBasic));
+
+                    commonTask = new CommonTask(url, jsonObject.toString());
+                    int count = Integer.parseInt(commonTask.execute().get());
+
+                    if (count == 1) {
+                        Common.toastShow(activity, "新增成功");
+                    }
+
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+                }
+
+                pref.edit().putString("UserBasic", new Gson().toJson(userBasic)).apply();
                 Navigation.findNavController(view)
                         .navigate(R.id.action_bmiResult_to_runMain);
             }
         });
+    }
+
+    private void setUserBasic() {
+        userBasic = (UserBasic) bundle.getSerializable("UserBasic");
+        height = userBasic.getHeight();
+        age = userBasic.getAge();
+        weight = userBasic.getWeight();
+        gender = userBasic.getGender();
+        bmi = userBasic.getBmi();
+        bmiSuggest = userBasic.getBMISuggest();
+
+
+
+
 
     }
 
-    private Bmi loadBmi() throws Exception {
-        FileInputStream fis = activity.openFileInput("BMI");
-        ObjectInputStream ois = new ObjectInputStream(fis);
-        Bmi bmi = (Bmi) ois.readObject();
-        ois.close();
-        return bmi;
-    }
 }

@@ -3,7 +3,7 @@
 
     <item
         android:title="跑步"
-        android:id="@+id/runInput"
+        android:id="@+id/runMain"
         android:icon="@drawable/ic_run"/>
     <item
         android:title="統計"
