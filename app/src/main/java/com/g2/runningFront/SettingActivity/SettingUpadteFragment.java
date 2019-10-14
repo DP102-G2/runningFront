@@ -51,6 +51,7 @@ import java.io.ByteArrayOutputStream;
 import android.util.Base64;
 
 import static android.app.Activity.RESULT_OK;
+import static com.g2.runningFront.Common.Common.round;
 
 
 public class SettingUpadteFragment extends Fragment {
@@ -161,9 +162,10 @@ public class SettingUpadteFragment extends Fragment {
                     Log.e(TAG, e.toString());
                 }
                 if (bitmap != null) {
-                    imageView.setImageBitmap(bitmap);
+                    imageView.setImageBitmap(round(bitmap));
                 } else {
-                    imageView.setImageResource(R.drawable.user_no_image);
+                    bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.user_no_image);
+                    imageView.setImageBitmap(round(bitmap));
                 }
 
             }
@@ -349,7 +351,7 @@ public class SettingUpadteFragment extends Fragment {
                             bitmap = BitmapFactory.decodeStream(
                                     activity.getContentResolver().openInputStream(uri));// 從 uri 讀取的檔案,編碼轉檔成為 bitmap 格式
                             if (bitmap != null) {
-                                imageView.setImageBitmap(bitmap);
+                                imageView.setImageBitmap(round(bitmap));
                             }
                             ByteArrayOutputStream out = new ByteArrayOutputStream();
                             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);// 把 bitmap 壓縮進 out
@@ -363,9 +365,10 @@ public class SettingUpadteFragment extends Fragment {
                         }
                     }
                     if (bitmap != null) {
-                        imageView.setImageBitmap(bitmap);
+                        imageView.setImageBitmap(round(bitmap));
                     } else {
-                        imageView.setImageResource(R.drawable.user_no_image);
+                        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.user_no_image);
+                        imageView.setImageBitmap(round(bitmap));
                     }
                     break;
             }

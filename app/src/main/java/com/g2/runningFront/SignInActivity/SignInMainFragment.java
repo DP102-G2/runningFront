@@ -89,7 +89,7 @@ public class SignInMainFragment extends Fragment {
                 hideKeyboard(activity);
 
                 String id = etId.getText().toString().trim();
-                String password = etId.getText().toString().trim();
+                String password = etPassword.getText().toString().trim();
                 User user = new User(0, id, password);
 
                 if (Common.networkConnected(activity)) {

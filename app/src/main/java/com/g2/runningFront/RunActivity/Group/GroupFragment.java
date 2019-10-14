@@ -9,7 +9,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,10 +18,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.g2.runningFront.Common.*;
 import com.g2.runningFront.R;
+import com.g2.runningFront.Common.Common;
+import com.g2.runningFront.Common.CommonTask;
+/* 屬於 Group Package 底下的 ImageTask */
+import com.g2.runningFront.RunActivity.Group.Common.ImageTask;
 
 /* 有關使用 Gson 解析資料 */
 import com.google.gson.Gson;
@@ -30,7 +33,6 @@ import com.google.gson.JsonObject;
 import java.lang.reflect.Type;
 import com.google.gson.reflect.TypeToken;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -45,8 +47,8 @@ public class GroupFragment extends Fragment {
     private int no;
     private RecyclerView gp_rv;
     private Gson gson;
-    private CommonTask followListGetAllTask;
-    private ImageTask FriendImageTask;
+    private CommonTask GetFollowsTask;
+    private ImageTask FollowImageTask;
 
     int flag = 1;
 
@@ -85,8 +87,8 @@ public class GroupFragment extends Fragment {
         /* 使用 RecyclerView */
         gp_rv = view.findViewById(R.id.gp_rv);
         gp_rv.setLayoutManager(new LinearLayoutManager(activity));
-        List<Follow> followList = getfollowList();
-        showFollowList(followList);
+        List<Follow> follows = getFollows();
+        showFollowList(follows);
 
         gp_btFriend = view.findViewById(R.id.gp_btFriend);
         gp_btAll = view.findViewById(R.id.gp_btAll);
@@ -97,6 +99,7 @@ public class GroupFragment extends Fragment {
                 /* 列出好友排行 */
             }
         });
+
     }
 
     private void showFollowList(List<Follow> follows) {
@@ -104,7 +107,7 @@ public class GroupFragment extends Fragment {
             return;
         }
         FollowAdapter followAdapter = (FollowAdapter) gp_rv.getAdapter();
-        // 如果spotAdapter不存在就建立新的，否則續用舊有的
+        // 如果followAdapter不存在就建立新的，否則續用舊有的
         if (followAdapter == null) {
             gp_rv.setAdapter(new FollowAdapter(activity, follows));
         } else {
@@ -116,14 +119,14 @@ public class GroupFragment extends Fragment {
     private class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.MyViewHolder> {
         private LayoutInflater layoutInflater;
         private List<Follow> follows;
-        private int imageSize;
+        private final int IMAGE_SIZE = 80;
 
         FollowAdapter(Context context, List<Follow> follows) {
             layoutInflater = LayoutInflater.from(context);
             this.follows = follows;
 
             /* 螢幕寬度除以4當作將圖的尺寸 */
-            imageSize = getResources().getDisplayMetrics().widthPixels / 4;
+            //imageSize = getResources().getDisplayMetrics().widthPixels / 4;
 
         }
 
@@ -133,11 +136,12 @@ public class GroupFragment extends Fragment {
 
         class MyViewHolder extends RecyclerView.ViewHolder {
             ImageView imageView;
-            TextView gp_tvFriend, gp_tvKm;
+            TextView gp_tvRank ,gp_tvFriend, gp_tvKm;
 
             MyViewHolder(View itemView) {
                 super(itemView);
                 imageView = itemView.findViewById(R.id.gp_ivFriend);
+                gp_tvRank = itemView.findViewById(R.id.gp_tvRank);
                 gp_tvFriend = itemView.findViewById(R.id.gp_tvFriend);
                 gp_tvKm = itemView.findViewById(R.id.gp_tvKm);
             }
@@ -159,16 +163,19 @@ public class GroupFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int position) {
+
+            /* ==================== ⬇️正在施工區域⬇️ ==================== */
             final Follow follow = follows.get(position);
             String url = Common.URL_SERVER + "GroupServlet";
 
             /* 索取追蹤會員大頭貼 */
             int no = follow.getNo();
-            FriendImageTask = new ImageTask(url, no, imageSize, myViewHolder.imageView);
-            FriendImageTask.execute();
+            FollowImageTask = new ImageTask(url, no, IMAGE_SIZE, myViewHolder.imageView);
+            FollowImageTask.execute();
 
+            myViewHolder.gp_tvRank.setText(String.valueOf(position));
             myViewHolder.gp_tvFriend.setText(follow.getName());
-            myViewHolder.gp_tvKm.setText(String.valueOf(follow.getDistance()) + " 公里");
+            myViewHolder.gp_tvKm.setText((follow.getDistance()) + " 公里");
 
             myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -184,24 +191,22 @@ public class GroupFragment extends Fragment {
     }
 
     /* 取得追蹤資料集合 */
-    private List<Follow> getfollowList() {
+    private List<Follow> getFollows() {
         List<Follow> followList = null;
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "GroupServlet";
             JsonObject jo = new JsonObject();
             jo.addProperty("action", "getAll");
 
-
-            jo.addProperty("user_no", 1);
-
+            jo.addProperty("user_no", no);
 
             String jsonOut = jo.toString();
-            followListGetAllTask = new CommonTask(url, jsonOut);
+            GetFollowsTask = new CommonTask(url, jsonOut);
+
             try {
-                String jsonIn = followListGetAllTask.execute().get();
+                String jsonIn = GetFollowsTask.execute().get();
                 
-                Log.e(TAG, "傳回的 List<Follow> = \n" + jsonIn);
-                
+                Log.d(TAG, "傳回的 List<Follow> = \n" + jsonIn);
                 Type listType = new TypeToken<List<Follow>>() {
                 }.getType();
                 followList = new Gson().fromJson(jsonIn, listType);
@@ -214,21 +219,16 @@ public class GroupFragment extends Fragment {
         return followList;
     }
 
-    /* 一些假資料 */ /*
-    private List<Follow> getfollowList_() {
-        List<Follow> followList = new ArrayList<>();
-        followList.add(new Follow(1,"追蹤A",10));
-        followList.add(new Follow(2,"追蹤B",20));
-        followList.add(new Follow(3,"追蹤C",30));
-        return followList;
-    }*/
-
     @Override
     public void onStop() {
         super.onStop();
-        if (followListGetAllTask != null) {
-            followListGetAllTask.cancel(true);
-            followListGetAllTask = null;
+        if (GetFollowsTask != null) {
+            GetFollowsTask.cancel(true);
+            GetFollowsTask = null;
+        }
+        if(FollowImageTask != null){
+            FollowImageTask.cancel(true);
+            FollowImageTask = null;
         }
     }
 

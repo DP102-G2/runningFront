@@ -1,9 +1,11 @@
 package com.g2.runningFront.SettingActivity;
 
 import android.app.Activity;
+import android.os.Bundle;
+
+/* 有關圖片處理 */
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,9 +20,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.g2.runningFront.Common.*;
-//import com.g2.runningFront.Common.Common;
-//import com.g2.runningFront.Common.CommonTask;
-//import com.g2.runningFront.Common.ImageTask;
 import com.g2.runningFront.R;
 
 
@@ -32,6 +31,8 @@ import android.os.Handler;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
+import static com.g2.runningFront.Common.Common.round;
+
 import android.content.Intent;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -39,8 +40,6 @@ import android.widget.TextView;
 
 import com.g2.runningFront.SignInActivity.SignInActivity;
 import com.google.gson.JsonObject;
-
-import java.io.BufferedInputStream;
 
 
 public class SettingMainFragment extends Fragment {
@@ -158,8 +157,6 @@ public class SettingMainFragment extends Fragment {
 
         try {
 
-            /* ==================== ⬇️正在施工區域⬇️ ==================== */
-
             /* 用 Base64 解碼 Servlet 端 編碼而成的文字變成 byte[]
              * 再用 BitmapFactory 把 byte[] 換成 bitmap 以供 UI 元件貼圖 */
             byte[] image = Base64.decode(imageTask.execute().get(), Base64.DEFAULT);
@@ -169,9 +166,13 @@ public class SettingMainFragment extends Fragment {
             Log.e(TAG, e.toString());
         }
         if (bitmap != null) {
-            imageView.setImageBitmap(bitmap);
+
+            /* 把圖片套上變成圓形的方法 */
+            imageView.setImageBitmap(round(bitmap));
+
         } else {
-            imageView.setImageResource(R.drawable.user_no_image);
+            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.user_no_image);
+            imageView.setImageBitmap(round(bitmap));
         }
 
     }
@@ -196,4 +197,5 @@ public class SettingMainFragment extends Fragment {
             }
         }
     }
+
 }

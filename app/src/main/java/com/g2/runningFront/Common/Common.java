@@ -1,10 +1,16 @@
 package com.g2.runningFront.Common;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+/* 有關大頭貼改成圓形 */
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.RectF;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
@@ -94,5 +100,39 @@ public class Common {
             , TPDCard.CardType.JCB
             , TPDCard.CardType.AmericanExpress
     };
+
+    /**
+     * 把圖片改成同樣大小的圓形圖片（用於大頭貼）
+     * @param bitmap 原始圖片資源
+     */
+    public static Bitmap round(Bitmap bitmap) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int r = 0;
+        //取照片的寬跟高，並將較短的一邊當做基準邊
+        if (width > height) {
+            r = height;
+        } else {
+            r = width;
+        }
+        //建構一個bitmap
+        Bitmap backgroundBmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        //new一个Canvas，並在backgroundBmp上畫圈
+        Canvas canvas = new Canvas(backgroundBmp);
+        Paint paint = new Paint();
+        //設置邊緣光滑，去掉鋸齒狀
+        paint.setAntiAlias(true);
+        //要抓寬高相等，就是取正方形，再畫成圓形
+        RectF rect = new RectF(0, 0, r, r);
+        //透過制定的rect畫一個圓角矩形，當圓角X軸方向的半徑等於Y軸方向的半徑，
+        //且都等于r/2时，畫出來的圓角矩形就是圓形
+        canvas.drawRoundRect(rect, r / 2, r / 2, paint);
+        //設置當兩個圖形相交時的模式，SRC_IN為取SRC圖形相交的部分，多餘的將被去掉
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        //canvas將bitmap畫在backgroundBmp上
+        canvas.drawBitmap(bitmap, null, rect, paint);
+        //回傳製作完成的backgroundBmp
+        return backgroundBmp;
+    }
 
 }
