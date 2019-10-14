@@ -50,7 +50,7 @@ public class SignInActivity extends AppCompatActivity {
         super.onStart();
 
         /* 查詢偏好設定檢查登入狀態，『已登入』則自動退出 登入Activity */
-        SharedPreferences pref = getSharedPreferences("preference", MODE_PRIVATE);
+        SharedPreferences pref = getSharedPreferences(Common.PREF, MODE_PRIVATE);
 
         boolean isSignIn = pref.getBoolean("isSignIn", false);
         if (isSignIn) {
@@ -61,6 +61,10 @@ public class SignInActivity extends AppCompatActivity {
 
         } else {
             pref.edit().putBoolean("isSignIn", false)
+
+                    /* 清除偏好設定 */
+                    //.clear()
+
                     .apply();
             Log.d(TAG, "onStart 檢查未登入");
         }

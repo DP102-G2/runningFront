@@ -100,12 +100,8 @@ public class SettingMainFragment extends Fragment {
 
                 Navigation.findNavController(textView).
                         navigate(R.id.action_settingMainFragment_to_settingUpadteFragment, bundle);
-
-                /*Navigation.findNavController(imageView)
-                        .navigate(R.id.action_settingMainFragment_to_settingUpadteFragment);*/
-                /*Navigation.findNavController(imageView)
-                        .navigate(R.id.action_settingMainFragment_to_settingUpadteFragment, bundle);*/
             }
+
         });
 
         /* 登出按鈕 */
@@ -114,7 +110,12 @@ public class SettingMainFragment extends Fragment {
             public void onClick(View view) {
                 SharedPreferences pref = activity.getSharedPreferences(Common.PREF,
                         MODE_PRIVATE);
-                pref.edit().putBoolean("isSignIn", false)
+                pref.edit()
+                        .putBoolean("isSignIn", false)
+
+                        /* 清除偏好設定 */
+                        .clear()
+
                         .apply();
 
                 textView.setText("已經登出");

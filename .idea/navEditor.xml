@@ -158,6 +158,11 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_runStart_to_runMain">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                           </map>
                         </option>
                       </LayoutPositions>

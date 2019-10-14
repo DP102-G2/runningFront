@@ -85,9 +85,7 @@ public class SignInMainFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                /* 隱藏 OR 顯示輸入鍵盤 */
-                /*InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);*/
+                /* 隱藏鍵盤方法 */
                 hideKeyboard(activity);
 
                 String id = etId.getText().toString().trim();
