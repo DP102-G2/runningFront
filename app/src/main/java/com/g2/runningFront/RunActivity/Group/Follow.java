@@ -6,15 +6,17 @@ public class Follow implements Serializable {
     private int no;
     private String name;
     private double distance;
+    private boolean isLove;// 是否也被按了愛心
 
     public Follow(){
         super();
     }
 
-    public Follow(int no, String name, double distance) {
+    public Follow(int no, String name, double distance, boolean isLove) {
         this.no = no;
         this.name = name;
         this.distance = distance;
+        this.isLove = isLove;
     }
 
     public int getNo() {
@@ -39,6 +41,14 @@ public class Follow implements Serializable {
 
     public void setDistance(double distance) {
         this.distance = distance;
+    }
+
+    public boolean getIsLove() {
+        return isLove;
+    }
+
+    public void setIsLove(boolean isLove) {
+        this.isLove = isLove;
     }
 
 }

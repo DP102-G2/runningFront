@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.g2.runningFront.R;
@@ -29,10 +28,12 @@ import com.g2.runningFront.RunActivity.Group.Common.ImageTask;
 
 /* 有關使用 Gson 解析資料 */
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import java.lang.reflect.Type;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.Date;
 import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -135,15 +136,16 @@ public class GroupFragment extends Fragment {
         }
 
         class MyViewHolder extends RecyclerView.ViewHolder {
-            ImageView imageView;
+            ImageView gp_ivFriend, gp_ivHeart;
             TextView gp_tvRank ,gp_tvFriend, gp_tvKm;
 
             MyViewHolder(View itemView) {
                 super(itemView);
-                imageView = itemView.findViewById(R.id.gp_ivFriend);
+                gp_ivFriend = itemView.findViewById(R.id.gp_ivFriend);
                 gp_tvRank = itemView.findViewById(R.id.gp_tvRank);
                 gp_tvFriend = itemView.findViewById(R.id.gp_tvFriend);
                 gp_tvKm = itemView.findViewById(R.id.gp_tvKm);
+                gp_ivHeart = itemView.findViewById(R.id.gp_ivHeart);
             }
         }
 
@@ -170,12 +172,20 @@ public class GroupFragment extends Fragment {
 
             /* 索取追蹤會員大頭貼 */
             int no = follow.getNo();
-            FollowImageTask = new ImageTask(url, no, IMAGE_SIZE, myViewHolder.imageView);
+            FollowImageTask = new ImageTask(url, no, IMAGE_SIZE, myViewHolder.gp_ivFriend);
             FollowImageTask.execute();
 
             myViewHolder.gp_tvRank.setText(String.valueOf(position));
             myViewHolder.gp_tvFriend.setText(follow.getName());
             myViewHolder.gp_tvKm.setText((follow.getDistance()) + " 公里");
+
+            /* 根據 follow 裡的 isLove(布林值)來改變愛心圖示 */
+            boolean isLove = follow.getIsLove();
+            if (isLove){
+                myViewHolder.gp_ivHeart.setImageResource(R.drawable.ic_lovered);
+            } else {
+                myViewHolder.gp_ivHeart.setImageResource(R.drawable.ic_loveblack);
+            }
 
             myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -199,6 +209,15 @@ public class GroupFragment extends Fragment {
             jo.addProperty("action", "getAll");
 
             jo.addProperty("user_no", no);
+
+            /* 查詢當前月份，設為跑步期間的條件 */
+            Gson gson = new GsonBuilder()
+                    .setDateFormat("yyMM")// 1910 即：年年月月
+                    .create();
+            /* 將 new Date() 轉為 Json，並且要符合以上的日期表示法
+             * 但是在 Servlet 端會變成字串型態 "1910"，需要再切開字串 */
+            String date = gson.toJson(new Date());
+            jo.addProperty("month", date);
 
             String jsonOut = jo.toString();
             GetFollowsTask = new CommonTask(url, jsonOut);
