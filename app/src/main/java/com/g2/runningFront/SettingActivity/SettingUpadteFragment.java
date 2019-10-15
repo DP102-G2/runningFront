@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 /* 有關 Layout */
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -49,6 +50,7 @@ import java.io.ByteArrayOutputStream;
 
 /* 有關照片壓縮 */
 import android.util.Base64;
+import android.widget.PopupMenu;
 
 import static android.app.Activity.RESULT_OK;
 import static com.g2.runningFront.Common.Common.round;
@@ -171,40 +173,54 @@ public class SettingUpadteFragment extends Fragment {
             }
         }
 
-        /* 拍照按鈕 */
+        /* 按下大頭貼，跳出選擇圖片來源選單 */
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                // 指定存檔路徑
-                File file = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-//                     生成File物件,代表一段路徑
-                file = new File(file, "user_image.jpg");
-//                     這路徑為上層路徑,再帶入要新增的檔案名,作為完整路徑
-                contentUri = FileProvider.getUriForFile(
-                        activity, activity.getPackageName() + ".provider", file);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri);
-//                在 intent 裡增加額外資料
-//                一開始建立 intent 是使用 MediaStore 的照片捕捉
-//                這邊是用 MediaStore 的向外輸出
+                PopupMenu popup = new PopupMenu(activity, view);
+                popup.inflate(R.menu.setting_update_menu);
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        switch (menuItem.getItemId()){
+                            /* 拍攝照片 */
+                            case R.id.take_pic:
+                                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                // 指定存檔路徑
+                                File file = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                                // 生成 File 物件，代表一段路徑
+                                file = new File(file, "user_image.jpg");
+                                /* 這路徑為上層路徑
+                                 * 再帶入要新增的檔案名,作為完整路徑 */
+                                contentUri = FileProvider.getUriForFile(
+                                        activity, activity.getPackageName() + ".provider", file);
+                                intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri);
+                                /* 在 intent 裡增加額外資料
+                                 * 一開始建立 intent 是使用 MediaStore 的照片捕捉
+                                 * 這邊是用 MediaStore 的向外輸出 */
 
-                if (intent.resolveActivity(activity.getPackageManager()) != null) {
-                    startActivityForResult(intent, REQ_TAKE_PIC);
-                } else {
-                    Common.toastShow(activity,"照片儲存失敗");
-                }
-            }
-        });
+                                if (intent.resolveActivity(activity.getPackageManager()) != null) {
+                                    startActivityForResult(intent, REQ_TAKE_PIC);
+                                } else {
+                                    Common.toastShow(activity,"照片儲存失敗");
+                                }
+                                return true;
 
-        /* 挑選照片按鈕 */
-        imageView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK,
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, REQ_PICK_PIC);
-                return false;
+                            /* 從相簿中選擇照片 */
+                            case R.id.pick_pic:
+                                Intent intent_pick = new Intent(Intent.ACTION_PICK,
+                                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                startActivityForResult(intent_pick, REQ_PICK_PIC);
+                                return true;
+
+                            /* 預設 */
+                            default:
+                                return false;
+                        }
+                    }
+                });
+                popup.show();
             }
         });
 
@@ -331,6 +347,10 @@ public class SettingUpadteFragment extends Fragment {
         });
     }
 
+    /* 處理拍照
+     * 選擇相簿照片
+     * 截圖
+     * 等意圖 */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
@@ -408,12 +428,15 @@ public class SettingUpadteFragment extends Fragment {
         }
     }
 
-    /* ==================== 兩種照片的縮小方式 ==================== */
 
+
+
+
+    /* ==================== 兩種縮小照片的方法 ==================== */
     /**
      * 指定比例壓縮圖片
-     * @param image    要壓縮的圖片
-     * @param quality  壓縮的質量比
+     * @param image     要壓縮的圖片
+     * @param quality   壓縮的質量比
      */
     public static Bitmap compressImage(Bitmap image, int quality) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

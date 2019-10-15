@@ -8,16 +8,20 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.g2.runningFront.R;
@@ -47,11 +51,12 @@ public class GroupFragment extends Fragment {
     /* 用於 RecyclerView 查詢、承接資料 */
     private int no;
     private RecyclerView gp_rv;
-    private Gson gson;
     private CommonTask GetFollowsTask;
     private ImageTask FollowImageTask;
 
-    int flag = 1;
+    /* 用於表現會員愛心狀態 */
+    private final int LOVE = 0;
+    private final int NOLOVE = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,9 +73,6 @@ public class GroupFragment extends Fragment {
         } else {
             Log.d(TAG,"檢查未登入，不顯示追蹤名單。");
         }
-
-        /* 使用 Gson 的前置宣告 */
-        gson = new Gson();
 
     }
 
@@ -164,9 +166,8 @@ public class GroupFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int position) {
+        public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, int position) {
 
-            /* ==================== ⬇️正在施工區域⬇️ ==================== */
             final Follow follow = follows.get(position);
             String url = Common.URL_SERVER + "GroupServlet";
 
@@ -179,21 +180,88 @@ public class GroupFragment extends Fragment {
             myViewHolder.gp_tvFriend.setText(follow.getName());
             myViewHolder.gp_tvKm.setText((follow.getDistance()) + " 公里");
 
-            /* 根據 follow 裡的 isLove(布林值)來改變愛心圖示 */
+            /* 根據 follow 裡的 isLove(布林值)
+             * 轉換成常數
+             * 用來決定愛心圖示的顏色 */
             boolean isLove = follow.getIsLove();
-            if (isLove){
-                myViewHolder.gp_ivHeart.setImageResource(R.drawable.ic_lovered);
-            } else {
-                myViewHolder.gp_ivHeart.setImageResource(R.drawable.ic_loveblack);
+            int loveInt = (isLove)? LOVE : NOLOVE;
+
+            switch (loveInt){
+                case LOVE:
+                    myViewHolder.gp_ivHeart.setImageResource(R.drawable.ic_lovered);
+                    break;
+                case NOLOVE:
+                    myViewHolder.gp_ivHeart.setImageResource(R.drawable.ic_loveblack);
+                    break;
             }
+
+            /* 切換愛心狀態，也更改資料庫中會員在愛心列表的資料 */
+            myViewHolder.gp_ivHeart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    /* ==================== ⬇️正在施工區域⬇️ ==================== */
+                    //follow.setIsLove(!follow.getIsLove());
+
+                    boolean isLove_onClick = follow.getIsLove();
+                    int loveInt_onClick = (isLove_onClick)? LOVE : NOLOVE;
+
+                    switch (loveInt_onClick){
+                        case LOVE:
+                            myViewHolder.gp_ivHeart.setImageResource(R.drawable.ic_loveblack);
+                            /* 點按愛心後卡片狀態改變，更新適配器 */
+                            FollowAdapter.this.notifyDataSetChanged();
+                            isLove_onClick = false;
+
+                            break;
+                        case NOLOVE:
+                            myViewHolder.gp_ivHeart.setImageResource(R.drawable.ic_lovered);
+                            /* 點按愛心後卡片狀態改變，更新適配器 */
+                            FollowAdapter.this.notifyDataSetChanged();
+                            isLove_onClick = true;
+
+                            break;
+                    }
+
+                }
+            });
 
             myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    /* 從偏好設定存取使用者編號，再放入 bundle 中
+                     * 預設值為整數 0 */
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("follow", follow);
-                    //Navigation.findNavController(view)
-                            //.navigate(R.id.action_GroupFragment_to_FriendFragment, bundle);
+                    bundle.putSerializable("user_no", activity.getSharedPreferences(Common.PREF, MODE_PRIVATE).getInt("user_no",0));
+                    Navigation.findNavController(view)
+                            .navigate(R.id.action_runGroupFragment_to_runDetailFragment, bundle);
+                }
+            });
+
+            /* 長按追蹤卡片，可以停止追蹤（刪除該筆追蹤資料） */
+            myViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+
+                    PopupMenu popup = new PopupMenu(activity, view);
+                    popup.inflate(R.menu.group_follow_menu);
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()){
+
+                                /* ==================== ⬇️正在施工區域⬇️ ==================== */
+
+                                case R.id.deleteFollow:
+                                    return true;
+                                default:
+                                    return false;
+                            }
+                        }
+                    });
+                    popup.show();
+                    return false;
                 }
             });
         }

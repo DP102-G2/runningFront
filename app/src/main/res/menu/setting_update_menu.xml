@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="拍攝照片"
+        android:id="@+id/take_pic"/>
+    <item
+        android:title="從相簿中選擇"
+        android:id="@+id/pick_pic"/>
+
+</menu>

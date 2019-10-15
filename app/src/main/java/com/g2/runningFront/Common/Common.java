@@ -54,7 +54,7 @@ public class Common {
 
     /**
      * 登入（檢查登入情形）
-     * @param activity 目前使用的 Activity
+     * @param activity  目前使用的 Activity
      */
     public static void signIn(Activity activity) {
         boolean isSignIn = false;
