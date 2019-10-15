@@ -12,64 +12,64 @@
 
     <TextView
         android:id="@+id/AcPay_tvTiltle"
+        style="@style/normalText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="34dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="291dp"
         android:text="訂單明細："
-        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/AcPay_tvReceiver"
+        style="@style/normalText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:text="收件人："
-        android:textSize="17sp"
         app:layout_constraintStart_toStartOf="@+id/AcPay_tvTiltle"
         app:layout_constraintTop_toBottomOf="@+id/AcPay_tvTiltle" />
 
     <TextView
         android:id="@+id/AcPay_tvAddress"
+        style="@style/normalText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
         android:text="地址："
-        android:textSize="17sp"
         app:layout_constraintStart_toStartOf="@+id/AcPay_tvReceiver"
         app:layout_constraintTop_toBottomOf="@+id/AcPay_tvReceiver" />
 
     <TextView
         android:id="@+id/AcPay_tvPayment"
+        style="@style/normalText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
         android:text="付款方式："
-        android:textSize="17sp"
         app:layout_constraintStart_toStartOf="@+id/AcPay_tvPhone"
         app:layout_constraintTop_toBottomOf="@+id/AcPay_tvPhone" />
 
     <TextView
         android:id="@+id/AcPay_tvSumTotal"
+        style="@style/normalText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:text="消費總金額："
-        android:textSize="17sp"
         app:layout_constraintStart_toStartOf="@+id/AcPay_tvPayment"
         app:layout_constraintTop_toBottomOf="@+id/AcPay_tvPayment" />
 
     <TextView
         android:id="@+id/AcPay_tvPhone"
+        style="@style/normalText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="17dp"
         android:text="聯絡電話："
-        android:textSize="17sp"
         app:layout_constraintStart_toStartOf="@+id/AcPay_tvAddress"
         app:layout_constraintTop_toBottomOf="@+id/AcPay_tvAddress" />
 
@@ -87,12 +87,12 @@
 
             <Button
                 android:id="@+id/AcPay_btConfirm"
+                style="@style/normalBt"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@drawable/bt_style"
                 android:text="確認結帳"
                 android:textColor="#ffffff"
-                android:textSize="17sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/AcPay_btGPay"

@@ -50,11 +50,11 @@ public class NationalFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         List<Friend> friends = getFriends();
-        recyclerView = view.findViewById(R.id.gp_rv);
+        recyclerView = view.findViewById(R.id.group_rv1);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.setAdapter(new FriendAdapter(activity, friends));
 
-        Button btFrist=view.findViewById(R.id.gp_btAll);
+        Button btFrist=view.findViewById(R.id.gp_btFirst);
 
         btFrist.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,11 +88,11 @@ public class NationalFragment extends Fragment {
 
             public MyViewHolder(View itemView) {                                                     //botton 追蹤or未追蹤
                 super(itemView);
-                imageView = itemView.findViewById(R.id.gp_ivFriend);
-                tvName = itemView.findViewById(R.id.gp_tvFriend);
-                tvPhone = itemView.findViewById(R.id.gp_tvKm);
+                imageView = itemView.findViewById(R.id.groupIt_ivImage);
+                tvName = itemView.findViewById(R.id.groupIt_tvName);
+                tvPhone = itemView.findViewById(R.id.groupIt_tvPhone);
                 btyes = itemView.findViewById(R.id.btyes);
-                ic_lovered= itemView.findViewById(R.id.gp_ivHeart);
+                ic_lovered= itemView.findViewById(R.id.ic_lovered);
 
 
                 ic_lovered.setOnClickListener(new View.OnClickListener() {
@@ -139,8 +139,8 @@ public class NationalFragment extends Fragment {
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("friend", friend);
-                    //Navigation.findNavController(v)
-                            //.navigate(R.id.action_nationalFragment_to_friendFragment, bundle);
+//                    Navigation.findNavController(v)
+//                            .navigate(R.id.action_nationalFragment_to_friendFragment, bundle);
                 }
             });
         }

@@ -6,19 +6,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    tools:context=".RunActivity.runInquire.RunInquireFragment">
+    tools:context=".RunActivity.Run.runInquire.RunInquireFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/inquire_pieChart"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.475"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inquire_etInputTime" />
+
     <TextView
         android:id="@+id/textView3"
+        style="@style/normalText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:inputType="date"
         android:text="請選擇查詢起始時間："
-        android:textSize="17sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,14 +49,14 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/inquire_rv"
-        android:layout_width="415dp"
+        android:layout_width="407dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inquire_etInputTime" />
+        app:layout_constraintTop_toBottomOf="@+id/inquire_pieChart" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

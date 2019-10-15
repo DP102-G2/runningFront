@@ -20,12 +20,7 @@ import android.widget.RadioGroup;
 
 import com.g2.runningFront.Common.Common;
 import com.g2.runningFront.R;
-import com.g2.runningFront.RunActivity.Bmi;
 import com.google.gson.Gson;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 
 import static android.content.Context.MODE_PRIVATE;
 

@@ -3,6 +3,7 @@ package com.g2.runningFront.RunActivity.Run;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,11 +18,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.g2.runningFront.Common.Common;
 import com.g2.runningFront.Common.CommonTask;
 import com.g2.runningFront.Common.TimestampTypeAdapter;
 import com.g2.runningFront.R;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -29,7 +39,11 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -39,7 +53,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class RunMainFragment extends Fragment {
     private Activity activity;
     private Button btStartRun;
-    TextView tvTime, tvDistance, tvCalorie, tvBMI;
+    TextView tvTime, tvCalorie, tvBMI;
     ImageView ivEditBMI;
     View view;
 
@@ -47,7 +61,7 @@ public class RunMainFragment extends Fragment {
 
     List<Run> runList = new ArrayList<>();
     String formatTime;
-    int wDistance = 0, wTime = 0, wCalorie = 0;
+    double wDistance = 0, wTime = 0, wCalorie = 0;
 
     CommonTask runTask;
     CommonTask uDataTask;
@@ -55,6 +69,11 @@ public class RunMainFragment extends Fragment {
 
     SharedPreferences pref;
     private final static String PREFERENCES_NAME = "UserBasic";
+
+    PieChart pieChart;
+    List<PieEntry> pieEntries = new ArrayList<>();
+
+    DecimalFormat format = new DecimalFormat(("0.00"));
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -102,12 +121,10 @@ public class RunMainFragment extends Fragment {
 
         tvTime = view.findViewById(R.id.rm_tvTime);
         tvCalorie = view.findViewById(R.id.rm_tvCalorie);
-        tvDistance = view.findViewById(R.id.rm_tvDistance);
         tvBMI = view.findViewById(R.id.rm_tvBMI);
 
         tvTime.setText(formatTime);
-        tvDistance.setText(String.valueOf(wDistance / 1000) + " km ");
-        tvCalorie.setText(String.valueOf(wCalorie) + " 卡 ");
+        tvCalorie.setText(format.format(wCalorie) + " 卡 ");
         tvBMI.setText(userBasic.getBMISuggest());
 
         ivEditBMI = view.findViewById(R.id.rm_ivEditBMI);
@@ -117,6 +134,57 @@ public class RunMainFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.action_runMain_to_runInput);
             }
         });
+
+        pieChart = view.findViewById(R.id.rm_pieChart);
+
+
+        String sDistance = format.format(wDistance / 1000);
+        pieChart.setRotationEnabled(true);
+        pieChart.setCenterText("跑步距離 \n" + sDistance + " km ");
+        pieChart.setCenterTextSize(25);
+
+        PieDataSet pieDataSet = new PieDataSet(pieEntries, "Run WeekData");
+        pieDataSet.setValueTextSize(0);
+        pieDataSet.setSliceSpace(2);
+
+        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        PieData pieData = new PieData(pieDataSet);
+        pieChart.setData(pieData);
+        pieChart.invalidate();
+
+        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry entry, Highlight highlight) {
+                PieEntry pieEntry = (PieEntry) entry;
+                String text = pieEntry.getLabel() + "\n" + format.format(pieEntry.getValue()) + " m";
+                Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
+    }
+
+    private void getWeekData() {
+
+        wCalorie = 0;
+        wDistance = 0;
+        wTime = 0;
+
+        for (Run run : runList) {
+            wCalorie += run.getCalorie();
+            wDistance += run.getDistance();
+            wTime += run.getTime();
+            float iDistance = (float) run.getDistance();
+            pieEntries.add(new PieEntry(iDistance, Common.getWeekDay(run.getRun_date())));
+        }
+        int seconds = ((int) wTime) % 60;
+        int minutes = (((int) wTime) / 60) % 60;
+        int hours = ((int) wTime) / 3600;
+
+        formatTime = hours + " 小時 , " + minutes + " 分鐘  "+ seconds+ " 秒  ";
     }
 
     private List<Run> getRun() {
@@ -126,7 +194,6 @@ public class RunMainFragment extends Fragment {
         gsonBuilder.setDateFormat("yyyyMMddhhmmss");
         gsonBuilder.registerTypeAdapter(Timestamp.class, new TimestampTypeAdapter());
         Gson gson = gsonBuilder.create();
-
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", "getWeekRunList");
@@ -145,27 +212,7 @@ public class RunMainFragment extends Fragment {
             e.printStackTrace();
         }
 
-
         return runs;
-    }
-
-    private void getWeekData() {
-
-        wCalorie = 0;
-        wDistance = 0;
-        wTime = 0;
-
-        for (Run run : runList) {
-            wCalorie += run.getCalorie();
-            wDistance += run.getDistance();
-            wTime += run.getTime();
-
-        }
-        int minutes = ((wTime) / 60) % 60;
-        int hours = (wTime) / 3600;
-
-        formatTime = hours + " 小時 , " + minutes + " 分鐘  ";
-
     }
 
     private void getUserBasic() {

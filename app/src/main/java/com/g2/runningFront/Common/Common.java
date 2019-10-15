@@ -17,6 +17,9 @@ import android.widget.Toast;
 
 import com.g2.runningFront.SignInActivity.SignInActivity;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
+
 import tech.cherri.tpdirect.api.TPDCard;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -133,6 +136,43 @@ public class Common {
         canvas.drawBitmap(bitmap, null, rect, paint);
         //回傳製作完成的backgroundBmp
         return backgroundBmp;
+    }
+
+    public static String getWeekDay(Timestamp timestamp){
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(timestamp);
+        cal.add(Calendar.DAY_OF_MONTH, -1);
+
+        cal.setFirstDayOfWeek(Calendar.MONDAY);
+        int day = cal.get(Calendar.DAY_OF_WEEK);
+        String dayStr = null;
+
+        switch (day){
+            case 1:
+                dayStr = "星期一";
+                break;
+            case 2:
+                dayStr = "星期二";
+                break;
+            case 3:
+                dayStr = "星期三";
+                break;
+            case 4:
+                dayStr = "星期四";
+                break;
+            case 5:
+                dayStr = "星期五";
+                break;
+            case 6:
+                dayStr = "星期六";
+                break;
+            case 7:
+                dayStr = "星期日";
+                break;
+        }
+
+        return dayStr;
     }
 
 }

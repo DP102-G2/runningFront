@@ -5,11 +5,8 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,18 +14,14 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.Navigation;
 
-import android.os.Environment;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.g2.runningFront.Common.Common;
 import com.g2.runningFront.Common.CommonTask;
@@ -41,11 +34,8 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.LocationSource;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
@@ -55,8 +45,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -131,7 +119,7 @@ public class RunStartFragment extends Fragment {
             if (ActivityCompat.checkSelfPermission(activity,
                     Manifest.permission.ACCESS_FINE_LOCATION) ==
                     PackageManager.PERMISSION_GRANTED) {
-                /* 加上監聽器        .getLastLocation().addOnSuccessListener() */
+                /* 加上監聽器 */
                 fusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
@@ -246,6 +234,7 @@ public class RunStartFragment extends Fragment {
         tvSpeed.setText("0.0");
 
         btStart = view.findViewById(R.id.runstart_btStart);
+        btStart.setVisibility(View.VISIBLE);
         btStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -253,8 +242,8 @@ public class RunStartFragment extends Fragment {
             }
         });
 
-
-        btComplete = view.findViewById(R.id.runstart_Complete);
+        btComplete = view.findViewById(R.id.runstart_btComplete);
+        btComplete.setVisibility(View.GONE);
         btComplete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -306,8 +295,8 @@ public class RunStartFragment extends Fragment {
             Location.distanceBetween(latLng1.longitude, latLng1.latitude, latLng2.longitude, latLng2.latitude, distanceResult);
             distance += (distanceResult[0]);
 
-            DecimalFormat format = new DecimalFormat(("0.0"));
-            String sDistance = format.format(distance / 1000);
+            DecimalFormat format = new DecimalFormat(("0.000"));
+            String sDistance = format.format(distance/1000);
 
             tvDistance.setText(sDistance);
 
@@ -343,6 +332,9 @@ public class RunStartFragment extends Fragment {
                 .newCameraPosition(cameraPosition);
         map.animateCamera(cameraUpdate);
 
+        /**
+        * 將zoom餵多點讓他適應大小*/
+
     }
 
     private void drawMap(LatLng latLng) {
@@ -377,47 +369,54 @@ public class RunStartFragment extends Fragment {
         }, 0, 1000);
 
         runStates = true;
+        btComplete.setVisibility(View.VISIBLE);
+        btStart.setVisibility(View.GONE);
     }
 
     private void runComplete() {
         timer.cancel();
         timer = null;
+
+        if(time<5){
+            Common.toastShow(activity,"跑步時間過短，無存取資料");
+        }else {
 //
-        runStates = false;
-        run = new Run(1, time,
-                Double.valueOf(tvDistance.getText().toString()),
-                Double.valueOf(tvCalories.getText().toString()),
-                Double.valueOf(tvSpeed.getText().toString()));
+            runStates = false;
+            run = new Run(1, time,
+                    Double.valueOf(tvDistance.getText().toString())*1000,
+                    Double.valueOf(tvCalories.getText().toString()),
+                    Double.valueOf(tvSpeed.getText().toString()));
 
-        if (routeBitmap != null) {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            routeBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-            route = out.toByteArray();
-            Common.toastShow(activity, route.toString());
-        }
-
-        if (Common.networkConnected(activity)) {
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("action", "InsertRun");
-            jsonObject.addProperty("Run", new Gson().toJson(run));
-
-            if (route != null) {
-                jsonObject.addProperty("imageBase64", Base64.encodeToString(route, Base64.DEFAULT));
+            if (routeBitmap != null) {
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                routeBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                route = out.toByteArray();
+                Common.toastShow(activity, route.toString());
             }
 
-            try {
-                commonTask = new CommonTask(url, jsonObject.toString());
-                String result = commonTask.execute().get();
+            if (Common.networkConnected(activity)) {
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("action", "InsertRun");
+                jsonObject.addProperty("Run", new Gson().toJson(run));
 
-                if(result.equals("1"))
-                Common.toastShow(activity, "新增成功");
-                Navigation.findNavController(view).navigate(R.id.action_runStart_to_runMain);
-            } catch (Exception e) {
-                e.printStackTrace();
+                if (route != null) {
+                    jsonObject.addProperty("imageBase64", Base64.encodeToString(route, Base64.DEFAULT));
+                }
+
+                try {
+                    commonTask = new CommonTask(url, jsonObject.toString());
+                    String result = commonTask.execute().get();
+
+                    if (result.equals("1"))
+                        Common.toastShow(activity, "新增成功");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
 
         }
-
+        Navigation.findNavController(view).navigate(R.id.action_runStart_to_runMain);
 
     }
 }

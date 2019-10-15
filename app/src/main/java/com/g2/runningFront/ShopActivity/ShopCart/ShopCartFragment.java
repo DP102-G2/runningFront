@@ -33,6 +33,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.g2.runningFront.Common.Common;
@@ -51,7 +52,7 @@ import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 
 
-public class ShopCartFragment extends Fragment {
+public class ShopCartFragment extends Fragment  {
     Activity activity;
 
     private static final String url = Common.URL_SERVER + "ShopCartServlet";
@@ -152,6 +153,7 @@ public class ShopCartFragment extends Fragment {
         });
 
     }
+
 
     private class CartViewAdapter extends RecyclerView.Adapter<CartViewAdapter.myViewHolder> {
         private LayoutInflater layoutInflater;
@@ -393,6 +395,15 @@ public class ShopCartFragment extends Fragment {
         super.onPause();
 
         if (!Confirl&&shopCartList!=null) {
+
+
+            PopupMenu popupMenu= new PopupMenu(activity,view);
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    return false;
+                }
+            });
 
             new AlertDialog.Builder(activity)
                     /* 設定標題 */

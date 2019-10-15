@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/runInquireFragment"
-        android:name="com.g2.runningFront.RunActivity.runInquire.RunInquireFragment"
+        android:name="com.g2.runningFront.RunActivity.Run.runInquire.RunInquireFragment"
         android:label="fragment_run_inquire"
         tools:layout="@layout/fragment_run_inquire" >
         <action
@@ -69,7 +69,7 @@
     </fragment>
     <fragment
         android:id="@+id/runDetailFragment"
-        android:name="com.g2.runningFront.RunActivity.runInquire.RunDetailFragment"
+        android:name="com.g2.runningFront.RunActivity.Run.runInquire.RunDetailFragment"
         android:label="fragment_run_detail"
         tools:layout="@layout/fragment_run_detail" >
         <action
