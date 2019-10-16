@@ -36,6 +36,17 @@
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/bt_addFollow"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@drawable/bt_follow_add"
+        app:layout_constraintBottom_toBottomOf="@+id/gp_sv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/gp_sv"
+        app:layout_constraintTop_toTopOf="@+id/gp_sv" />
+
     <SearchView
         android:id="@+id/gp_sv"
         android:layout_width="0dp"
@@ -55,10 +66,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gp_sv"
 
-        android:scrollbars="vertical" />
+        app:layout_constraintTop_toBottomOf="@+id/gp_sv" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,13 +8,13 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.view.menu.MenuView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.g2.runningFront.R;
@@ -37,20 +38,26 @@ import com.google.gson.JsonObject;
 import java.lang.reflect.Type;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
+/* 設定 View 的可見狀態 */
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 
 public class GroupFragment extends Fragment {
     private static String TAG = "TAG_GroupFragment";
     private Activity activity;
-    private Button gp_btFriend, gp_btAll;
+    private Button gp_btFriend, gp_btAll, bt_addFollow;
+    private SearchView gp_sv;
 
     /* 用於 RecyclerView 查詢、承接資料 */
     private int no;
     private RecyclerView gp_rv;
+    private List<Follow> follows;
     private CommonTask GetFollowsTask;
     private ImageTask FollowImageTask;
 
@@ -87,10 +94,38 @@ public class GroupFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        /* 使用 SearchView */
+        gp_sv = view.findViewById(R.id.gp_sv);
+        gp_sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                // 如果搜尋條件為空字串，就顯示原始資料；否則就顯示搜尋後結果
+                if (newText.isEmpty()) {
+                    showFollowList(follows);
+                } else {
+                    List<Follow> searchFollows = new ArrayList<>();
+                    // 搜尋原始資料內有無包含關鍵字(不區別大小寫)
+                    for (Follow follow : follows) {
+                        if (follow.getName().toUpperCase().contains(newText.toUpperCase())) {
+                            searchFollows.add(follow);
+                        }
+                    }
+                    showFollowList(searchFollows);
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+        });
+
         /* 使用 RecyclerView */
         gp_rv = view.findViewById(R.id.gp_rv);
         gp_rv.setLayoutManager(new LinearLayoutManager(activity));
-        List<Follow> follows = getFollows();
+        follows = getFollows();
         showFollowList(follows);
 
         gp_btFriend = view.findViewById(R.id.gp_btFriend);
@@ -99,10 +134,23 @@ public class GroupFragment extends Fragment {
         gp_btFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /* 列出好友排行 */
+                gp_rv.setVisibility(VISIBLE);
+
+                showFollowList(follows);
             }
         });
 
+        gp_btAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gp_rv.setVisibility(GONE);
+
+                // 顯示 App 全體排行榜
+            }
+        });
+
+        /* ⚠️新增追蹤會員按鈕⚠️ */
+        //bt_addFollow.findViewById(R.id.bt_addFollow);
     }
 
     private void showFollowList(List<Follow> follows) {
@@ -127,10 +175,6 @@ public class GroupFragment extends Fragment {
         FollowAdapter(Context context, List<Follow> follows) {
             layoutInflater = LayoutInflater.from(context);
             this.follows = follows;
-
-            /* 螢幕寬度除以4當作將圖的尺寸 */
-            //imageSize = getResources().getDisplayMetrics().widthPixels / 4;
-
         }
 
         void setFollows(List<Follow> follows) {
@@ -159,14 +203,12 @@ public class GroupFragment extends Fragment {
         @NonNull
         @Override
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
             View itemView = layoutInflater.inflate(R.layout.itern_view_group2, parent, false);
-
             return new MyViewHolder(itemView);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, int position) {
+        public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, final int position) {
 
             final Follow follow = follows.get(position);
             String url = Common.URL_SERVER + "GroupServlet";
@@ -178,7 +220,8 @@ public class GroupFragment extends Fragment {
 
             myViewHolder.gp_tvRank.setText(String.valueOf(position));
             myViewHolder.gp_tvFriend.setText(follow.getName());
-            myViewHolder.gp_tvKm.setText((follow.getDistance()) + " 公里");
+            String length = follow.getDistance() + " 公里";
+            myViewHolder.gp_tvKm.setText(length);
 
             /* 根據 follow 裡的 isLove(布林值)
              * 轉換成常數
@@ -200,28 +243,18 @@ public class GroupFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
 
-                    /* ==================== ⬇️正在施工區域⬇️ ==================== */
-                    //follow.setIsLove(!follow.getIsLove());
+                    /* 改變愛心圖示，也改變 follow 的 isLove 布林值 */
+                    boolean isLove_new = changeLove(follow, myViewHolder.gp_ivHeart);
 
-                    boolean isLove_onClick = follow.getIsLove();
-                    int loveInt_onClick = (isLove_onClick)? LOVE : NOLOVE;
+                    /* 連線 Servlet 修改愛心列表 */
+                    changeLove(follow.getNo(), isLove_new);
 
-                    switch (loveInt_onClick){
-                        case LOVE:
-                            myViewHolder.gp_ivHeart.setImageResource(R.drawable.ic_loveblack);
-                            /* 點按愛心後卡片狀態改變，更新適配器 */
-                            FollowAdapter.this.notifyDataSetChanged();
-                            isLove_onClick = false;
-
-                            break;
-                        case NOLOVE:
-                            myViewHolder.gp_ivHeart.setImageResource(R.drawable.ic_lovered);
-                            /* 點按愛心後卡片狀態改變，更新適配器 */
-                            FollowAdapter.this.notifyDataSetChanged();
-                            isLove_onClick = true;
-
-                            break;
-                    }
+                    /* 重設適配器內指定的 follow 物件
+                     * 並提醒適配器即時更新
+                     * 最後更新此頁面屬性之一的 follows 物件集合 */
+                    follows.set(position, follow);
+                    FollowAdapter.this.notifyDataSetChanged();
+                    GroupFragment.this.follows.set(position, follow);
 
                 }
             });
@@ -233,35 +266,68 @@ public class GroupFragment extends Fragment {
                     /* 從偏好設定存取使用者編號，再放入 bundle 中
                      * 預設值為整數 0 */
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("user_no", activity.getSharedPreferences(Common.PREF, MODE_PRIVATE).getInt("user_no",0));
+                    bundle.putInt("user_no", activity.getSharedPreferences(Common.PREF, MODE_PRIVATE).getInt("user_no",0));
                     Navigation.findNavController(view)
                             .navigate(R.id.action_runGroupFragment_to_runDetailFragment, bundle);
                 }
             });
 
-            /* 長按追蹤卡片，可以停止追蹤（刪除該筆追蹤資料） */
+            /* 長按追蹤卡片，可以取消追蹤（刪除該筆追蹤資料） */
             myViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
 
-                    PopupMenu popup = new PopupMenu(activity, view);
+                    PopupMenu popup = new PopupMenu(activity, view, Gravity.CENTER);
                     popup.inflate(R.menu.group_follow_menu);
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()){
-
                                 /* ==================== ⬇️正在施工區域⬇️ ==================== */
-
+                                /* 刪除追蹤會員 */
                                 case R.id.deleteFollow:
-                                    return true;
-                                default:
-                                    return false;
+                                    if (Common.networkConnected(activity)) {
+                                        String url = Common.URL_SERVER + "GroupServlet";
+                                        JsonObject jo = new JsonObject();
+                                        jo.addProperty("action", "unfollow");
+                                        jo.addProperty("user_no",
+                                                activity.getSharedPreferences(Common.PREF, MODE_PRIVATE)
+                                                        .getInt("user_no",0));
+                                        jo.addProperty("follow_no", follow.getNo());
+
+                                        int count = 0;
+
+                                        try {
+                                            CommonTask deleteTask = new CommonTask(url, jo.toString());
+                                            String result = deleteTask.execute().get();
+                                            count = Integer.valueOf(result);
+                                        } catch (Exception e) {
+                                            Log.e(TAG, e.toString());
+                                        }
+                                        if (count == 0) {
+                                            Common.toastShow(activity,"取消追蹤失敗");
+                                        } else {
+
+                                            /* 移除適配器內指定的 follow 物件
+                                             * 並提醒適配器即時更新
+                                             * 最後更新此頁面屬性之一的 follows 物件集合 */
+                                            follows.remove(follow);
+                                            FollowAdapter.this.notifyDataSetChanged();
+                                            GroupFragment.this.follows.remove(follow);
+                                            Common.toastShow(activity,"已取消追蹤");
+
+                                        }
+                                    } else {
+                                        Common.toastShow(activity,"取消追蹤失敗");
+                                    }
                             }
+                            return true;
                         }
+
                     });
                     popup.show();
-                    return false;
+                    return true;
                 }
             });
         }
@@ -306,6 +372,51 @@ public class GroupFragment extends Fragment {
         return followList;
     }
 
+    /* 改變愛心圖示，也改變 follow 的 isLove 布林值 */
+    private boolean changeLove(Follow follow, ImageView imageView) {
+
+        follow.setIsLove(!follow.getIsLove());
+
+        int loveInt = (follow.getIsLove())? LOVE : NOLOVE;
+        switch (loveInt){
+            case LOVE:
+                imageView.setImageResource(R.drawable.ic_lovered);
+                break;
+            case NOLOVE:
+                imageView.setImageResource(R.drawable.ic_loveblack);
+                break;
+        }
+        return follow.getIsLove();
+    }
+
+    /* 改變使用者的愛心列表 */
+    private void changeLove(int follow_no ,boolean isLove){
+        if (Common.networkConnected(activity)) {
+
+            String url = Common.URL_SERVER + "GroupServlet";
+
+            JsonObject jo = new JsonObject();
+            jo.addProperty("action", "changeLove");
+            jo.addProperty("user_no", no);
+            jo.addProperty("follow_no", follow_no);
+            jo.addProperty("isLove", isLove);
+
+            String outStr = jo.toString();
+            CommonTask updateTask = new CommonTask(url, outStr);
+
+            try {
+                /* 執行就好，不計結果 */
+                updateTask.execute();
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+
+        }else {
+            Common.toastShow(activity, "暫時無法更改狀態");
+        }
+
+    }
+
     @Override
     public void onStop() {
         super.onStop();
@@ -320,10 +431,3 @@ public class GroupFragment extends Fragment {
     }
 
 }
-
-
-
-
-
-
-

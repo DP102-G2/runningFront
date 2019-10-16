@@ -103,11 +103,11 @@ public class SettingUpadteFragment extends Fragment {
         /* 列印出該會員資料 */
         final Bundle bundle = getArguments();
 
-        if (bundle == null || bundle.getSerializable("user_no") == null) {
-            Log.e(TAG, "讀入的 user_no 為空值");
+        if (bundle == null || bundle.getInt("user_no") == 0) {
+            Log.e(TAG, "讀入的 user_no 不被許可");
             return;// 沒通過 bundle 檢驗,就跳出
         } else {
-            int no = (int) bundle.getSerializable("user_no");
+            int no = bundle.getInt("user_no");
             Log.d(TAG, "讀入的 user_no：" + no);
 
             if (Common.networkConnected(activity)) {

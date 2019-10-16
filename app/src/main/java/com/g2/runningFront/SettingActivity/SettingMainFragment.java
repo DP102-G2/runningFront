@@ -95,7 +95,7 @@ public class SettingMainFragment extends Fragment {
 
                 int no = activity.getSharedPreferences(Common.PREF,MODE_PRIVATE).getInt("user_no",0);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("user_no", no);
+                bundle.putInt("user_no", no);
 
                 Navigation.findNavController(textView).
                         navigate(R.id.action_settingMainFragment_to_settingUpadteFragment, bundle);
