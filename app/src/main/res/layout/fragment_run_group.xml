@@ -17,22 +17,23 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="34dp">
 
-        <!--點擊「First」按鈕會切換到第1個會員-->
-        <Button
-            android:id="@+id/gp_btAll"
-            style="?android:buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/btFirst" />
-
-        <!--點擊「Last」按鈕會切換到最後一個會員-->
         <Button
             android:id="@+id/gp_btFriend"
             style="?android:buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/btLast" />
+            android:text="@string/btLast"
+            android:textColor="@color/colorMain"
+            android:textSize="17sp" />
 
+        <Button
+            android:id="@+id/gp_btAll"
+            style="?android:buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btFirst"
+            android:textColor="@android:color/black"
+            android:textSize="17sp" />
 
     </LinearLayout>
 
@@ -42,8 +43,6 @@
         android:layout_height="24dp"
         android:background="@drawable/bt_follow_add"
         app:layout_constraintBottom_toBottomOf="@+id/gp_sv"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/gp_sv"
         app:layout_constraintTop_toTopOf="@+id/gp_sv" />
 

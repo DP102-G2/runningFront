@@ -4,6 +4,7 @@ package com.g2.runningFront.RunActivity.Group;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;// 取得偏好設定
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -134,6 +135,8 @@ public class GroupFragment extends Fragment {
         gp_btFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                gp_btFriend.setTextColor(Color.parseColor("#36C2CF"));
+                gp_btAll.setTextColor(Color.parseColor("#000000"));
                 gp_rv.setVisibility(VISIBLE);
 
                 showFollowList(follows);
@@ -143,6 +146,9 @@ public class GroupFragment extends Fragment {
         gp_btAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                gp_btAll.setTextColor(Color.parseColor("#36C2CF"));
+                gp_btFriend.setTextColor(Color.parseColor("#000000"));
+
                 gp_rv.setVisibility(GONE);
 
                 // 顯示 App 全體排行榜
@@ -218,7 +224,7 @@ public class GroupFragment extends Fragment {
             FollowImageTask = new ImageTask(url, no, IMAGE_SIZE, myViewHolder.gp_ivFriend);
             FollowImageTask.execute();
 
-            myViewHolder.gp_tvRank.setText(String.valueOf(position));
+            myViewHolder.gp_tvRank.setText(String.valueOf(position+1));
             myViewHolder.gp_tvFriend.setText(follow.getName());
             String length = follow.getDistance() + " 公里";
             myViewHolder.gp_tvKm.setText(length);

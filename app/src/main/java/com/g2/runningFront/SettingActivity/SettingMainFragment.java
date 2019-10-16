@@ -1,9 +1,13 @@
 package com.g2.runningFront.SettingActivity;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 
 /* 有關圖片處理 */
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Base64;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -12,7 +16,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import android.util.Base64;
+/* 使用 Gson */
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import android.util.Log;
 import android.view.LayoutInflater;
 
@@ -35,11 +41,14 @@ import static com.g2.runningFront.Common.Common.round;
 
 import android.content.Intent;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.g2.runningFront.SignInActivity.SignInActivity;
 import com.google.gson.JsonObject;
+
+import java.util.regex.Pattern;
 
 
 public class SettingMainFragment extends Fragment {
@@ -48,6 +57,9 @@ public class SettingMainFragment extends Fragment {
     private ImageView imageView;
     private TextView textView;
     private Button button;
+    private EditText et;
+
+    private Gson gson;
 
     /* 請求登入的代碼 */
     private static final int REQ_SIGNIN = 50;
@@ -56,6 +68,10 @@ public class SettingMainFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = getActivity();
+
+        /* 為了在此使用 Gson */
+        gson = new Gson();
+
     }
 
     @Nullable
@@ -72,7 +88,54 @@ public class SettingMainFragment extends Fragment {
         imageView = view.findViewById(R.id.imageView);
         textView = view.findViewById(R.id.textView);
 
-        /* （暫時性）前往登入 Activity 的臨時按鈕 */
+        /* 檢查會員註冊的帳號名稱是否有重複 */
+        et = view.findViewById(R.id.et);
+        et.addTextChangedListener(new TextWatcher() {
+
+            @Override   //這三個方法一定要 Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String new_id = et.getText().toString().trim();
+
+                JsonObject jo = new JsonObject();
+                jo.addProperty("action","checkId");
+                jo.addProperty("new_id", new_id);
+
+                String url = Common.URL_SERVER + "SettingServlet";
+                CommonTask checkIdTask = new CommonTask(url, jo.toString());
+
+                boolean isIdValid = false;
+                try {
+
+                    String strIn = checkIdTask.execute().get();
+                    Log.e(TAG,"" + strIn);
+                    isIdValid = gson.fromJson(strIn, Boolean.class);
+
+                } catch (Exception e) {
+                    Log.e(TAG, e.toString());
+                }
+                if (isIdValid) {
+                    // Id OK
+                    et.setTextColor(Color.BLACK);
+                } else {
+                    // Id 不OK
+                    et.setTextColor(Color.RED);
+                }
+
+            }
+
+            @Override   //這三個方法一定要 Override
+            public void afterTextChanged(Editable editable) {
+                return;
+            }
+
+            @Override   //這三個方法一定要 Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                return;
+            }
+
+        });
+
+        /* ❗️（暫時性）前往登入 Activity 的臨時按鈕❗️ */
         button = view.findViewById(R.id.set_btLogin);
         button.setOnClickListener(new View.OnClickListener() {
             @Override

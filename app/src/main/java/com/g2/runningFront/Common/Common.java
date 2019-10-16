@@ -28,6 +28,8 @@ import static android.content.Context.MODE_PRIVATE;
 public class Common {
 
     public static String URL_SERVER = "http://10.0.2.2:8080/RunningWeb/";
+    // 底下為安裝至手機時改用的位址（必須在連線同一個區域網路）
+    // public static String URL_SERVER = "http://192.168.196.207/RunningWeb/";
 
     /**
      * 確認連網
@@ -62,7 +64,7 @@ public class Common {
     public static void signIn(Activity activity) {
         boolean isSignIn = false;
         /* 取得當前偏好設定                  .getSharedPreferences */
-        SharedPreferences pref  = activity.getSharedPreferences(Common.PREF, MODE_PRIVATE);
+        SharedPreferences pref  = activity.getSharedPreferences(PREF, MODE_PRIVATE);
         try {
             isSignIn = pref.getBoolean("isSignIn", false);
         } catch (ClassCastException c) {
@@ -83,7 +85,7 @@ public class Common {
 
     public static void signIn(Activity activity, int requestCode) {
         boolean isSignIn = false;
-        SharedPreferences pref  = activity.getSharedPreferences(Common.PREF, MODE_PRIVATE);
+        SharedPreferences pref  = activity.getSharedPreferences(PREF, MODE_PRIVATE);
         try {
             isSignIn = pref.getBoolean("isSignIn", false);
         } catch (ClassCastException c) {
@@ -95,6 +97,21 @@ public class Common {
                 return;
             }
         }
+    }
+
+    /**
+     * 查詢登入中的使用者編號
+     * @param activity  目前使用的 Activity
+     * @return int      返回使用者編號，預設回傳 0
+     */
+    public static int getUserNo(Activity activity) {
+        int no = 0;
+        try {
+            no = activity.getSharedPreferences(PREF, MODE_PRIVATE).getInt("user_no", 0);
+        } catch (ClassCastException c) {
+            c.printStackTrace();
+        }
+        return no;
     }
 
     public static final TPDCard.CardType[] CARD_TYPES = new TPDCard.CardType[]{
