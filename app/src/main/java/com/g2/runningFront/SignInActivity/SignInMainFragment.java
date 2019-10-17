@@ -79,7 +79,7 @@ public class SignInMainFragment extends Fragment {
 
         etId = view.findViewById(R.id.etId);
         etPassword = view.findViewById(R.id.etPassword);
-        textView = view.findViewById(R.id.textView);
+        textView = view.findViewById(R.id.textView2);
 
         view.findViewById(R.id.btSignIn).setOnClickListener(new View.OnClickListener() {
             @Override
