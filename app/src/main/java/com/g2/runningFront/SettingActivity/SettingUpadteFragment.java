@@ -16,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -51,6 +50,8 @@ import java.io.ByteArrayOutputStream;
 /* 有關照片壓縮 */
 import android.util.Base64;
 import android.widget.PopupMenu;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import static android.app.Activity.RESULT_OK;
 import static com.g2.runningFront.Common.Common.round;
@@ -61,7 +62,9 @@ public class SettingUpadteFragment extends Fragment {
     private Activity activity;
     private ImageView imageView;
     private EditText etId, etPW, etName, etEmail;
-    private Button btUpadte;
+
+    private RadioGroup radioGroup;
+    private RadioButton rbPublic, rbPrivate;
 
     private Gson gson;
 
@@ -99,6 +102,8 @@ public class SettingUpadteFragment extends Fragment {
         etPW = view.findViewById(R.id.etPW);
         etName = view.findViewById(R.id.etName);
         etEmail = view.findViewById(R.id.etEmail);
+        /* 隱私單選按鈕群組 */
+        radioGroup = view.findViewById(R.id.radioGroup);
 
         /* 列印出該會員資料 */
         final Bundle bundle = getArguments();
@@ -126,7 +131,6 @@ public class SettingUpadteFragment extends Fragment {
 
                     String strIn = loginTask.execute().get();
                     jo = gson.fromJson(strIn, JsonObject.class);
-                    //user = gson.fromJson(strIn, User.class);
 
                     if(jo == null){
                         Common.toastShow(activity,"找不到會員資料");
@@ -139,6 +143,18 @@ public class SettingUpadteFragment extends Fragment {
                         etPW.setText(jo.get("user_pw").getAsString());
                         etName.setText(jo.get("user_name").getAsString());
                         etEmail.setText(jo.get("user_email").getAsString());
+                        /* 根據資料控制隱私按鈕是目前是勾選哪一項 */
+                        int private_code = jo.get("user_private").getAsInt();
+                        switch(private_code){
+                            case 0:
+                                RadioButton rbPublic = view.findViewById(R.id.rbPublic);
+                                rbPublic.setChecked(true);
+                                break;
+                            case 1:
+                                RadioButton rbPrivate = view.findViewById(R.id.rbPrivate);
+                                rbPrivate.setChecked(true);
+                                break;
+                        }
                     }
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
@@ -233,7 +249,6 @@ public class SettingUpadteFragment extends Fragment {
                 String name = etName.getText().toString().trim();
                 String email = etEmail.getText().toString().trim();
 
-                /* 🔥還沒有做密碼跟信箱驗證🔥️️ */
 
                 if (Common.networkConnected(activity)) {
 
@@ -247,7 +262,19 @@ public class SettingUpadteFragment extends Fragment {
                     jo.addProperty("user_pw", password);
                     jo.addProperty("user_name", name);
                     jo.addProperty("user_email", email);
+                    /* 得知被按下的隱私按鈕是哪一個 */
+                    int private_code = 0;
+                    switch(radioGroup.getCheckedRadioButtonId()){
+                        case R.id.rbPublic:
+                            private_code = 0;
+                            break;
+                        case R.id.rbPrivate:
+                            private_code = 1;
+                            break;
+                    }
+                    jo.addProperty("user_private", private_code);
 
+                    /* 編碼使用者大頭貼成 Base64 文字格式 */
                     if (image != null) {
                         jo.addProperty("user_imageBase64",
                                 Base64.encodeToString(image, Base64.DEFAULT));//圖片轉檔成文字
@@ -261,13 +288,13 @@ public class SettingUpadteFragment extends Fragment {
 
                         String jsonIn = signUpTask.execute().get();
                         isUpdate = gson.fromJson(jsonIn, Boolean.class);
-                        Log.e(TAG, "isUpdate = " + isUpdate);
+                        Log.d(TAG, "isUpdate = " + isUpdate);
 
                     } catch (Exception e) {
                         Log.e(TAG, e.getMessage());
                     }
                     if (isUpdate) {
-                        Log.e(TAG, "會員資料修改成功。");
+                        Log.d(TAG, "會員資料修改成功。");
                         Common.toastShow(activity, "會員資料已更新！");
                         // ("註冊成功");
                     } else{
@@ -291,6 +318,8 @@ public class SettingUpadteFragment extends Fragment {
                 String password = etPW.getText().toString().trim();
                 String name = etName.getText().toString().trim();
                 String email = etEmail.getText().toString().trim();
+
+                /* ⛔️🔥還沒有做密碼跟信箱驗證🔥⛔️️️ */
 
                 if(id.length() <= 0 || password.length() <= 0
                         || name.length() <= 0 || email.length() <= 0){
@@ -345,10 +374,11 @@ public class SettingUpadteFragment extends Fragment {
 
             }
         });
+
     }
 
-    /* 處理拍照
-     * 選擇相簿照片
+    /* 處理拍照、
+     * 選擇相簿照片、
      * 截圖
      * 等意圖 */
     @Override
@@ -428,9 +458,7 @@ public class SettingUpadteFragment extends Fragment {
         }
     }
 
-
-
-
+    /* ==================== ⬇️以下方法並沒有使用到⬇️ ==================== */
 
     /* ==================== 兩種縮小照片的方法 ==================== */
     /**
@@ -465,4 +493,5 @@ public class SettingUpadteFragment extends Fragment {
         bitmap.recycle();
         return resizedBitmap;
     }
+
 }

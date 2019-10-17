@@ -192,4 +192,19 @@ public class Common {
         return dayStr;
     }
 
+    /**
+     * 用正規表達式檢查字串，回傳布林值
+     * @param aString    任意字串
+     * @return boolean
+     */
+    public static boolean matches(String aString){
+        return aString.matches("正規表達式");
+
+        // 長度5-16，由數字、英文字母、_ 組成 --  ^\\w{5,16}$
+        // 長度5以上的密碼 --                  ^[A-Za-z0-9]+.{5,}$
+        // Email --                         ^\w+([-+.]\w+)@\w+([-.]\w+).\w+([-.]\w+)*$
+        // 由數字或英文字母組成 --              ^[A-Za-z0-9]+$
+
+    }
+
 }

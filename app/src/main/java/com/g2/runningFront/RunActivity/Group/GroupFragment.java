@@ -14,6 +14,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -255,12 +256,18 @@ public class GroupFragment extends Fragment {
                     /* 連線 Servlet 修改愛心列表 */
                     changeLove(follow.getNo(), isLove_new);
 
-                    /* 重設適配器內指定的 follow 物件
-                     * 並提醒適配器即時更新
-                     * 最後更新此頁面屬性之一的 follows 物件集合 */
-                    follows.set(position, follow);
-                    FollowAdapter.this.notifyDataSetChanged();
-                    GroupFragment.this.follows.set(position, follow);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            /* 重設適配器內指定的 follow 物件
+                             * 並提醒適配器即時更新
+                             * 最後更新此頁面屬性之一的 follows 物件集合 */
+                            follows.set(position, follow);
+                            FollowAdapter.this.notifyDataSetChanged();
+                            GroupFragment.this.follows.set(position, follow);
+                        }
+                    },3 * 1000);// 延後3秒
 
                 }
             });
@@ -272,7 +279,7 @@ public class GroupFragment extends Fragment {
                     /* 從偏好設定存取使用者編號，再放入 bundle 中
                      * 預設值為整數 0 */
                     Bundle bundle = new Bundle();
-                    bundle.putInt("user_no", activity.getSharedPreferences(Common.PREF, MODE_PRIVATE).getInt("user_no",0));
+                    bundle.putInt("user_no", follow.getNo());
                     Navigation.findNavController(view)
                             .navigate(R.id.action_runGroupFragment_to_runDetailFragment, bundle);
                 }

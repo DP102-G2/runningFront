@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,16 +13,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.g2.runningFront.R;
 import com.g2.runningFront.RunActivity.MainActivity;
 import com.g2.runningFront.ShopActivity.ShopActivity;
-import com.g2.runningFront.SignInActivity.SignInActivity;
+
 
 public class SettingActivity extends AppCompatActivity {
+    private static final String TAG = "TAG_SettingAct";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         setTitle(R.string.setting_name);
-
     }
 
     @Override

@@ -48,6 +48,7 @@ import android.widget.TextView;
 import com.g2.runningFront.SignInActivity.SignInActivity;
 import com.google.gson.JsonObject;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
@@ -113,7 +114,7 @@ public class SettingMainFragment extends Fragment {
                 } catch (Exception e) {
                     Log.e(TAG, e.toString());
                 }
-                if (isIdValid) {
+                if (isIdValid && new_id.length() <= 16) {
                     // Id OK
                     et.setTextColor(Color.BLACK);
                 } else {
@@ -261,4 +262,18 @@ public class SettingMainFragment extends Fragment {
         }
     }
 
+    /**
+     * 用正規表達式檢查字串，回傳布林值
+     * @param string    任意字串
+     * @return boolean
+     */
+    private boolean matches(String string){
+        return string.matches("");
+
+        // 長度5-16，由數字、英文字母、_ 組成 --  ^\\w{5,16}$
+        // 長度5以上的密碼 --                  ^[A-Za-z0-9]+.{5,}$
+        // Email --                         ^\w+([-+.]\w+)@\w+([-.]\w+).\w+([-.]\w+)*$
+        // 由數字或英文字母組成 --              ^[A-Za-z0-9]+$
+
+    }
 }
