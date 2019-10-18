@@ -3,6 +3,7 @@
 //
 //import android.app.Activity;
 //import android.content.Context;
+//import android.content.SharedPreferences;
 //import android.os.Bundle;
 //
 //import androidx.annotation.NonNull;
@@ -12,17 +13,31 @@
 //import androidx.recyclerview.widget.LinearLayoutManager;
 //import androidx.recyclerview.widget.RecyclerView;
 //
+//import android.util.Log;
 //import android.view.LayoutInflater;
+//import android.view.MenuItem;
 //import android.view.View;
 //import android.view.ViewGroup;
 //import android.widget.Button;
 //import android.widget.ImageView;
+//import android.widget.PopupMenu;
 //import android.widget.TextView;
 //
+//import com.g2.runningFront.Common.Common;
+//import com.g2.runningFront.Common.CommonTask;
 //import com.g2.runningFront.R;
+//import com.g2.runningFront.RunActivity.Group.Common.ImageTask;
+//import com.google.gson.Gson;
+//import com.google.gson.GsonBuilder;
+//import com.google.gson.JsonObject;
+//import com.google.gson.reflect.TypeToken;
 //
+//import java.lang.reflect.Type;
 //import java.util.ArrayList;
+//import java.util.Date;
 //import java.util.List;
+//
+//import static android.content.Context.MODE_PRIVATE;
 //
 //
 //public class NationalFragment extends Fragment {
@@ -30,139 +45,281 @@
 //
 //    private Activity activity;
 //    private RecyclerView recyclerView;
-//    int flag = 1;
+//    private static String TAG = "TAG_GroupFragment";
+//    private Button gp_btFriend, gp_btAll;
+//
+//    /* 用於 RecyclerView 查詢、承接資料 */
+//    private int no;
+//    private RecyclerView gp_rv;
+//    private CommonTask GetFollowsTask;
+//    private ImageTask FollowImageTask;
 //
 //
 //    @Override
 //    public void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
 //        activity = getActivity();
+//
+//        /* 從偏好設定讀取登入狀態與否，並得到會員編號（用來查詢該會員的追蹤名單） */
+//        SharedPreferences pref = activity.getSharedPreferences(Common.PREF, MODE_PRIVATE);
+//
+//        boolean isSignIn = pref.getBoolean("isSignIn", false);
+//        if (isSignIn) {
+//            /* 顯示使用者追蹤名單 */
+//            no = pref.getInt("user_no",0);
+//        } else {
+//            Log.d(TAG,"檢查未登入，不顯示追蹤名單。");
+//        }
+//
 //    }
 //
 //    @Override
 //    public View onCreateView(LayoutInflater inflater, ViewGroup container,
 //                             Bundle savedInstanceState) {
-//        // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_national, container, false);
+//        activity.setTitle("社群排行榜");
+//        return inflater.inflate(R.layout.fragment_run_group, container, false);
 //    }
 //
 //    @Override
 //    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 //        super.onViewCreated(view, savedInstanceState);
-//        //List<Friend> friends = getFriends();
-//        //recyclerView = view.findViewById(R.id.group_rv1);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-//        //recyclerView.setAdapter(new FriendAdapter(activity, friends));
 //
-//        //Button btFrist=view.findViewById(R.id.gp_btFirst);
+//        /* 使用 RecyclerView */
+//        gp_rv = view.findViewById(R.id.gp_rv);
+//        gp_rv.setLayoutManager(new LinearLayoutManager(activity));
+//        List<Follow> follows = getFollows();
+//        showFollowList(follows);
 //
-//        //btFrist.setOnClickListener(new View.OnClickListener() {
-//            //@Override
-//            //public void onClick(View v) {
-//                //Navigation.findNavController(v).popBackStack();
+//        gp_btFriend = view.findViewById(R.id.gp_btFriend);
+//        gp_btAll = view.findViewById(R.id.gp_btAll);
+//
+//        gp_btFriend.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                /* 列出好友排行 */
 //            }
-//        //});
+//        });
 //
 //    }
 //
-//    //private class FriendAdapter extends RecyclerView.Adapter {                                      //把RecyclerView.Adapter圈起來按command+1//前2個選Conyext型別,之esc
-//        Context context;
-//        List<Friend> friends;
+//    private void showFollowList(List<Follow> follows) {
+//        if (follows == null || follows.isEmpty()){
+//            return;
+//        }
+//        GroupFragment.FollowAdapter followAdapter = (GroupFragment.FollowAdapter) gp_rv.getAdapter();
+//        // 如果followAdapter不存在就建立新的，否則續用舊有的
+//        if (followAdapter == null) {
+//            gp_rv.setAdapter(new GroupFragment.FollowAdapter(activity, follows));
+//        } else {
+//            followAdapter.setFollows(follows);
+//            followAdapter.notifyDataSetChanged();
+//        }
+//    }
 //
-//        public FriendAdapter(Context context, List<Friend> friends) {
-//            this.context = context;
-//            this.friends = friends;
+//    private class FollowAdapter extends RecyclerView.Adapter<GroupFragment.FollowAdapter.MyViewHolder> {
+//        private LayoutInflater layoutInflater;
+//        private List<Follow> follows;
+//        private final int IMAGE_SIZE = 80;
+//
+//        FollowAdapter(Context context, List<Follow> follows) {
+//            layoutInflater = LayoutInflater.from(context);
+//            this.follows = follows;
+//
+//            /* 螢幕寬度除以4當作將圖的尺寸 */
+//            //imageSize = getResources().getDisplayMetrics().widthPixels / 4;
+//
+//        }
+//
+//        void setFollows(List<Follow> follows) {
+//            this.follows = follows;
+//        }
+//
+//        class MyViewHolder extends RecyclerView.ViewHolder {
+//            ImageView gp_ivFriend, gp_ivHeart;
+//            TextView gp_tvRank ,gp_tvFriend, gp_tvKm;
+//
+//            MyViewHolder(View itemView) {
+//                super(itemView);
+//                gp_ivFriend = itemView.findViewById(R.id.gp_ivFriend);
+//                gp_tvRank = itemView.findViewById(R.id.gp_tvRank);
+//                gp_tvFriend = itemView.findViewById(R.id.gp_tvFriend);
+//                gp_tvKm = itemView.findViewById(R.id.gp_tvKm);
+//                gp_ivHeart = itemView.findViewById(R.id.gp_ivHeart);
+//            }
 //        }
 //
 //        @Override
 //        public int getItemCount() {
-//            return friends.size();
-//        }
-//
-//        private class MyViewHolder extends RecyclerView.ViewHolder {
-//            ImageView imageView,ic_lovered;
-//            TextView tvName, tvPhone;
-//            Button btyes;
-//
-//
-//
-//            public MyViewHolder(View itemView) {                                                     //botton 追蹤or未追蹤
-//                super(itemView);
-//                //imageView = itemView.findViewById(R.id.groupIt_ivImage);
-//                //tvName = itemView.findViewById(R.id.groupIt_tvName);
-//                //tvPhone = itemView.findViewById(R.id.groupIt_tvPhone);
-//                //btyes = itemView.findViewById(R.id.btyes);
-//                //ic_lovered= itemView.findViewById(R.id.ic_lovered);
-//
-//
-//                ic_lovered.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        //switch (flag){
-//                           //case 0:
-//                              ic_lovered.setImageResource(R.drawable.ic_lovered);
-//                                //flag = 1;
-//
-//                               //break;
-//                           //case 1:
-//                               ic_lovered.setImageResource(R.drawable.ic_loveblack);
-//                               //flag = 0;
-//
-//                               //break;
-//                       }
-//                    //}
-//                });
-//
-//            }
+//            return follows.size();
 //        }
 //
 //        @NonNull
 //        @Override
-//        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+//        public GroupFragment.FollowAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 //
+//            View itemView = layoutInflater.inflate(R.layout.itern_view_group2, parent, false);
 //
-//            View itemView = LayoutInflater.from(context)
-//                    .inflate(R.layout.itern_view_group2, parent, false);
-//            return new MyViewHolder(itemView);
+//            return new GroupFragment.FollowAdapter.MyViewHolder(itemView);
 //        }
 //
-//
 //        @Override
-//        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-//            final Friend friend = friends.get(position);
-//            FriendAdapter.MyViewHolder viewHolder = (FriendAdapter.MyViewHolder) holder;
-//            viewHolder.imageView.setImageResource(friend.getImageId());
-//            viewHolder.tvName.setText(friend.getName());
-//            viewHolder.tvPhone.setText(friend.getPhone());
-//            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+//        public void onBindViewHolder(@NonNull final GroupFragment.FollowAdapter.MyViewHolder myViewHolder, int position) {
+//
+//            final Follow follow = follows.get(position);
+//            String url = Common.URL_SERVER + "GroupServlet";
+//
+//            /* 索取追蹤會員大頭貼 */
+//            int no = follow.getNo();
+//            FollowImageTask = new ImageTask(url, no, IMAGE_SIZE, myViewHolder.gp_ivFriend);
+//            FollowImageTask.execute();
+//
+//            myViewHolder.gp_tvRank.setText(String.valueOf(position));
+//            myViewHolder.gp_tvFriend.setText(follow.getName());
+//            myViewHolder.gp_tvKm.setText((follow.getDistance()) + " 公里");
+//
+//            /* 根據 follow 裡的 isLove(布林值)
+//             * 轉換成常數
+//             * 用來決定愛心圖示的顏色 */
+//            boolean isLove = follow.getIsLove();
+//            int loveInt = (isLove)? LOVE : NOLOVE;
+//
+//            switch (loveInt){
+//                case LOVE:
+//                    myViewHolder.gp_ivHeart.setImageResource(R.drawable.ic_lovered);
+//                    break;
+//                case NOLOVE:
+//                    myViewHolder.gp_ivHeart.setImageResource(R.drawable.ic_loveblack);
+//                    break;
+//            }
+//
+//            /* 切換愛心狀態，也更改資料庫中會員在愛心列表的資料 */
+//            myViewHolder.gp_ivHeart.setOnClickListener(new View.OnClickListener() {
 //                @Override
-//                public void onClick(View v) {
+//                public void onClick(View view) {
+//
+//                    /* ==================== ⬇️正在施工區域⬇️ ==================== */
+//                    //follow.setIsLove(!follow.getIsLove());
+//
+//                    boolean isLove_onClick = follow.getIsLove();
+//                    int loveInt_onClick = (isLove_onClick)? LOVE : NOLOVE;
+//
+//                    switch (loveInt_onClick){
+//                        case LOVE:
+//                            myViewHolder.gp_ivHeart.setImageResource(R.drawable.ic_loveblack);
+//                            /* 點按愛心後卡片狀態改變，更新適配器 */
+//                            GroupFragment.FollowAdapter.this.notifyDataSetChanged();
+//                            isLove_onClick = false;
+//
+//                            break;
+//                        case NOLOVE:
+//                            myViewHolder.gp_ivHeart.setImageResource(R.drawable.ic_lovered);
+//                            /* 點按愛心後卡片狀態改變，更新適配器 */
+//                            GroupFragment.FollowAdapter.this.notifyDataSetChanged();
+//                            isLove_onClick = true;
+//
+//                            break;
+//                    }
+//
+//                }
+//            });
+//
+//            myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//
+//                    /* 從偏好設定存取使用者編號，再放入 bundle 中
+//                     * 預設值為整數 0 */
 //                    Bundle bundle = new Bundle();
-//                    bundle.putSerializable("friend", friend);
-////                    Navigation.findNavController(v)
-////                            .navigate(R.id.action_nationalFragment_to_friendFragment, bundle);
+////                    bundle.putSerializable("user_no", activity.getSharedPreferences(Common.PREF, MODE_PRIVATE).getInt("user_no",0));
+//                    bundle.putInt("user_no",follow.getNo());
+//                    Navigation.findNavController(view)
+//                            .navigate(R.id.action_runGroupFragment_to_FriendFragment2, bundle);
+//                }
+//            });
+//
+//            /* 長按追蹤卡片，可以停止追蹤（刪除該筆追蹤資料） */
+//            myViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+//                @Override
+//                public boolean onLongClick(View view) {
+//
+//                    PopupMenu popup = new PopupMenu(activity, view);
+//                    popup.inflate(R.menu.group_follow_menu);
+//                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                        @Override
+//                        public boolean onMenuItemClick(MenuItem item) {
+//                            switch (item.getItemId()){
+//
+//                                /* ==================== ⬇️正在施工區域⬇️ ==================== */
+//
+//                                case R.id.deleteFollow:
+//                                    return true;
+//                                default:
+//                                    return false;
+//                            }
+//                        }
+//                    });
+//                    popup.show();
+//                    return false;
 //                }
 //            });
 //        }
-//    //}
 //
-//
-//    private List<Friend> getFriends() {
-//        List<Friend> friends = new ArrayList<>();
-//        friends.add(new Friend(R.drawable.p01, "John","03-1111111","2:30:14","15.2km","6'15","4500","81","2019/10/01"));
-//        friends.add(new Friend(R.drawable.p02, "Jack","03-12345678","2:19:17","12.33km","7'12","4900","156","2010/10/01"));
-//        friends.add(new Friend(R.drawable.p03, "Mark","01-12345678",",2:13:13","13.44km","3'44","1200","65","2019/10/01"));
-//        friends.add(new Friend(R.drawable.p04, "Ben","02-12345678","2:10:13","15.44km","5'44","1150","53","2019/10/01"));
-//        friends.add(new Friend(R.drawable.p05, "James","03-12345678","2:17:13","13.34km","3'44","1120","5","2019/10/01"));
-//        friends.add(new Friend(R.drawable.p06, "David","04-12345678","2:43:13","17.74km","7'44","1420","53","2019/10/01"));
-//        friends.add(new Friend(R.drawable.p07, "Ken","05512345678","2:33:13","17.44km","7'34","1340","511","2019/10/01"));
-//        friends.add(new Friend(R.drawable.p08, "Ron","03-4247725627","2:43:13","13.34km","3'44","1530","58","2019/10/01"));
-//        friends.add(new Friend(R.drawable.p09, "Jerry","03-26726726","2:13:13","15.14km","4'34","1130","511","2019/10/01"));
-//        friends.add(new Friend(R.drawable.p10, "Maggie","03-662635846","2:13:13","15.14km","4'34","1130","35","2019/10/01"));
-//        friends.add(new Friend(R.drawable.p11, "Sue","03-248525276872","2:13:13","15.14km","4'34","1130","82","2019/10/01"));
-//        friends.add(new Friend(R.drawable.p12, "Cathy","03-24762875827","2:13:13","15.14km","4'34","1130","578","2019/10/01"));
-//        return friends;
 //    }
+//
+//    /* 取得追蹤資料集合 */
+//    private List<Follow> getFollows() {
+//        List<Follow> followList = null;
+//        if (Common.networkConnected(activity)) {
+//            String url = Common.URL_SERVER + "GroupServlet";
+//            JsonObject jo = new JsonObject();
+//            jo.addProperty("action", "getAll");
+//
+//            jo.addProperty("user_no", no);
+//
+//            /* 查詢當前月份，設為跑步期間的條件 */
+//            Gson gson = new GsonBuilder()
+//                    .setDateFormat("yyMM")// 1910 即：年年月月
+//                    .create();
+//            /* 將 new Date() 轉為 Json，並且要符合以上的日期表示法
+//             * 但是在 Servlet 端會變成字串型態 "1910"，需要再切開字串 */
+//            String date = gson.toJson(new Date());
+//            jo.addProperty("month", date);
+//
+//            String jsonOut = jo.toString();
+//            GetFollowsTask = new CommonTask(url, jsonOut);
+//
+//            try {
+//                String jsonIn = GetFollowsTask.execute().get();
+//
+//                Log.d(TAG, "傳回的 List<Follow> = \n" + jsonIn);
+//                Type listType = new TypeToken<List<Follow>>() {
+//                }.getType();
+//                followList = new Gson().fromJson(jsonIn, listType);
+//            } catch (Exception e) {
+//                Log.e(TAG, e.toString());
+//            }
+//        } else {
+//            Common.toastShow(activity, R.string.textNoNetwork);
+//        }
+//        return followList;
+//    }
+//
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//        if (GetFollowsTask != null) {
+//            GetFollowsTask.cancel(true);
+//            GetFollowsTask = null;
+//        }
+//        if(FollowImageTask != null){
+//            FollowImageTask.cancel(true);
+//            FollowImageTask = null;
+//        }
+//    }
+//
 //}
+//
+//
+//
 //
 //

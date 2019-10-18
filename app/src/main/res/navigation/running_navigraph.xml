@@ -20,8 +20,8 @@
         android:label="fragment_run_inquire"
         tools:layout="@layout/fragment_run_inquire" >
         <action
-            android:id="@+id/action_runInquireFragment_to_runDetailFragment"
-            app:destination="@id/runDetailFragment" />
+            android:id="@+id/action_runInquireFragment_to_FriendFragment"
+            app:destination="@id/FriendFragment" />
     </fragment>
     <fragment
         android:id="@+id/runGroupFragment"
@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_runGroupFragment_to_runDetailFragment"
             app:destination="@+id/runDetailFragment" />
+        <action
+            android:id="@+id/action_runGroupFragment_to_FriendFragment2"
+            app:destination="@id/FriendFragment" />
     </fragment>
     <fragment
         android:id="@+id/runAchieveFragment"
@@ -68,14 +71,8 @@
             app:destination="@id/runMain" />
     </fragment>
     <fragment
-        android:id="@+id/runDetailFragment"
-        android:name="com.g2.runningFront.RunActivity.Run.runInquire.RunDetailFragment"
+        android:id="@+id/FriendFragment"
+        android:name="com.g2.runningFront.RunActivity.Group.FriendFragment"
         android:label="fragment_run_detail"
-        tools:layout="@layout/fragment_run_detail" >
-        <action
-            android:id="@+id/action_runDetailFragment_to_runInquireFragment"
-            app:destination="@id/runInquireFragment" /><![CDATA[
-        tools:layout="@layout/fragment_run_start">
-        ]]>
-    </fragment>
+        tools:layout="@layout/fragment_friend" />
 </navigation>

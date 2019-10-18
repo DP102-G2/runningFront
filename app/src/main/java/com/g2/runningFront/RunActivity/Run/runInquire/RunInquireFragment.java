@@ -301,7 +301,7 @@ public class RunInquireFragment extends Fragment
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("Run",run);
-                    Navigation.findNavController(view).navigate(R.id.action_runInquireFragment_to_runDetailFragment,bundle);
+                    Navigation.findNavController(view).navigate(R.id.action_runInquireFragment_to_FriendFragment,bundle);
 
                 }
             });

@@ -130,7 +130,7 @@ public class ShopOrderFragment extends Fragment {
             }
         }
     }
-
+ //
     public void spcon() {
         spOrder = getView().findViewById(R.id.spOrder);
 
@@ -147,7 +147,7 @@ public class ShopOrderFragment extends Fragment {
                                 orders_spinner.add(order);
                             }
                         }
-
+ 
                         OrderAdapter adapter = (OrderAdapter) recyclerView.getAdapter();
                         adapter.setOrders(orders_spinner);
                         adapter.notifyDataSetChanged();
@@ -226,7 +226,7 @@ public class ShopOrderFragment extends Fragment {
         private LayoutInflater layoutInflater;
         //  Context context;
         private List<Order> orders;
-        private boolean[] orderExpanded;
+      //  private boolean[] orderExpanded;
 
         public OrderAdapter(Context context, List<Order> orders) {
             layoutInflater = LayoutInflater.from(context);
@@ -304,9 +304,9 @@ public class ShopOrderFragment extends Fragment {
             viewHolder.tvpaymentmathon.setText("付款方式:" + order.getPayment_methon());
             viewHolder.tvordermoney.setText("金額:" + order.getOrder_money() + " ");
             viewHolder.tvorderstatus.setText("訂單狀態:" + order.getOrder_status());
-            viewHolder.tvProduct.setText(order.getProduct_no());
-            viewHolder.tvShop_quantity.setText(order.getQty() + " ");
-            viewHolder.tvProduct_price.setText(order.getOrder_price() + " ");
+            viewHolder.tvProduct.setText("商品編號:" +order.getProduct_no());
+            viewHolder.tvShop_quantity.setText("商品數量:" +order.getQty() + " ");
+            viewHolder.tvProduct_price.setText("訂單金額:" +order.getOrder_price() + " ");
 
         }
 
