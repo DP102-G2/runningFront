@@ -28,9 +28,7 @@
         android:name="com.g2.runningFront.RunActivity.Group.GroupFragment"
         android:label="fragment_run_group"
         tools:layout="@layout/fragment_run_group" >
-        <action
-            android:id="@+id/action_runGroupFragment_to_runDetailFragment"
-            app:destination="@+id/runDetailFragment" />
+
         <action
             android:id="@+id/action_runGroupFragment_to_FriendFragment2"
             app:destination="@id/FriendFragment" />

@@ -281,7 +281,7 @@ public class GroupFragment extends Fragment {
                     Bundle bundle = new Bundle();
                     bundle.putInt("user_no", follow.getNo());
                     Navigation.findNavController(view)
-                            .navigate(R.id.action_runGroupFragment_to_runDetailFragment, bundle);
+                            .navigate(R.id.action_runGroupFragment_to_FriendFragment2, bundle);
                 }
             });
 

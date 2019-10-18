@@ -128,6 +128,18 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
+                  <entry key="FriendFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="bmiResult">
                     <value>
                       <LayoutPositions>
@@ -161,27 +173,6 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="runDetailFragment">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="744" />
-                            <option name="y" value="12" />
-                          </Point>
-                        </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="action_runDetailFragment_to_runInquireFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
                   <entry key="runGroupFragment">
                     <value>
                       <LayoutPositions>
@@ -193,6 +184,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_runGroupFragment_to_FriendFragment2">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_runGroupFragment_to_runDetailFragment">
                               <value>
                                 <LayoutPositions />
@@ -235,7 +231,7 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_runInquireFragment_to_runDetailFragment">
+                            <entry key="action_runInquireFragment_to_FriendFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
