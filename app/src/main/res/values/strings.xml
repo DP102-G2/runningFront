@@ -6,7 +6,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tveveryday">每日好康</string>
     <string name="textProductNotFound">Product Not Found</string>
-    <string name="textNoNetwork">No Net Work</string>
+    <string name="textNoNetwork">與伺服器連線失敗</string>
     <string name="ProductIntroduction">商品簡介</string>
     <string name="shopping">瀏覽商品</string>
     <string name="textFriend">個人頁面</string>
@@ -28,10 +28,11 @@
     <string name="textCannotUseGPay">Cannot use Google Pay</string>
     <string name="textCanceled">Canceled by the user.</string>
     <string name="btFirst">全國排行</string>
-    <string name="btLast">好友排行</string>
+    <string name="btLast">追蹤排行</string>
     <string name="lbName">Name</string>
     <string name="achieve">achieve</string>
     <string name="textNoAchievesFound">沒有成就</string>
+    <string name="textSearchFriend">請輸入想找的人名或帳號</string>
     <string-array name="textOrderArray">
         <item>全部</item>
         <item>未出貨</item>

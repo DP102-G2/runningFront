@@ -369,7 +369,7 @@ public class SettingUpadteFragment extends Fragment {
                         Common.toastShow(activity, "會員註冊失敗");
                     }
                 }else {
-                    Common.toastShow(activity, "與伺服器連線失敗");
+                    Common.toastShow(activity, R.string.textNoNetwork);
                 }
 
             }

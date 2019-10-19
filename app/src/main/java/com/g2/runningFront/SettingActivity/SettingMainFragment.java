@@ -46,10 +46,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.g2.runningFront.SignInActivity.SignInActivity;
-import com.google.gson.JsonObject;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class SettingMainFragment extends Fragment {
@@ -97,6 +93,7 @@ public class SettingMainFragment extends Fragment {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String new_id = et.getText().toString().trim();
 
+                /*
                 JsonObject jo = new JsonObject();
                 jo.addProperty("action","checkId");
                 jo.addProperty("new_id", new_id);
@@ -113,7 +110,9 @@ public class SettingMainFragment extends Fragment {
 
                 } catch (Exception e) {
                     Log.e(TAG, e.toString());
-                }
+                }*/
+
+                boolean isIdValid = matches(new_id);
                 if (isIdValid && new_id.length() <= 16) {
                     // Id OK
                     et.setTextColor(Color.BLACK);
@@ -145,9 +144,6 @@ public class SettingMainFragment extends Fragment {
                 Intent intent;
                 intent = new Intent(activity, SignInActivity.class);
                 startActivity(intent);
-
-                //SettingActivity.this.finish();
-                //前面區塊，根據要關閉的activity做更換
 
             }
         });
@@ -268,7 +264,7 @@ public class SettingMainFragment extends Fragment {
      * @return boolean
      */
     private boolean matches(String string){
-        return string.matches("");
+        return string.matches("^\\w+([-+.]\\w+)@\\w+([-.]\\w+).\\w+([-.]\\w+)*$");
 
         // 長度5-16，由數字、英文字母、_ 組成 --  ^\\w{5,16}$
         // 長度5以上的密碼 --                  ^[A-Za-z0-9]+.{5,}$

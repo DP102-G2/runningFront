@@ -71,12 +71,12 @@ public class Common {
             c.printStackTrace();
         } finally {
             if (!isSignIn) {
-                /* 檢查到未登入，將切換至登入頁 */
+                /* 檢查到未登入，發起意圖：切換至登入頁 */
                 Intent signInIntent = new Intent(activity, SignInActivity.class);
 
+                activity.startActivity(signInIntent);
                 /* 請求登入頁面的結果（登入成功/登入失敗）
                  * startActivityForResult(Intent, 請求代碼); */
-                activity.startActivity(signInIntent);
                 //activity.startActivityForResult(signInIntent, Common.REQ_SIGNIN);
                 return;
             }
@@ -102,7 +102,7 @@ public class Common {
     /**
      * 查詢登入中的使用者編號
      * @param activity  目前使用的 Activity
-     * @return int      返回使用者編號，預設回傳 0
+     * @return          返回使用者編號，預設回傳 0
      */
     public static int getUserNo(Activity activity) {
         int no = 0;

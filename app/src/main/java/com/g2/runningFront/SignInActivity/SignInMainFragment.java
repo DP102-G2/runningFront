@@ -81,6 +81,7 @@ public class SignInMainFragment extends Fragment {
         etPassword = view.findViewById(R.id.etPassword);
         textView = view.findViewById(R.id.textView2);
 
+        /* 會員登入按鈕 */
         view.findViewById(R.id.btSignIn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -110,6 +111,7 @@ public class SignInMainFragment extends Fragment {
                         if(user == null){
                             textView.setText("輸入之帳號或密碼不正確");
                             Common.toastShow(activity, "輸入之帳號或密碼不正確");
+
                         } else {
 
                             textView.setText("一般登入成功\n"+"User_ID:\t\t"+user.getId()
@@ -137,7 +139,7 @@ public class SignInMainFragment extends Fragment {
                                     Log.d(TAG, "登入成功，此頁消失");
                                     activity.finish();// finish() 讓視窗（Activity）消失
                                 }
-                            },2000);// 延後2秒
+                            },2 * 1000);// 延後2秒
                         }
 
                     } catch (Exception e) {

@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 public class User implements Serializable {
     private int no;
-    private String id, password;
+    private String id;
+    private String password;
 
     public User() {
         super();
