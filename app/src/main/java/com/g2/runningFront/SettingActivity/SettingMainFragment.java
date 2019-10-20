@@ -18,6 +18,7 @@ import androidx.navigation.Navigation;
 
 /* 使用 Gson */
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,6 +38,7 @@ import android.os.Handler;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
+import static com.g2.runningFront.Common.Common.PREF;
 import static com.g2.runningFront.Common.Common.round;
 
 import android.content.Intent;
@@ -85,6 +87,7 @@ public class SettingMainFragment extends Fragment {
         imageView = view.findViewById(R.id.imageView);
         textView = view.findViewById(R.id.textView);
 
+
         /* 檢查會員註冊的帳號名稱是否有重複 */
         et = view.findViewById(R.id.et);
         et.addTextChangedListener(new TextWatcher() {
@@ -93,7 +96,6 @@ public class SettingMainFragment extends Fragment {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String new_id = et.getText().toString().trim();
 
-                /*
                 JsonObject jo = new JsonObject();
                 jo.addProperty("action","checkId");
                 jo.addProperty("new_id", new_id);
@@ -110,17 +112,14 @@ public class SettingMainFragment extends Fragment {
 
                 } catch (Exception e) {
                     Log.e(TAG, e.toString());
-                }*/
-
-                boolean isIdValid = matches(new_id);
-                if (isIdValid && new_id.length() <= 16) {
-                    // Id OK
-                    et.setTextColor(Color.BLACK);
-                } else {
-                    // Id 不OK
-                    et.setTextColor(Color.RED);
                 }
-
+                if(!isIdValid){
+                    // ID 未通過
+                    et.setTextColor(Color.RED);
+                } else {
+                    // ID 通過
+                    et.setTextColor(Color.BLACK);
+                }
             }
 
             @Override   //這三個方法一定要 Override
@@ -174,11 +173,9 @@ public class SettingMainFragment extends Fragment {
 
                         /* 清除偏好設定 */
                         .clear()
-
                         .apply();
 
                 textView.setText("已經登出");
-
                 Log.e(TAG,"使用者登出，登入狀態\"isSignIn\"已修改。");
 
                 /* 延時執行 */
@@ -271,5 +268,15 @@ public class SettingMainFragment extends Fragment {
         // Email --                         ^\w+([-+.]\w+)@\w+([-.]\w+).\w+([-.]\w+)*$
         // 由數字或英文字母組成 --              ^[A-Za-z0-9]+$
 
+        /*
+        boolean isIdValid = matches(new_id);
+        if (isIdValid && new_id.length() <= 16) {
+            // id OK
+            et.setTextColor(Color.BLACK);
+        } else {
+            // Id 不OK
+            et.setTextColor(Color.RED);
+        }
+         */
     }
 }

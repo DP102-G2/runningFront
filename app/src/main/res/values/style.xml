@@ -1,12 +1,34 @@
 <resources>
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!-- 文字輸入方塊 -->
+    <style name="type_radius" parent="@android:style/Widget.EditText">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:gravity">left</item>
+        <item name="android:background">@drawable/et_radius</item>
+        <item name="android:padding">8dip</item>
+    </style>
+
+    <!-- 常用按鈕樣式（綠色） -->
+    <style name="bt_radius_main" parent="@android:style/Widget.Button">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/bt_radius_green</item>
+        <item name="android:padding">8dip</item>
+    </style>
+
+    <!-- 警示小文字 -->
+    <style name="tv_warning_red" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/colorRed</item>
+        <item name="android:gravity">center</item>
     </style>
 
 </resources>

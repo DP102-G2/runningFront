@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -22,14 +21,12 @@
 
             <Button
                 android:id="@+id/btUpdate"
+                style="@style/bt_radius_main"
                 android:layout_width="108dp"
                 android:layout_height="36dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="80dp"
-                android:background="@drawable/bt_style"
                 android:text="確認修改"
-                android:textColor="@android:color/white"
-                android:textSize="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -38,20 +35,49 @@
 
             <Button
                 android:id="@+id/btSignUp"
+                style="@style/bt_radius_main"
                 android:layout_width="108dp"
                 android:layout_height="36dp"
-                android:background="@drawable/bt_style"
                 android:text="註冊帳號"
-                android:textColor="@android:color/white"
                 android:textSize="15dp"
                 app:layout_constraintBottom_toBottomOf="@+id/btUpdate"
                 app:layout_constraintStart_toEndOf="@+id/btUpdate"
                 app:layout_constraintTop_toTopOf="@+id/btUpdate" />
 
             <EditText
-                android:id="@+id/etName"
+                android:id="@+id/etId"
+                style="@style/type_radius"
+                android:layout_width="316dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="50dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView"
+                tools:text="user_id" />
+
+            <EditText
+                android:id="@+id/etPW"
+                style="@style/type_radius"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginTop="24dp"
+
+                android:ems="10"
+                android:inputType="textPassword"
+                android:textSize="17sp"
+                app:layout_constraintEnd_toEndOf="@+id/etId"
+                app:layout_constraintStart_toStartOf="@+id/etId"
+                app:layout_constraintTop_toBottomOf="@+id/etId"
+                tools:text="user_pw" />
+
+            <EditText
+                android:id="@+id/etName"
+                style="@style/type_radius"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
                 android:layout_marginTop="24dp"
                 android:ems="10"
                 android:inputType="textPersonName"
@@ -64,8 +90,9 @@
 
             <EditText
                 android:id="@+id/etEmail"
+                style="@style/type_radius"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:layout_marginTop="24dp"
                 android:ems="10"
                 android:inputType="textEmailAddress"
@@ -75,34 +102,6 @@
                 app:layout_constraintStart_toStartOf="@+id/etName"
                 app:layout_constraintTop_toBottomOf="@+id/etName"
                 tools:text="user_email" />
-
-            <EditText
-                android:id="@+id/etId"
-                android:layout_width="316dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:textSize="17sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView"
-                tools:text="user_id" />
-
-            <EditText
-                android:id="@+id/etPW"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:ems="10"
-                android:inputType="textPassword"
-
-                android:textSize="17sp"
-                app:layout_constraintEnd_toEndOf="@+id/etId"
-                app:layout_constraintStart_toStartOf="@+id/etId"
-                app:layout_constraintTop_toBottomOf="@+id/etId"
-                tools:text="user_pw" />
 
             <ImageView
                 android:id="@+id/imageView"
@@ -140,17 +139,15 @@
 
             <TextView
                 android:id="@+id/tvAt"
+                style="@style/tv_warning_red"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Setting Update Fragment"
-                android:textColor="@color/colorRed"
-                android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
