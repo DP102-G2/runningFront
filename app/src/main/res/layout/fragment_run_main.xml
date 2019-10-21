@@ -92,14 +92,14 @@
 
                 <ImageView
                     android:id="@+id/rm_ivEditBMI"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
-                    android:src="@android:drawable/ic_menu_edit"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/rm_tvBMI"
-                    app:layout_constraintTop_toTopOf="@+id/rm_tvBMI" />
+                    app:layout_constraintTop_toTopOf="@+id/rm_tvBMI"
+                    app:srcCompat="@drawable/ic_edit" />
 
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/rm_pieChart"

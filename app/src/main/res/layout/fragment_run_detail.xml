@@ -7,68 +7,88 @@
     android:layout_height="match_parent"
     tools:context=".RunActivity.Run.runInquire.RunDetailFragment">
 
-    <ImageView
-        android:id="@+id/rd_ivImage"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+    <ScrollView
+        android:id="@+id/scrollView3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/avatars" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/rd_tvDistance"
-        style="@style/normalText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="24dp"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="@+id/rd_ivImage"
-        app:layout_constraintTop_toBottomOf="@+id/rd_tvDate" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/rd_tvTime"
-        style="@style/normalText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="@+id/rd_tvSpeed"
-        app:layout_constraintTop_toBottomOf="@+id/rd_tvSpeed" />
+            <ImageView
+                android:id="@+id/rd_ivImage"
+                android:layout_width="350dp"
+                android:layout_height="350dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@tools:sample/avatars" />
 
-    <TextView
-        android:id="@+id/rd_tvSpeed"
-        style="@style/normalText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="34dp"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="@+id/rd_tvDistance"
-        app:layout_constraintTop_toBottomOf="@+id/rd_tvDistance" />
+            <TextView
+                android:id="@+id/rd_tvDistance"
+                style="@style/normalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="36dp"
+                android:layout_marginTop="24dp"
+                android:text="TextView"
+                app:layout_constraintStart_toStartOf="@+id/rd_ivImage"
+                app:layout_constraintTop_toBottomOf="@+id/rd_tvDate" />
 
-    <TextView
-        android:id="@+id/rd_tvDate"
-        style="@style/normalText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rd_ivImage" />
+            <TextView
+                android:id="@+id/rd_tvTime"
+                style="@style/normalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:text="TextView"
+                app:layout_constraintStart_toStartOf="@+id/rd_tvSpeed"
+                app:layout_constraintTop_toBottomOf="@+id/rd_tvSpeed" />
 
-    <TextView
-        android:id="@+id/rd_tvCalroie"
-        style="@style/normalText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="34dp"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="@+id/rd_tvTime"
-        app:layout_constraintTop_toBottomOf="@+id/rd_tvTime" />
+            <TextView
+                android:id="@+id/rd_tvSpeed"
+                style="@style/normalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="34dp"
+                android:text="TextView"
+                app:layout_constraintStart_toStartOf="@+id/rd_tvDistance"
+                app:layout_constraintTop_toBottomOf="@+id/rd_tvDistance" />
+
+            <TextView
+                android:id="@+id/rd_tvDate"
+                style="@style/normalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:text="TextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rd_ivImage" />
+
+            <TextView
+                android:id="@+id/rd_tvCalroie"
+                style="@style/normalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="34dp"
+                android:layout_marginBottom="32dp"
+                android:text="TextView"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/rd_tvTime"
+                app:layout_constraintTop_toBottomOf="@+id/rd_tvTime" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

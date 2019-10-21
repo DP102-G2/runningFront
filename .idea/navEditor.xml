@@ -211,6 +211,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="runDetailFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-498" />
+                            <option name="y" value="13" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="runGroupFragment">
                     <value>
                       <LayoutPositions>
@@ -270,6 +282,11 @@
                         <option name="myPositions">
                           <map>
                             <entry key="action_runInquireFragment_to_FriendFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_runInquireFragment_to_runDetailFragment">
                               <value>
                                 <LayoutPositions />
                               </value>

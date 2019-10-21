@@ -66,11 +66,10 @@
         style="@style/normalText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="@+id/runstart_textView23"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/runstart_textView23"
         app:layout_constraintTop_toTopOf="@+id/runstart_tvCalories" />
 
     <TextView
@@ -78,13 +77,11 @@
         style="@style/normalText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="116dp"
-        android:layout_marginEnd="28dp"
+        android:layout_marginTop="24dp"
         android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toEndOf="@+id/runstart_textView24"
         app:layout_constraintStart_toStartOf="@+id/runstart_textView24"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/runstart_textView13" />
 
     <TextView
         android:id="@+id/runstart_textView22"
@@ -115,23 +112,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="95dp"
-        android:layout_marginTop="164dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="56dp"
         android:text="平均時速"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.688"
         app:layout_constraintStart_toEndOf="@+id/runstart_textView22"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/runstart_tvSpeed" />
 
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/runstart_mapView"
+    <androidx.cardview.widget.CardView
         android:layout_width="350dp"
         android:layout_height="350dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
+        app:cardCornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/runstart_textView22" />
+        app:layout_constraintTop_toBottomOf="@+id/runstart_textView22"
+        app:layout_constraintVertical_bias="0.0">
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/runstart_mapView"
+            android:layout_width="350dp"
+            android:layout_height="350dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/runstart_textView22"
+            app:layout_constraintVertical_bias="0.0" />
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

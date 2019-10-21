@@ -2,10 +2,7 @@ package com.g2.runningFront.ShopActivity.ShopCart.TapPay;
 
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -39,6 +36,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,21 +67,27 @@ public class ShopCartAcpayFragment extends Fragment {
     private static final String url = Common.URL_SERVER + "ShopCartServlet";
     private final static String PREFERENCES_NAME = "preferences";
 
-    CartOrder co;
+
     String receiverName, receiverPayment, receiverAddress, receiverPhone;
     int sumToatal;
-    int OrderNo;
+    int orderNo;
 
-    // 載入偏好設定檔案及購物車清單
     private SharedPreferences pref;
-    List<ShopCart> shopCarts = new ArrayList<>();
+    // 載入偏好設定檔案及購物車清單
+
+    List<ShopCart> shopCartList = new ArrayList<>();
+    //訂單明細
+
+    CartOrder cartOrder;
+    //訂單
+
 
     // VIEW
     Activity activity;
     StringBuilder orderDetail = new StringBuilder();
     View view;
     RelativeLayout btGPay;
-    Button btConfirm;
+    public static Button btConfirm;
     TextView tvReceiver, tvAddress, tvPhone, tvPayment, tvSumTotal;
     RecyclerView rvList;
 
@@ -110,7 +114,7 @@ public class ShopCartAcpayFragment extends Fragment {
         pref = activity.getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
         // 抓取偏好設定
 
-        shopCarts = getShopCarts();
+        shopCartList = getShopCartList();
         // 第一次抓取購物清單
 
         holdView();
@@ -126,23 +130,16 @@ public class ShopCartAcpayFragment extends Fragment {
 
     private StringBuilder getOrderDetail() {
 
-        orderDetail.append("訂單編號：" + OrderNo + ",");
+        orderDetail.append("訂單編號：" + orderNo + ",");
 
-        for (ShopCart a : shopCarts) {
-            orderDetail.append(a.getDetail());
+        for (ShopCart shopCart : shopCartList) {
+            orderDetail.append(shopCart.getDetail());
         }
 
         return orderDetail;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-
-
-    public void holdView() {
+    private void holdView() {
 
         btGPay = view.findViewById(R.id.AcPay_btGPay);
         tvReceiver = view.findViewById(R.id.AcPay_tvReceiver);
@@ -154,7 +151,7 @@ public class ShopCartAcpayFragment extends Fragment {
         btConfirm = view.findViewById(R.id.AcPay_btConfirm);
 
         rvList.setLayoutManager(new LinearLayoutManager(activity));
-        rvList.setAdapter(new myCartAdapter(activity, shopCarts));
+        rvList.setAdapter(new myCartAdapter(activity, shopCartList));
 
         /**
          *
@@ -181,14 +178,10 @@ public class ShopCartAcpayFragment extends Fragment {
                         .build(), LOAD_PAYMENT_DATA_REQUEST_CODE);
                 //我們預設的值，代碼就是101
 
-
-
-                if (paymentData != null) {
-                    btConfirm.setVisibility(View.VISIBLE);
-                }
             }
         });
 
+        btConfirm.setVisibility(View.GONE);
         btConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -206,24 +199,24 @@ public class ShopCartAcpayFragment extends Fragment {
 
         if (!listStr.equals("Error") && sumToatal != -1) {
 
-            co = new Gson().fromJson(listStr, CartOrder.class);
+            cartOrder = new Gson().fromJson(listStr, CartOrder.class);
 
-            receiverName = co.getName();
-            receiverPayment = co.getPaymentText();
-            receiverAddress = co.getAddress();
-            receiverPhone = co.getPhone();
-            sumToatal = co.getSumTotal();
+            receiverName = cartOrder.getName();
+            receiverPayment = cartOrder.getPaymentText();
+            receiverAddress = cartOrder.getAddress();
+            receiverPhone = cartOrder.getPhone();
+            sumToatal = cartOrder.getSumTotal();
 
             tvReceiver.setText("收件人： " + receiverName);
             tvPayment.setText("付款方式： " + receiverPayment);
             tvAddress.setText("收件地址： " + receiverAddress);
-            tvPhone.setText("聯絡電話： " + co.getPhone());
+            tvPhone.setText("聯絡電話： " + cartOrder.getPhone());
             tvSumTotal.setText("訂單總金額： " + sumToatal);
         }
     }
 
     // 到偏好設定檔裡拿購物車清單
-    public List<ShopCart> getShopCarts() {
+    public List<ShopCart> getShopCartList() {
 
         List<ShopCart> shopCartList = new ArrayList<>();
         String listStr = pref.getString("ShopCartList", "Error");
@@ -339,7 +332,7 @@ public class ShopCartAcpayFragment extends Fragment {
             public void onSuccess(String prime, TPDCardInfo tpdCardInfo) {
                 //PRIME類似通行證
                 TapPayApiUtil tapPayApiUtil
-                        = new TapPayApiUtil(sumToatal, OrderNo, orderDetail.toString(), receiverName, receiverPhone);
+                        = new TapPayApiUtil(sumToatal, orderNo, orderDetail.toString(), receiverName, receiverPhone);
                 tapPayApiUtil.generatePayByPrimeCURLForSanBox
                         (prime, getString(R.string.TapPay_PartnerKey), getString(R.string.TapPay_MerchantID));
                 orderComplete();
@@ -355,23 +348,26 @@ public class ShopCartAcpayFragment extends Fragment {
 
     }
 
+
     // 完成訂單時要做的事情，並把訂單狀態改為已完成付款狀態
     private void orderComplete() {
-        co.setOrdStatus(1);
-        co.setOrderNo(OrderNo);
+        cartOrder.setOrdStatus(1);
+        cartOrder.setOrderNo(orderNo);
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", "OrderComplete");
-        jsonObject.addProperty("CartOrder", new Gson().toJson(co));
+        jsonObject.addProperty("CartOrder", new Gson().toJson(cartOrder));
         commonTask = new CommonTask(url, jsonObject.toString());
 
         Log.d(TAG, jsonObject.toString());
 
-        try {
-            String Complete = commonTask.execute().get();
-            Common.toastShow(activity, "訂購成功");
-            Navigation.findNavController(view).navigate(R.id.action_shopCartAcpayFragment_to_shopMainFragment);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (Common.networkConnected(activity)) {
+            try {
+                String Complete = commonTask.execute().get();
+                Common.toastShow(activity, "訂購成功");
+                Navigation.findNavController(view).navigate(R.id.action_shopCartAcpayFragment_to_shopMainFragment);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
     }
@@ -380,24 +376,24 @@ public class ShopCartAcpayFragment extends Fragment {
     private void getOrderNo() {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", "insertOrder");
-        jsonObject.addProperty("CartOrder", new Gson().toJson(co));
-        jsonObject.addProperty("ShopCart", new Gson().toJson(shopCarts));
+        jsonObject.addProperty("CartOrder", new Gson().toJson(cartOrder));
+        jsonObject.addProperty("ShopCart", new Gson().toJson(shopCartList));
         commonTask = new CommonTask(url, jsonObject.toString());
 
-        Log.d(TAG, jsonObject.toString());
+        if (Common.networkConnected(activity)) {
+            Log.d(TAG, jsonObject.toString());
+            if (Common.networkConnected(activity)) {
 
-        try {
-            String getOrderNo = commonTask.execute().get();
-            Log.d(TAG, getOrderNo);
+                try {
+                    String getOrderNo = commonTask.execute().get();
+                    Log.d(TAG, getOrderNo);
 
-            OrderNo = Integer.parseInt(getOrderNo);
-            Common.toastShow(activity, getOrderNo);
-            tvAddress.setText(getOrderNo);
-        } catch (Exception e) {
-            e.printStackTrace();
+                    orderNo = Integer.parseInt(getOrderNo);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
-
-
 }
 

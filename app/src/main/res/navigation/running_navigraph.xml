@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_runInquireFragment_to_FriendFragment"
             app:destination="@id/FriendFragment" />
+        <action
+            android:id="@+id/action_runInquireFragment_to_runDetailFragment"
+            app:destination="@id/runDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/runGroupFragment"
@@ -93,4 +96,9 @@
         android:name="com.g2.runningFront.RunActivity.Group.GroupQRcodeFragment"
         android:label="fragment_group_qrcode"
         tools:layout="@layout/fragment_group_qrcode" />
+    <fragment
+        android:id="@+id/runDetailFragment"
+        android:name="com.g2.runningFront.RunActivity.Run.runInquire.RunDetailFragment"
+        android:label="fragment_run_detail"
+        tools:layout="@layout/fragment_run_detail" />
 </navigation>
