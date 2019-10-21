@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -53,6 +54,7 @@ public class ShopActivity extends AppCompatActivity {
                     Common.toastShow(this, "GPAY 成功登陸資料");
                     paymentData = PaymentData.getFromIntent(data);
                     ShopCartAcpayFragment.paymentData = paymentData;
+                    ShopCartAcpayFragment.btConfirm.setVisibility(View.VISIBLE);
                     break;
                 case RESULT_CANCELED:
                     Common.toastShow(this, "GPAY 取消");

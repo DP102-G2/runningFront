@@ -138,9 +138,14 @@ public class RunMainFragment extends Fragment {
         pieChart = view.findViewById(R.id.rm_pieChart);
 
 
-        String sDistance = format.format(wDistance / 1000);
+        String sDistance;
         pieChart.setRotationEnabled(true);
-        pieChart.setCenterText("跑步距離 \n" + sDistance + " km ");
+        if (wDistance == 0) {
+            sDistance = "本週尚未\n開始跑步";
+        } else {
+            sDistance = "跑步距離 \n" + format.format(wDistance / 1000) + " km ";
+        }
+        pieChart.setCenterText(sDistance);
         pieChart.setCenterTextSize(25);
 
         PieDataSet pieDataSet = new PieDataSet(pieEntries, "Run WeekData");
@@ -184,10 +189,11 @@ public class RunMainFragment extends Fragment {
         int minutes = (((int) wTime) / 60) % 60;
         int hours = ((int) wTime) / 3600;
 
-        formatTime = hours + " 小時 , " + minutes + " 分鐘  "+ seconds+ " 秒  ";
+        formatTime = hours + " 小時 , " + minutes + " 分鐘  " + seconds + " 秒  ";
     }
 
     private List<Run> getRun() {
+
 
         List<Run> runs = new ArrayList<>();
         GsonBuilder gsonBuilder = new GsonBuilder();
@@ -195,21 +201,24 @@ public class RunMainFragment extends Fragment {
         gsonBuilder.registerTypeAdapter(Timestamp.class, new TimestampTypeAdapter());
         Gson gson = gsonBuilder.create();
 
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("action", "getWeekRunList");
-        jsonObject.addProperty("userNo", 1);
-        // 之後要補足資料
+        if(Common.networkConnected(activity)){
 
-        try {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("action", "getWeekRunList");
+            jsonObject.addProperty("userNo", 1);
+            // 之後要補足資料
 
-            runTask = new CommonTask(url, jsonObject.toString());
-            String runListStr = runTask.execute().get();
-            Type listType = new TypeToken<List<Run>>() {
-            }.getType();
-            runs = gson.fromJson(runListStr, listType);
+            try {
 
-        } catch (Exception e) {
-            e.printStackTrace();
+                runTask = new CommonTask(url, jsonObject.toString());
+                String runListStr = runTask.execute().get();
+                Type listType = new TypeToken<List<Run>>() {
+                }.getType();
+                runs = gson.fromJson(runListStr, listType);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return runs;
@@ -217,31 +226,34 @@ public class RunMainFragment extends Fragment {
 
     private void getUserBasic() {
 
-        try {
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("action", "getUserBasic");
-            jsonObject.addProperty("userNo", 1);
-            uDataTask = new CommonTask(url, jsonObject.toString());
-            String ubStr = uDataTask.execute().get();
-            Log.d("ubStr", ubStr);
-            userBasic = new Gson().fromJson(ubStr, UserBasic.class);
-            pref.edit().putString("UserBasic", new Gson().toJson(userBasic)).apply();
+        // 先上網抓並存到偏好設定，再偵測如果偏好設定內沒有資料，就會跳到初始頁面
 
-            if (userBasic.getHeight() == 0 | userBasic.getGender() == 0 | userBasic.getAge() == 0) {
-                Navigation.findNavController(view).navigate(R.id.action_runMain_to_runInput);
+        if (Common.networkConnected(activity)) {
+            try {
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("action", "getUserBasic");
+                jsonObject.addProperty("userNo", 1);
+                uDataTask = new CommonTask(url, jsonObject.toString());
+                String ubStr = uDataTask.execute().get();
+                Log.d("ubStr", ubStr);
+                userBasic = new Gson().fromJson(ubStr, UserBasic.class);
+                pref.edit().putString("UserBasic", new Gson().toJson(userBasic)).apply();
+
+                if (userBasic.getHeight() == 0 | userBasic.getGender() == 0 | userBasic.getAge() == 0) {
+                    Navigation.findNavController(view).navigate(R.id.action_runMain_to_runInput);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        String ubPrefStr = pref.getString("UserBasic", "noData");
-        if (ubPrefStr.equals("noData")) {
-            Navigation.findNavController(view).navigate(R.id.action_runMain_to_runInput);
-        } else {
-            userBasic = new Gson().fromJson(ubPrefStr, UserBasic.class);
+            String ubPrefStr = pref.getString("UserBasic", "noData");
+            if (ubPrefStr.equals("noData")) {
+                Navigation.findNavController(view).navigate(R.id.action_runMain_to_runInput);
+            } else {
+                userBasic = new Gson().fromJson(ubPrefStr, UserBasic.class);
+            }
         }
     }
-
 
 }

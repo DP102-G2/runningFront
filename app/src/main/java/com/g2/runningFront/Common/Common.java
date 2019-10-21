@@ -34,7 +34,9 @@ public class Common {
 
     public static String URL_SERVER = "http://10.0.2.2:8080/RunningWeb/";
     // 底下為安裝至手機時改用的位址（必須在連線同一個區域網路）
-    // public static String URL_SERVER = "http://192.168.196.207/RunningWeb/";
+//     public static String URL_SERVER = "http://192.168.196.207/RunningWeb/";
+
+
 
     /**
      * 確認連網
@@ -202,6 +204,28 @@ public class Common {
                 dayStr = "星期日";
                 break;
         }
+
+        return dayStr;
+    }
+
+    public static String getDay(Timestamp timestamp){
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(timestamp);
+        cal.add(Calendar.DAY_OF_MONTH, -1);
+
+        cal.setFirstDayOfWeek(Calendar.MONDAY);
+        String day = "";
+        String month = "";
+        if (cal.get(Calendar.DAY_OF_WEEK)<10){
+            day += "0";
+        }
+        if (cal.get(Calendar.MONTH)<10){
+            month +="0";
+        }
+        day += String.valueOf(cal.get(Calendar.DAY_OF_WEEK));
+        month += cal.get(Calendar.MONTH);
+        String dayStr = month +"/" +day;
 
         return dayStr;
     }

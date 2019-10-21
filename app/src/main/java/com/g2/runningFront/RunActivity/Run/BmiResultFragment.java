@@ -13,9 +13,11 @@ import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.g2.runningFront.Common.Common;
@@ -35,6 +37,7 @@ public class BmiResultFragment extends Fragment {
 
     UserBasic userBasic;
     int bmi, height, weight, gender, age;
+    SeekBar seekBar;
     String bmiSuggest;
 
     SharedPreferences pref;
@@ -74,6 +77,16 @@ public class BmiResultFragment extends Fragment {
 
         tvSuggest = view.findViewById(R.id.bmi_tvSuggest);
         tvSuggest.setText(bmiSuggest);
+
+        seekBar = view.findViewById(R.id.bmi_sb);
+        seekBar.setProgress(userBasic.getBmi());
+        seekBar.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
+
 
         btConfirm = view.findViewById(R.id.bmi_btConfirm);
         btConfirm.setOnClickListener(new View.OnClickListener() {

@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: :tpdirect:@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9db1da2f643334674decbbef309b7ec1/jetified-tpdirect/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9db1da2f643334674decbbef309b7ec1/jetified-tpdirect/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5a70a051a4390b642d7e2ceb98d1718a/jetified-tpdirect/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5a70a051a4390b642d7e2ceb98d1718a/jetified-tpdirect/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

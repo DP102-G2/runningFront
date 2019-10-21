@@ -7,6 +7,9 @@ public class UserBasic implements Serializable {
     int height;
     int weight;
     int age;
+    int gender;
+    int bmi;
+    String bmiSuggest;
 
     public int getBmi() {
         return bmi;
@@ -16,9 +19,7 @@ public class UserBasic implements Serializable {
         this.bmi = bmi;
     }
 
-    int gender;
-    int bmi;
-    String bmiSuggest;
+
 
     public UserBasic(int height, int weight, int age, int gender) {
         this.height = height;
@@ -62,11 +63,11 @@ public class UserBasic implements Serializable {
 
     public String getBMISuggest(){
         if (bmi > 24) {
-            bmiSuggest = "BMI過重，建議您可以調整飲食";
+            bmiSuggest = "BMI偏重，建議您可以調整飲食";
         } else if (bmi <= 24 & bmi > 18.5) {
             bmiSuggest = "BMI正常，建議您維持運動習慣";
         } else if (bmi <= 18.5) {
-            bmiSuggest = "BMI過輕，建議您增加訓練";
+            bmiSuggest = "BMI偏輕，建議您增加訓練";
         }
         return bmiSuggest;
     }
