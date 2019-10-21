@@ -1,9 +1,12 @@
 package com.g2.runningFront.Common;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
+import android.content.Context;
 import android.content.SharedPreferences;
+/* 有關隱藏鍵盤 */
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 /* 有關大頭貼改成圓形 */
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -11,8 +14,10 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
-import android.net.ConnectivityManager;
+
 import android.net.NetworkInfo;
+import android.net.ConnectivityManager;
+
 import android.widget.Toast;
 
 import com.g2.runningFront.SignInActivity.SignInActivity;
@@ -54,7 +59,7 @@ public class Common {
     public static void toastShow(Activity activity ,int optSt){
         Toast.makeText(activity, optSt, Toast.LENGTH_LONG).show();
     }
-
+    // 偏好設定的變數名稱
     public final static String PREF = "preference";
 
     /**
@@ -73,11 +78,7 @@ public class Common {
             if (!isSignIn) {
                 /* 檢查到未登入，發起意圖：切換至登入頁 */
                 Intent signInIntent = new Intent(activity, SignInActivity.class);
-
                 activity.startActivity(signInIntent);
-                /* 請求登入頁面的結果（登入成功/登入失敗）
-                 * startActivityForResult(Intent, 請求代碼); */
-                //activity.startActivityForResult(signInIntent, Common.REQ_SIGNIN);
                 return;
             }
         }
@@ -93,6 +94,7 @@ public class Common {
         } finally {
             if (!isSignIn) {
                 Intent signInIntent = new Intent(activity, SignInActivity.class);
+                /* 請求登入頁面的結果（登入成功OR登入失敗）*/
                 activity.startActivityForResult(signInIntent, requestCode);
                 return;
             }
@@ -100,7 +102,7 @@ public class Common {
     }
 
     /**
-     * 查詢登入中的使用者編號
+     * 查詢登入中的會員編號
      * @param activity  目前使用的 Activity
      * @return          返回使用者編號，預設回傳 0
      */
@@ -120,6 +122,18 @@ public class Common {
             , TPDCard.CardType.JCB
             , TPDCard.CardType.AmericanExpress
     };
+
+    /**
+     * 呼叫隱藏鍵盤的指令
+     * @param activity  目前使用的 Activity
+     */
+    public static void hideKeys(Activity activity){
+        View view = activity.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
 
     /**
      * 把圖片改成同樣大小的圓形圖片（用於大頭貼）
@@ -199,12 +213,11 @@ public class Common {
      */
     public static boolean matches(String aString){
         return aString.matches("正規表達式");
-
-        // 長度5-16，由數字、英文字母、_ 組成 --  ^\\w{5,16}$
-        // 長度5以上的密碼 --                  ^[A-Za-z0-9]+.{5,}$
-        // Email --                         ^\w+([-+.]\w+)@\w+([-.]\w+).\w+([-.]\w+)*$
+        // 規範                              正規表達式
+        // 長度4-16，由數字、英文字母、_ 組成 --  ^\\w{4,16}$
+        // 長度4以上的密碼 --                  ^[A-Za-z0-9]+.{3,}$
+        // Email --                         ^\w+(\w+)@\w+([-.]\w+).\w+([-.]\w+)*$
         // 由數字或英文字母組成 --              ^[A-Za-z0-9]+$
-
     }
 
 }

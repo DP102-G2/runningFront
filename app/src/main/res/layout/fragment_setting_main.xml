@@ -7,25 +7,27 @@
 
     <Button
         android:id="@+id/btSignOut"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/bt_shop_style"
-        android:text="SIGNOUT"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:background="@drawable/btb_style"
+        android:paddingLeft="10dp"
+        android:text="登出"
+        android:textAlignment="textStart"
         android:textColor="@android:color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:textSize="17sp"
+        app:layout_constraintTop_toBottomOf="@+id/btHealth"
+        tools:layout_editor_absoluteX="0dp" />
 
     <Button
         android:id="@+id/btUpdate"
         android:layout_width="match_parent"
         android:layout_height="36dp"
-        android:layout_marginTop="54dp"
-        android:background="@drawable/bt_shop_style"
+        android:layout_marginTop="55dp"
+        android:background="@drawable/btb_style"
+        android:paddingLeft="10dp"
         android:text="編輯會員資料"
-        android:textColor="@android:color/white"
+        android:textAlignment="textStart"
+        android:textColor="@android:color/black"
         android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -33,30 +35,16 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <Button
-        android:id="@+id/set_btLogin"
-        android:layout_width="240dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="160dp"
-        android:background="@color/colorMain"
-        android:text="Sign In Page"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/et"
-        style="@style/smallText"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="ENTER"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/set_btLogin"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView" />
+        android:id="@+id/btHealth"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:background="@drawable/btb_style"
+        android:paddingLeft="10dp"
+        android:text="修改健康資訊"
+        android:textAlignment="textStart"
+        android:textSize="17sp"
+        app:layout_constraintTop_toBottomOf="@+id/btUpdate"
+        tools:layout_editor_absoluteX="16dp" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -70,29 +58,16 @@
         tools:srcCompat="@drawable/user_no_image" />
 
     <TextView
-        android:id="@+id/tvAt"
+        android:id="@+id/tvId"
+        style="@style/normalText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="fragment_setting_main.xml"
-        android:textColor="@color/colorRed"
-        android:textSize="15sp"
+        android:layout_marginTop="15dp"
+        android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textColor="@color/colorRed"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btUpdate"
-        tools:text="textView" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        tools:text="會員暱稱" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

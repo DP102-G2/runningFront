@@ -73,6 +73,7 @@ public class SignInMainFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_signin_main, container, false);
     }
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -150,7 +151,7 @@ public class SignInMainFragment extends Fragment {
             }
         });
 
-        /*============================== Google 登入程式碼 ==============================*/
+        /* ============================== Google 登入程式碼 ============================== */
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -167,9 +168,17 @@ public class SignInMainFragment extends Fragment {
 
             }
         });
-
         SignInButton signInButton = view.findViewById(R.id.btGSignIn);
         signInButton.setSize(SignInButton.SIZE_WIDE);
+
+        /* 註冊會員按鈕 */
+        view.findViewById(R.id.btSignUp).setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 Navigation.findNavController(view)
+                         .navigate(R.id.action_signinMainFragment_to_signupFragment);
+             }
+         });
 
         /* 登出按鈕 */
         view.findViewById(R.id.btSignOut).setOnClickListener(new View.OnClickListener() {

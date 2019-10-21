@@ -296,7 +296,6 @@ public class SettingUpadteFragment extends Fragment {
                     if (isUpdate) {
                         Log.d(TAG, "會員資料修改成功。");
                         Common.toastShow(activity, "會員資料已更新！");
-                        // ("註冊成功");
                     } else{
                         Log.e(TAG, "會員資料修改失敗。");
                         Common.toastShow(activity, "會員資更新失敗");
@@ -310,70 +309,68 @@ public class SettingUpadteFragment extends Fragment {
 
 
         /* 註冊會員按鈕 */
-        view.findViewById(R.id.btSignUp).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                String id = etId.getText().toString().trim();
-                String password = etPW.getText().toString().trim();
-                String name = etName.getText().toString().trim();
-                String email = etEmail.getText().toString().trim();
-
-                /* ⛔️🔥還沒有做密碼跟信箱驗證🔥⛔️️️ */
-
-                if(id.length() <= 0 || password.length() <= 0
-                        || name.length() <= 0 || email.length() <= 0){
-                    Common.toastShow(activity,"輸入資料不符規定");
-                    return;
-                }
-
-                if (Common.networkConnected(activity)) {
-
-                    String url = Common.URL_SERVER + "SettingServlet";
-
-                    JsonObject jo = new JsonObject();
-                    jo.addProperty("action", "signup");
-                    jo.addProperty("user_id", id);
-                    jo.addProperty("user_pw", password);
-                    jo.addProperty("user_name", name);
-                    jo.addProperty("user_email", email);
-
-                    /* 會員註冊日期 */
-                    Gson gson = new GsonBuilder()
-                            .setDateFormat("yyyy-MM-dd")// 2020-01-02
-                            .create();
-                    /* 將 new Date() 轉為 Json，並且要符合以上的日期表示法
-                     * 但是在 Servlet 端會變成字串型態，需要再利用 Gson 轉成 Date */
-                    String date = gson.toJson(new Date());
-                    jo.addProperty("user_regtime", date);
-
-                    Log.d(TAG, "即將送出的註冊資料：\n" + jo);
-                    String outStr = jo.toString();
-                    CommonTask signUpTask = new CommonTask(url, outStr);
-
-                    boolean isSignUp = false;
-                    try {
-                        String jsonIn = signUpTask.execute().get();
-                        isSignUp = gson.fromJson(jsonIn, Boolean.class);
-                        Log.e(TAG, "isSignUp = " + isSignUp);
-
-                    } catch (Exception e) {
-                        Log.e(TAG, e.getMessage());
-                    }
-                    if (isSignUp) {
-                        Log.e(TAG, "會員註冊成功。");
-                        Common.toastShow(activity, "會員註冊成功！");
-                        // ("註冊成功");
-                    } else{
-                        Log.e(TAG, "會員註冊失敗。");
-                        Common.toastShow(activity, "會員註冊失敗");
-                    }
-                }else {
-                    Common.toastShow(activity, R.string.textNoNetwork);
-                }
-
-            }
-        });
+//        view.findViewById(R.id.btSignUp).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                String id = etId.getText().toString().trim();
+//                String password = etPW.getText().toString().trim();
+//                String name = etName.getText().toString().trim();
+//                String email = etEmail.getText().toString().trim();
+//
+//                if(id.length() <= 0 || password.length() <= 0
+//                        || name.length() <= 0 || email.length() <= 0){
+//                    Common.toastShow(activity,"輸入資料不符規定");
+//                    return;
+//                }
+//
+//                if (Common.networkConnected(activity)) {
+//
+//                    String url = Common.URL_SERVER + "SettingServlet";
+//
+//                    JsonObject jo = new JsonObject();
+//                    jo.addProperty("action", "signup");
+//                    jo.addProperty("user_id", id);
+//                    jo.addProperty("user_pw", password);
+//                    jo.addProperty("user_name", name);
+//                    jo.addProperty("user_email", email);
+//
+//                    /* 會員註冊日期 */
+//                    Gson gson = new GsonBuilder()
+//                            .setDateFormat("yyyy-MM-dd")// 2020-01-02
+//                            .create();
+//                    /* 將 new Date() 轉為 Json，並且要符合以上的日期表示法
+//                     * 但是在 Servlet 端會變成字串型態，需要再利用 Gson 轉成 Date */
+//                    String date = gson.toJson(new Date());
+//                    jo.addProperty("user_regtime", date);
+//
+//                    Log.d(TAG, "即將送出的註冊資料：\n" + jo);
+//                    String outStr = jo.toString();
+//                    CommonTask signUpTask = new CommonTask(url, outStr);
+//
+//                    boolean isSignUp = false;
+//                    try {
+//                        String jsonIn = signUpTask.execute().get();
+//                        isSignUp = gson.fromJson(jsonIn, Boolean.class);
+//                        Log.e(TAG, "isSignUp = " + isSignUp);
+//
+//                    } catch (Exception e) {
+//                        Log.e(TAG, e.getMessage());
+//                    }
+//                    if (isSignUp) {
+//                        Log.e(TAG, "會員註冊成功。");
+//                        Common.toastShow(activity, "會員註冊成功！");
+//                        // ("註冊成功");
+//                    } else{
+//                        Log.e(TAG, "會員註冊失敗。");
+//                        Common.toastShow(activity, "會員註冊失敗");
+//                    }
+//                }else {
+//                    Common.toastShow(activity, R.string.textNoNetwork);
+//                }
+//
+//            }
+//        });
 
     }
 

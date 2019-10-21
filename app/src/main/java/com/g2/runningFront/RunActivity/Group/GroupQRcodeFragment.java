@@ -207,6 +207,6 @@ public class GroupQRcodeFragment extends Fragment {
         } else {
             Common.toastShow(activity,"找不到 QR 掃描結果\n請使用其它方式");
         }
-        /* ==================== ⬇️ ️正在施工區域 ⬇️ ==================== */
+
     }
 }

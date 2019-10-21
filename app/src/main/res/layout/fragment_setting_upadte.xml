@@ -24,39 +24,40 @@
                 style="@style/bt_radius_main"
                 android:layout_width="108dp"
                 android:layout_height="36dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="35dp"
                 android:layout_marginBottom="80dp"
                 android:text="確認修改"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/radioGroup"
                 app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
             <Button
-                android:id="@+id/btSignUp"
-                style="@style/bt_radius_main"
+                android:id="@+id/btCancel"
+                style="@style/bt_radius_white"
                 android:layout_width="108dp"
                 android:layout_height="36dp"
-                android:text="註冊帳號"
-                android:textSize="15dp"
-                app:layout_constraintBottom_toBottomOf="@+id/btUpdate"
+                android:layout_marginTop="35dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="80dp"
+                android:text="取消修改"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/etEmail"
                 app:layout_constraintStart_toEndOf="@+id/btUpdate"
-                app:layout_constraintTop_toTopOf="@+id/btUpdate" />
+                app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
-            <EditText
-                android:id="@+id/etId"
-                style="@style/type_radius"
-                android:layout_width="316dp"
-                android:layout_height="35dp"
-                android:layout_marginTop="50dp"
-                android:ems="10"
-                android:inputType="textPersonName"
+            <TextView
+                android:id="@+id/tvName"
+                style="@style/lilText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="55dp"
+                android:text="user_id"
+                android:textSize="17sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView"
-                tools:text="user_id" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
             <EditText
                 android:id="@+id/etPW"
@@ -103,6 +104,21 @@
                 app:layout_constraintTop_toBottomOf="@+id/etName"
                 tools:text="user_email" />
 
+            <EditText
+                android:id="@+id/etId"
+                style="@style/type_radius"
+                android:layout_width="316dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="55dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView"
+                tools:text="user_id" />
+
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="140dp"
@@ -137,16 +153,6 @@
 
             </RadioGroup>
 
-            <TextView
-                android:id="@+id/tvAt"
-                style="@style/tv_warning_red"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Setting Update Fragment"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

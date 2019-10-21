@@ -1,12 +1,9 @@
 package com.g2.runningFront.SettingActivity;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 
 /* 有關圖片處理 */
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Base64;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,9 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-/* 使用 Gson */
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,8 +36,6 @@ import static com.g2.runningFront.Common.Common.PREF;
 import static com.g2.runningFront.Common.Common.round;
 
 import android.content.Intent;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -54,11 +46,8 @@ public class SettingMainFragment extends Fragment {
     private static String TAG = "TAG_SettingMain";
     private Activity activity;
     private ImageView imageView;
-    private TextView textView;
-    private Button button;
-    private EditText et;
+    private TextView tvId;
 
-    private Gson gson;
 
     /* 請求登入的代碼 */
     private static final int REQ_SIGNIN = 50;
@@ -66,11 +55,8 @@ public class SettingMainFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         activity = getActivity();
-
-        /* 為了在此使用 Gson */
-        gson = new Gson();
-
     }
 
     @Nullable
@@ -85,67 +71,11 @@ public class SettingMainFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         imageView = view.findViewById(R.id.imageView);
-        textView = view.findViewById(R.id.textView);
+        tvId = view.findViewById(R.id.tvId);
 
-
-        /* 檢查會員註冊的帳號名稱是否有重複 */
-        et = view.findViewById(R.id.et);
-        et.addTextChangedListener(new TextWatcher() {
-
-            @Override   //這三個方法一定要 Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String new_id = et.getText().toString().trim();
-
-                JsonObject jo = new JsonObject();
-                jo.addProperty("action","checkId");
-                jo.addProperty("new_id", new_id);
-
-                String url = Common.URL_SERVER + "SettingServlet";
-                CommonTask checkIdTask = new CommonTask(url, jo.toString());
-
-                boolean isIdValid = false;
-                try {
-
-                    String strIn = checkIdTask.execute().get();
-                    Log.e(TAG,"" + strIn);
-                    isIdValid = gson.fromJson(strIn, Boolean.class);
-
-                } catch (Exception e) {
-                    Log.e(TAG, e.toString());
-                }
-                if(!isIdValid){
-                    // ID 未通過
-                    et.setTextColor(Color.RED);
-                } else {
-                    // ID 通過
-                    et.setTextColor(Color.BLACK);
-                }
-            }
-
-            @Override   //這三個方法一定要 Override
-            public void afterTextChanged(Editable editable) {
-                return;
-            }
-
-            @Override   //這三個方法一定要 Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                return;
-            }
-
-        });
-
-        /* ❗️（暫時性）前往登入 Activity 的臨時按鈕❗️ */
-        button = view.findViewById(R.id.set_btLogin);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent;
-                intent = new Intent(activity, SignInActivity.class);
-                startActivity(intent);
-
-            }
-        });
+        /* 顯示偏好設定中的會員暱稱 */
+        String name = activity.getSharedPreferences(Common.PREF,MODE_PRIVATE).getString("user_name","");
+        tvId.setText(name);
 
         /* 修改會資料按鈕 */
         view.findViewById(R.id.btUpdate).setOnClickListener(new View.OnClickListener() {
@@ -156,7 +86,7 @@ public class SettingMainFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putInt("user_no", no);
 
-                Navigation.findNavController(textView).
+                Navigation.findNavController(imageView).
                         navigate(R.id.action_settingMainFragment_to_settingUpadteFragment, bundle);
             }
 
@@ -169,13 +99,11 @@ public class SettingMainFragment extends Fragment {
                 SharedPreferences pref = activity.getSharedPreferences(Common.PREF,
                         MODE_PRIVATE);
                 pref.edit()
-                        .putBoolean("isSignIn", false)
-
                         /* 清除偏好設定 */
+                        //.putBoolean("isSignIn", false)
                         .clear()
                         .apply();
 
-                textView.setText("已經登出");
                 Log.e(TAG,"使用者登出，登入狀態\"isSignIn\"已修改。");
 
                 /* 延時執行 */
@@ -187,7 +115,7 @@ public class SettingMainFragment extends Fragment {
                         Intent signInIntent = new Intent(activity, SignInActivity.class);
                         startActivityForResult(signInIntent,REQ_SIGNIN);
                     }
-                },4000);// 延後4秒
+                },4 * 1000);// 延後 4 秒
             }
         });
 
@@ -244,10 +172,6 @@ public class SettingMainFragment extends Fragment {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case REQ_SIGNIN:
-
-                    textView.setText("isSignIn = "+ pref.getBoolean("isSignIn",false)
-                            +"\nUser_No:\t\t"+pref.getInt("user_no",0));
-
                     break;
                 default:
                     break;
@@ -255,28 +179,4 @@ public class SettingMainFragment extends Fragment {
         }
     }
 
-    /**
-     * 用正規表達式檢查字串，回傳布林值
-     * @param string    任意字串
-     * @return boolean
-     */
-    private boolean matches(String string){
-        return string.matches("^\\w+([-+.]\\w+)@\\w+([-.]\\w+).\\w+([-.]\\w+)*$");
-
-        // 長度5-16，由數字、英文字母、_ 組成 --  ^\\w{5,16}$
-        // 長度5以上的密碼 --                  ^[A-Za-z0-9]+.{5,}$
-        // Email --                         ^\w+([-+.]\w+)@\w+([-.]\w+).\w+([-.]\w+)*$
-        // 由數字或英文字母組成 --              ^[A-Za-z0-9]+$
-
-        /*
-        boolean isIdValid = matches(new_id);
-        if (isIdValid && new_id.length() <= 16) {
-            // id OK
-            et.setTextColor(Color.BLACK);
-        } else {
-            // Id 不OK
-            et.setTextColor(Color.RED);
-        }
-         */
-    }
 }

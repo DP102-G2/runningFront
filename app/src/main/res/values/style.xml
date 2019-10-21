@@ -24,11 +24,13 @@
         <item name="android:padding">8dip</item>
     </style>
 
-    <!-- 警示小文字 -->
-    <style name="tv_warning_red" parent="@android:style/Widget.TextView">
-        <item name="android:textSize">13sp</item>
-        <item name="android:textColor">@color/colorRed</item>
+    <!-- 白色按鈕樣式 -->
+    <style name="bt_radius_white" parent="@android:style/Widget.Button">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@android:color/black</item>
         <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/bt_radius_white</item>
+        <item name="android:padding">8dip</item>
     </style>
 
 </resources>

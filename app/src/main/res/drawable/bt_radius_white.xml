@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android" android:color="@color/colorMain">
+    <!--  按壓時  -->
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="15dip" />
+            <!-- 漸層顏色 -->
+            <gradient android:angle="-90" android:startColor="@color/colorMain" android:endColor="@color/colorMain" />
+        </shape>
+    </item>
+
+    <!--  預設時  -->
+    <item android:color="@android:color/white">
+        <shape android:shape="rectangle"  >
+            <corners android:radius="15dip" />
+            <gradient android:angle="-90" android:startColor="@android:color/white" android:endColor="@android:color/white" />
+        </shape>
+    </item>
+</ripple>

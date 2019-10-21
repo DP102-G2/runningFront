@@ -89,6 +89,7 @@ public class GroupSearchFragment extends Fragment {
             public boolean onQueryTextSubmit(String query) {
                 return false;
             }
+
         });
 
         view.findViewById(R.id.bt_qrCode).setOnClickListener(new View.OnClickListener() {
@@ -143,7 +144,7 @@ public class GroupSearchFragment extends Fragment {
             MyViewHolder(View itemView) {
                 super(itemView);
                 imageView = itemView.findViewById(R.id.imageView);
-                tvName = itemView.findViewById(R.id.tvName);
+                tvName = itemView.findViewById(R.id.tvId);
                 tvId = itemView.findViewById(R.id.tvId);
             }
         }
