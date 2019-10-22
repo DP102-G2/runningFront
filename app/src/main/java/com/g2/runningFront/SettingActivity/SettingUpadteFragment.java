@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 /* 有關 Layout */
 import android.util.Log;
@@ -21,14 +22,6 @@ import android.widget.ImageView;
 
 /* 不知道為什麼要 import Res 目錄 */
 import com.g2.runningFront.R;
-
-import com.g2.runningFront.Common.Common;
-import com.g2.runningFront.Common.CommonTask;
-import com.g2.runningFront.Common.ImageTask;
-
-/* 有關建立日期、日期格式 */
-import com.google.gson.GsonBuilder;
-import java.util.Date;
 
 /* 使用 Gson */
 import com.google.gson.Gson;
@@ -52,19 +45,26 @@ import android.util.Base64;
 import android.widget.PopupMenu;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
+import com.g2.runningFront.Common.Common;
+import com.g2.runningFront.Common.CommonTask;
+
+import static com.g2.runningFront.Common.Common.PREF;
+import static android.content.Context.MODE_PRIVATE;
 import static android.app.Activity.RESULT_OK;
+/* 有關把大頭貼改成圓形 */
 import static com.g2.runningFront.Common.Common.round;
 
 
 public class SettingUpadteFragment extends Fragment {
     private static String TAG = "TAG_SettingUpdate";
     private Activity activity;
+    private TextView tvId;
     private ImageView imageView;
-    private EditText etId, etPW, etName, etEmail;
+    private EditText etPW, etName, etEmail;
 
     private RadioGroup radioGroup;
-    private RadioButton rbPublic, rbPrivate;
 
     private Gson gson;
 
@@ -97,8 +97,8 @@ public class SettingUpadteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        tvId = view.findViewById(R.id.tvId);
         imageView = view.findViewById(R.id.imageView);
-        etId = view.findViewById(R.id.etId);
         etPW = view.findViewById(R.id.etPW);
         etName = view.findViewById(R.id.etName);
         etEmail = view.findViewById(R.id.etEmail);
@@ -107,6 +107,7 @@ public class SettingUpadteFragment extends Fragment {
 
         /* 列印出該會員資料 */
         final Bundle bundle = getArguments();
+        tvId.setText(activity.getSharedPreferences(PREF, MODE_PRIVATE).getString("user_id",""));
 
         if (bundle == null || bundle.getInt("user_no") == 0) {
             Log.e(TAG, "讀入的 user_no 不被許可");
@@ -139,7 +140,6 @@ public class SettingUpadteFragment extends Fragment {
                         Log.e(TAG, "傳回的 JsonObject：\n" + jo);
 
                         /* 印出會員資料 */
-                        etId.setText(jo.get("user_id").getAsString());
                         etPW.setText(jo.get("user_pw").getAsString());
                         etName.setText(jo.get("user_name").getAsString());
                         etEmail.setText(jo.get("user_email").getAsString());
@@ -189,8 +189,8 @@ public class SettingUpadteFragment extends Fragment {
             }
         }
 
-        /* 按下大頭貼，跳出選擇圖片來源選單 */
-        imageView.setOnClickListener(new View.OnClickListener() {
+        /* 按下編輯按鈕，跳出選擇圖片來源選單 */
+        view.findViewById(R.id.btChoosePic).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -200,6 +200,7 @@ public class SettingUpadteFragment extends Fragment {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getItemId()){
+
                             /* 拍攝照片 */
                             case R.id.take_pic:
                                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -307,70 +308,16 @@ public class SettingUpadteFragment extends Fragment {
             }
         });
 
+        /* 取消修改按鈕（返回上一頁） */
+        view.findViewById(R.id.btCancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-        /* 註冊會員按鈕 */
-//        view.findViewById(R.id.btSignUp).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                String id = etId.getText().toString().trim();
-//                String password = etPW.getText().toString().trim();
-//                String name = etName.getText().toString().trim();
-//                String email = etEmail.getText().toString().trim();
-//
-//                if(id.length() <= 0 || password.length() <= 0
-//                        || name.length() <= 0 || email.length() <= 0){
-//                    Common.toastShow(activity,"輸入資料不符規定");
-//                    return;
-//                }
-//
-//                if (Common.networkConnected(activity)) {
-//
-//                    String url = Common.URL_SERVER + "SettingServlet";
-//
-//                    JsonObject jo = new JsonObject();
-//                    jo.addProperty("action", "signup");
-//                    jo.addProperty("user_id", id);
-//                    jo.addProperty("user_pw", password);
-//                    jo.addProperty("user_name", name);
-//                    jo.addProperty("user_email", email);
-//
-//                    /* 會員註冊日期 */
-//                    Gson gson = new GsonBuilder()
-//                            .setDateFormat("yyyy-MM-dd")// 2020-01-02
-//                            .create();
-//                    /* 將 new Date() 轉為 Json，並且要符合以上的日期表示法
-//                     * 但是在 Servlet 端會變成字串型態，需要再利用 Gson 轉成 Date */
-//                    String date = gson.toJson(new Date());
-//                    jo.addProperty("user_regtime", date);
-//
-//                    Log.d(TAG, "即將送出的註冊資料：\n" + jo);
-//                    String outStr = jo.toString();
-//                    CommonTask signUpTask = new CommonTask(url, outStr);
-//
-//                    boolean isSignUp = false;
-//                    try {
-//                        String jsonIn = signUpTask.execute().get();
-//                        isSignUp = gson.fromJson(jsonIn, Boolean.class);
-//                        Log.e(TAG, "isSignUp = " + isSignUp);
-//
-//                    } catch (Exception e) {
-//                        Log.e(TAG, e.getMessage());
-//                    }
-//                    if (isSignUp) {
-//                        Log.e(TAG, "會員註冊成功。");
-//                        Common.toastShow(activity, "會員註冊成功！");
-//                        // ("註冊成功");
-//                    } else{
-//                        Log.e(TAG, "會員註冊失敗。");
-//                        Common.toastShow(activity, "會員註冊失敗");
-//                    }
-//                }else {
-//                    Common.toastShow(activity, R.string.textNoNetwork);
-//                }
-//
-//            }
-//        });
+                Navigation.findNavController(radioGroup)
+                        .popBackStack();
+
+            }
+        });
 
     }
 

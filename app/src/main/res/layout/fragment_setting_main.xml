@@ -5,6 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/user_no_image" />
+
+    <TextView
+        android:id="@+id/tvName"
+        style="@style/normalText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        tools:text="會員暱稱" />
+
     <Button
         android:id="@+id/btSignOut"
         android:layout_width="match_parent"
@@ -17,6 +41,18 @@
         android:textSize="17sp"
         app:layout_constraintTop_toBottomOf="@+id/btHealth"
         tools:layout_editor_absoluteX="0dp" />
+
+    <Button
+        android:id="@+id/btHealth"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:background="@drawable/btb_style"
+        android:paddingLeft="10dp"
+        android:text="修改健康資訊"
+        android:textAlignment="textStart"
+        android:textSize="17sp"
+        app:layout_constraintTop_toBottomOf="@+id/btUpdate"
+        tools:layout_editor_absoluteX="16dp" />
 
     <Button
         android:id="@+id/btUpdate"
@@ -33,41 +69,5 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-    <Button
-        android:id="@+id/btHealth"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:background="@drawable/btb_style"
-        android:paddingLeft="10dp"
-        android:text="修改健康資訊"
-        android:textAlignment="textStart"
-        android:textSize="17sp"
-        app:layout_constraintTop_toBottomOf="@+id/btUpdate"
-        tools:layout_editor_absoluteX="16dp" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
-        android:layout_marginTop="60dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/user_no_image" />
-
-    <TextView
-        android:id="@+id/tvId"
-        style="@style/normalText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:textColor="@android:color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        tools:text="會員暱稱" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

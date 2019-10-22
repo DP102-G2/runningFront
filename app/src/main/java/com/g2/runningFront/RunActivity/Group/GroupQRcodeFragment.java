@@ -4,6 +4,7 @@ package com.g2.runningFront.RunActivity.Group;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +40,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.g2.runningFront.Common.Common.round;
 
 
 public class GroupQRcodeFragment extends Fragment {
@@ -179,6 +182,8 @@ public class GroupQRcodeFragment extends Fragment {
                 // 掃描到的 id 帳號
                 String follow_id = intentResult.getContents();
 
+                /* 目前沒有阻擋追蹤自己的行為 */
+
                 JsonObject jo = new JsonObject();
                 jo.addProperty("action","follow");
                 jo.addProperty("user_id", id);
@@ -197,7 +202,12 @@ public class GroupQRcodeFragment extends Fragment {
                     Log.e(TAG, e.getMessage());
                 }
                 if(isFollow){
+                    /* 改變掃描器按鈕屬性 */
+                    button.setEnabled(false);
+                    button.setText("追蹤成功囉！");
+
                     Common.toastShow(activity,"加入追蹤成功");
+                    changeToFollowImage(follow_id);
                 } else {
                     Common.toastShow(activity,"加入追蹤失敗\n請重新加入");
                 }
@@ -209,4 +219,35 @@ public class GroupQRcodeFragment extends Fragment {
         }
 
     }
+
+    /* 取得追蹤會員大頭貼 */
+    private void changeToFollowImage(String follow_id){
+
+        String url = Common.URL_SERVER + "GroupServlet";
+
+        JsonObject jo = new JsonObject();
+        jo.addProperty("action","getOneImage");
+        jo.addProperty("follow_id", follow_id);
+
+        CommonTask imageTask = new CommonTask(url, jo.toString());
+
+        Bitmap bitmap = null;
+
+        try {
+            /* 用 Base64 解碼 Servlet 端 編碼而成的文字變成 byte[]
+             * 再用 BitmapFactory 把 byte[] 換成 bitmap 以供 UI 元件貼圖 */
+            byte[] image = Base64.decode(imageTask.execute().get(), Base64.DEFAULT);
+            bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
+        }
+        if (bitmap != null) {
+            /* 把圖片套上變成圓形的方法 */
+            imageView.setImageBitmap(round(bitmap));
+        } else {
+            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.user_no_image);
+            imageView.setImageBitmap(round(bitmap));
+        }
+    }
+
 }

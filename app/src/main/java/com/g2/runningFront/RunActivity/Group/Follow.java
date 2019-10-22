@@ -1,6 +1,7 @@
 package com.g2.runningFront.RunActivity.Group;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 
 public class Follow implements Serializable {
     private int no;
@@ -46,7 +47,11 @@ public class Follow implements Serializable {
     }
 
     public double getDistance() {
-        return distance;
+        // 因為是資料庫的數據是公尺，需要 ÷ 1000
+        // 除以 1000 以後的小數點，改成只顯示小數點後2位
+        DecimalFormat df = new DecimalFormat("##.00");
+        String distanceStr = df.format(distance/1000);
+        return Double.parseDouble(distanceStr);
     }
 
     public void setDistance(double distance) {

@@ -6,7 +6,6 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -34,13 +33,12 @@ import com.g2.runningFront.Common.CommonTask;
 import com.g2.runningFront.R;
 
 /* 使用 Gson 相關 */
-import com.g2.runningFront.SettingActivity.SettingActivity;
-import com.g2.runningFront.SettingActivity.SettingUpadteFragment;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
+/* 有關建立日期、日期格式 */
 import java.util.Date;
+import com.google.gson.GsonBuilder;
 
 
 public class SignupFragment extends Fragment {
@@ -90,7 +88,6 @@ public class SignupFragment extends Fragment {
         ivCheckBig = view.findViewById(R.id.ivCheckBig);
         hideViews(ivIdCheck, ivIdCross, ivNameCheck, ivNameCross,
                 ivPWCheck, ivPWCross, ivEmailCheck, ivEmailCross, ivCheckBig);
-
 
         /* 輸入註冊帳號 */
         etId = view.findViewById(R.id.etId);
@@ -164,6 +161,13 @@ public class SignupFragment extends Fragment {
 
         /* 輸入註冊密碼 */
         etPW = view.findViewById(R.id.etPW);
+        /* 隱藏鍵盤方法 */
+        etPW.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideKeys(activity);
+            }
+        });
         tvPWBtn = view.findViewById(R.id.tvPWBtn);
         etPW.addTextChangedListener(new TextWatcher() {
             @Override //這三個方法一定要 Override
@@ -241,6 +245,9 @@ public class SignupFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
+                /* 隱藏鍵盤 */
+                hideKeys(activity);
+
                 String id = etId.getText().toString().trim();
                 String password = etPW.getText().toString().trim();
                 String name = etName.getText().toString().trim();
@@ -297,8 +304,6 @@ public class SignupFragment extends Fragment {
                 }else {
                     Common.toastShow(activity, R.string.textNoNetwork);
                 }
-                /* 隱藏鍵盤 */
-                hideKeys(activity);
 
                 /* 註冊成功跳頁前動畫 */
                 signUpAnimator();
@@ -306,11 +311,17 @@ public class SignupFragment extends Fragment {
                     @Override
                     public void run() {
 
-                        Intent settingIntent = new Intent(activity, SettingActivity.class);
+                        /* 結束註冊 Activity，回到上一層開啟的 Activity */
+                        activity.finish();
+
+                        /*
+                        Intent settingIntent = new Intent(activity, SettingMainFragment.class);
+                        Intent runIntent = new Intent(activity, MainActivity.class);
                         activity.startActivity(settingIntent);
+                         */
 
                     }
-                },5 * 1000);// 延後 5 秒
+                },8 * 1000);// 延後 8 秒
             }
         });
 
@@ -453,7 +464,7 @@ public class SignupFragment extends Fragment {
         ObjectAnimator objectAnimator =
                 ObjectAnimator.ofPropertyValuesHolder(ivCheckBig, holderX, holderY);
         objectAnimator.setDuration(2500);
-        objectAnimator.setRepeatCount(5);
+        objectAnimator.setRepeatCount(2);
         return objectAnimator;
     }
 

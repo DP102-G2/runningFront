@@ -174,7 +174,7 @@ public class GroupFragment extends Fragment {
 
         FollowAdapter followAdapter = (FollowAdapter) gp_rv.getAdapter();
 
-        // 如果followAdapter不存在就建立新的，否則續用舊有的
+        // 如果 followAdapter 不存在就建立新的，否則續用舊有的
         if (followAdapter == null) {
             gp_rv.setAdapter(new FollowAdapter(activity, follows));
 

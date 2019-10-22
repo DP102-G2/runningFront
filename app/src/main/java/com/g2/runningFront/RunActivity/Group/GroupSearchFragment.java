@@ -144,7 +144,7 @@ public class GroupSearchFragment extends Fragment {
             MyViewHolder(View itemView) {
                 super(itemView);
                 imageView = itemView.findViewById(R.id.imageView);
-                tvName = itemView.findViewById(R.id.tvId);
+                tvName = itemView.findViewById(R.id.tvName);
                 tvId = itemView.findViewById(R.id.tvId);
             }
         }

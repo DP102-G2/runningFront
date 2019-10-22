@@ -82,6 +82,8 @@ public class Common {
                 Intent signInIntent = new Intent(activity, SignInActivity.class);
                 activity.startActivity(signInIntent);
                 return;
+            } else {
+                return;
             }
         }
     }
@@ -135,6 +137,14 @@ public class Common {
             InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) activity.getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(
+                activity.getCurrentFocus().getWindowToken(),0);
     }
 
     /**
