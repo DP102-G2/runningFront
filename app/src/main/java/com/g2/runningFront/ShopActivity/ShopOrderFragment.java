@@ -96,14 +96,6 @@ public class ShopOrderFragment extends Fragment {
 
 
     }
-//    private void change(){
-//        for (Order order : orders) {
-//            Switch(order.getOrder_status().equals(){
-//
-//
-//            }
-//        }
-//    }
 
 
     private void showAll() {
@@ -118,12 +110,7 @@ public class ShopOrderFragment extends Fragment {
                     String jsonOut = jsonObject.toString();
                     orderGetAllTask = new CommonTask(url, jsonOut);
                     String jsonIn = orderGetAllTask.execute().get();
-                    Common.toastShow(activity, jsonIn);
                     Log.d(TAG, jsonIn);
-//                    Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd hh:mm:ss.S").create();
-//                    Gson gson = new GsonBuilder()
-////                            .registerTypeAdapter(Timestamp.class,new TimestampTypeAdapter()).setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-////                    // timestamp 解碼？
                     GsonBuilder gsonBuilder = new GsonBuilder();
                     gsonBuilder.setDateFormat("yyyyMMddHHmmss");
                     gsonBuilder.registerTypeAdapter(Timestamp.class, new TimestampTypeAdapter());

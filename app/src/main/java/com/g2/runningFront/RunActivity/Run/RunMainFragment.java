@@ -75,10 +75,14 @@ public class RunMainFragment extends Fragment {
 
     DecimalFormat format = new DecimalFormat(("0.00"));
 
+    int user_no;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = getActivity();
+        Common.signIn(activity);
+        user_no = Common.getUserNo(activity);
     }
 
     @Override
@@ -92,10 +96,11 @@ public class RunMainFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
+
         pref = activity.getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
         runList = getRun();
         getUserBasic();
-        if (runList != null) {
+        if (runList != null&&userBasic!=null) {
             getWeekData();
             holdView();
         }
@@ -205,7 +210,7 @@ public class RunMainFragment extends Fragment {
 
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("action", "getWeekRunList");
-            jsonObject.addProperty("userNo", 1);
+            jsonObject.addProperty("userNo", user_no);
             // 之後要補足資料
 
             try {
@@ -232,11 +237,12 @@ public class RunMainFragment extends Fragment {
             try {
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("action", "getUserBasic");
-                jsonObject.addProperty("userNo", 1);
+                jsonObject.addProperty("userNo", user_no);
                 uDataTask = new CommonTask(url, jsonObject.toString());
                 String ubStr = uDataTask.execute().get();
                 Log.d("ubStr", ubStr);
                 userBasic = new Gson().fromJson(ubStr, UserBasic.class);
+                userBasic.setUser_no(user_no);
                 pref.edit().putString("UserBasic", new Gson().toJson(userBasic)).apply();
 
                 if (userBasic.getHeight() == 0 | userBasic.getGender() == 0 | userBasic.getAge() == 0) {

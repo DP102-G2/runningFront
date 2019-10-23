@@ -33,7 +33,7 @@
     </fragment>
     <fragment
         android:id="@+id/shopServerFragment"
-        android:name="com.g2.runningFront.ShopActivity.ShopServerFragment"
+        android:name="com.g2.runningFront.ShopActivity.Server.ShopServerFragment"
         android:label="fragment_shop_server"
         tools:layout="@layout/fragment_shop_server" />
     <fragment

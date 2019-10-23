@@ -52,6 +52,7 @@ public class ShopCartFillFragment extends Fragment {
     TextView textView;
 
     int sumTotal;
+    int user_no;
 
     private final static String DEFAULT_ERROR = "null";
     private final static String PREFERENCES_NAME = "preferences";
@@ -65,6 +66,7 @@ public class ShopCartFillFragment extends Fragment {
         super.onCreate(savedInstanceState);
         activity = getActivity();
         bundle = getArguments();
+        user_no = Common.getUserNo(activity);
     }
 
     @Override
@@ -109,7 +111,7 @@ public class ShopCartFillFragment extends Fragment {
                 if (receiverName.equals("") || receiverAddress.equals("") || receiverPhone.equals("")) {
                     Common.toastShow(activity, "請填寫你的收件人資料");
                 } else {
-                    CartOrder or = new CartOrder(1,receiverName, receiverAddress, receiverPhone, receiverPayment,0,sumTotal);
+                    CartOrder or = new CartOrder(user_no,receiverName, receiverAddress, receiverPhone, receiverPayment,0,sumTotal);
                     // 訂單狀態先預設為0，代表尚未付款，等到下一頁要上傳取訂單編號用
                     // 未來要補上USERNO
                     pref.edit().putString("CartOrder", new Gson().toJson(or)).apply();

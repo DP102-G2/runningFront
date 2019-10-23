@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,11 +89,16 @@ public class RunInquireFragment extends Fragment
     double sumDistance = 0;
     String distanceStr;
 
+    int user_no;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = getActivity();
+        setHasOptionsMenu(true);
+        Common.signIn(activity);
+        user_no = Common.getUserNo(activity);
     }
 
     @Override
@@ -99,6 +106,7 @@ public class RunInquireFragment extends Fragment
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_run_inquire, container, false);
     }
+
 
 
     @Override
@@ -112,7 +120,6 @@ public class RunInquireFragment extends Fragment
         if (runList != null) {
             holdView();
         }
-
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -207,12 +214,15 @@ public class RunInquireFragment extends Fragment
         // 針對目前的時間，可以算出起始與七天後的時間
         Calendar calendar = new GregorianCalendar(year, month, day);
         startDate = new Timestamp(calendar.getTimeInMillis());
-        if (runList.get(runList.size() - 1).getRun_date().getTime() - endDate.getTime() < dayTime * 6) {
+
+        if (runList.get(runList.size() - 1).getRun_date().getTime() - startDate.getTime() < dayTime * 6) {
+
             endDate = new Timestamp(runList.get(runList.size() - 1).getRun_date().getTime());
 
         } else {
             endDate = new Timestamp(startDate.getTime() + dayTime * 6);
         }
+
         updateDisplay(startDate, endDate);
     }
 
@@ -355,7 +365,7 @@ public class RunInquireFragment extends Fragment
         List<Run> runs = new ArrayList<>();
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", "getRunList");
-        jsonObject.addProperty("userNo", 1);
+        jsonObject.addProperty("userNo", user_no);
         jsonObject.addProperty("startDate", gson.toJson(startDate));
 
         if (Common.networkConnected(activity)) {

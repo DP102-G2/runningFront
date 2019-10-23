@@ -170,15 +170,15 @@ public class GroupSearchFragment extends Fragment {
             SearchImageTask = new ImageTask(url, no, IMAGE_SIZE, myViewHolder.imageView);
             SearchImageTask.execute();
 
-//            myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Bundle bundle = new Bundle();
-//                    bundle.putInt("user_no", follow.getNo());
-//                    Navigation.findNavController(view)
-//                            .navigate(R.id.action_groupSearchFragment_to_FriendFragment2, bundle);
-//                }
-//            });
+            myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("user_no", follow.getNo());
+                    Navigation.findNavController(view)
+                            .navigate(R.id.action_runGroupFragment_to_FriendFragment2, bundle);
+                }
+            });
 
         }
     }

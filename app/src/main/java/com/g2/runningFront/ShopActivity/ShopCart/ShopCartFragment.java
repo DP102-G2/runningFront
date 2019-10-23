@@ -49,6 +49,7 @@ public class ShopCartFragment extends Fragment {
 
     Activity activity;
     SharedPreferences pref;
+    int user_no;
 
 
     private static final String url = Common.URL_SERVER + "ShopCartServlet";
@@ -85,6 +86,8 @@ public class ShopCartFragment extends Fragment {
         super.onCreate(savedInstanceState);
         activity = getActivity();
         activity.setTitle("購物車");
+        Common.signIn(activity);
+        user_no = Common.getUserNo(activity);
     }
 
     @Override
@@ -408,8 +411,6 @@ public class ShopCartFragment extends Fragment {
     // 離開始顯示提醒事項
     @Override
     public void onPause() {
-        super.onPause();
-
         if (!Confirl && shopCartList != null) {
 
 
@@ -433,6 +434,7 @@ public class ShopCartFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             updateShopCart();
+
                         }
                     })
                     .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -444,6 +446,8 @@ public class ShopCartFragment extends Fragment {
                     })
                     .show();
         }
+        super.onPause();
+
     }
 
     public void updateShopCart() {
@@ -454,7 +458,7 @@ public class ShopCartFragment extends Fragment {
 
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("action", "saveShopCart");
-            jsonObject.addProperty("user_no", 1);
+            jsonObject.addProperty("user_no", user_no);
             // 需更改USER
 
             jsonObject.addProperty("ShopCart", new Gson().toJson(mList));

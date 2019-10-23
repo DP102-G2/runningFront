@@ -22,6 +22,8 @@ import android.net.ConnectivityManager;
 import android.widget.Toast;
 
 import com.g2.runningFront.SignInActivity.SignInActivity;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -203,7 +205,7 @@ public class Common {
         int day = cal.get(Calendar.DAY_OF_WEEK);
         String dayStr = null;
 
-        switch (day){
+        switch (day) {
             case 1:
                 dayStr = "星期一";
                 break;
@@ -230,7 +232,7 @@ public class Common {
         return dayStr;
     }
 
-    public static String getDay(Timestamp timestamp){
+    public static String getDay(Timestamp timestamp) {
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(timestamp);
@@ -239,15 +241,15 @@ public class Common {
         cal.setFirstDayOfWeek(Calendar.MONDAY);
         String day = "";
         String month = "";
-        if (cal.get(Calendar.DAY_OF_WEEK)<10){
+        if (cal.get(Calendar.DAY_OF_WEEK) < 10) {
             day += "0";
         }
-        if (cal.get(Calendar.MONTH)<10){
-            month +="0";
+        if (cal.get(Calendar.MONTH) < 10) {
+            month += "0";
         }
         day += String.valueOf(cal.get(Calendar.DAY_OF_WEEK));
         month += cal.get(Calendar.MONTH);
-        String dayStr = month +"/" +day;
+        String dayStr = month + "/" + day;
 
         return dayStr;
     }
@@ -257,13 +259,38 @@ public class Common {
      * @param aString    任意字串
      * @return boolean
      */
-    public static boolean matches(String aString){
+    public static boolean matches(String aString) {
         return aString.matches("正規表達式");
         // 規範                              正規表達式
         // 長度4-16，由數字、英文字母、_ 組成 --  ^\\w{4,16}$
         // 長度4以上的密碼 --                  ^[A-Za-z0-9]+.{3,}$
         // Email --                         ^\w+(\w+)@\w+([-.]\w+).\w+([-.]\w+)*$
         // 由數字或英文字母組成 --              ^[A-Za-z0-9]+$
+    }
+
+    public static String formatNum(int num) {
+        String numStr = "";
+
+        if (num < 10) {
+
+            numStr += "0";
+
+        }
+
+        numStr += String.valueOf(num);
+
+        return numStr;
+
+    }
+
+    public static Gson getTimeStampGson(){
+
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.setDateFormat("yyyyMMddhhmmss");
+        gsonBuilder.registerTypeAdapter(Timestamp.class, new TimestampTypeAdapter());
+        Gson gson = gsonBuilder.create();
+
+        return gson;
     }
 
 

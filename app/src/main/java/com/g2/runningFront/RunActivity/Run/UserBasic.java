@@ -4,6 +4,34 @@ import java.io.Serializable;
 
 public class UserBasic implements Serializable {
 
+    int user_no;
+
+    public int getUser_no() {
+        return user_no;
+    }
+
+    public void setUser_no(int user_no) {
+        this.user_no = user_no;
+    }
+
+    public String getBmiSuggest() {
+        return bmiSuggest;
+    }
+
+    public void setBmiSuggest(String bmiSuggest) {
+        this.bmiSuggest = bmiSuggest;
+    }
+
+    public UserBasic(int user_no, int height, int weight, int age, int gender, int bmi, String bmiSuggest) {
+        this.user_no = user_no;
+        this.height = height;
+        this.weight = weight;
+        this.age = age;
+        this.gender = gender;
+        this.bmi = bmi;
+        this.bmiSuggest = bmiSuggest;
+    }
+
     int height;
     int weight;
     int age;
