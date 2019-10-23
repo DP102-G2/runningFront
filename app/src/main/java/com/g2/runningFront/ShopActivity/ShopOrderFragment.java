@@ -3,6 +3,7 @@ package com.g2.runningFront.ShopActivity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -36,10 +37,13 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class ShopOrderFragment extends Fragment {
     private RecyclerView recyclerView;
     private Activity activity;
     private int j;
+    private  int no;
     Button btoOrder_detail;
     List<Order> orders = new ArrayList<>();
     List<Order> orders_spinner = new ArrayList<>();
@@ -49,12 +53,16 @@ public class ShopOrderFragment extends Fragment {
     private CommonTask spotDeleteTask;
     private static final String TAG = "TAG_OrdertListFragment";
     private Spinner spOrder;
+
     TextView tvorderstatus;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = getActivity();
+        no=Common.getUserNo(activity);
+
+        Common.signIn(activity);
     }
 
     @Override
@@ -62,6 +70,7 @@ public class ShopOrderFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_shop_order, container, false);
+
 
 
     }
@@ -72,6 +81,16 @@ public class ShopOrderFragment extends Fragment {
         recyclerView = view.findViewById(R.id.reachieve);
         spOrder = view.findViewById(R.id.spOrder);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        /* 從偏好設定讀取登入狀態與否，並得到會員編號（用來查詢該會員的追蹤名單） */
+        SharedPreferences pref = activity.getSharedPreferences(Common.PREF, MODE_PRIVATE);
+
+        boolean isSignIn = pref.getBoolean("isSignIn", false);
+        if (isSignIn) {
+            /* 顯示使用者追蹤名單 */
+            no = pref.getInt("user_no",0);
+        } else {
+            Log.d(TAG,"檢查未登入，不顯示追蹤名單。");
+        }
         showAll();
         spcon();
 
@@ -79,7 +98,7 @@ public class ShopOrderFragment extends Fragment {
     }
 //    private void change(){
 //        for (Order order : orders) {
-//            Switch(order.getOrder_status().equals()){
+//            Switch(order.getOrder_status().equals(){
 //
 //
 //            }
@@ -95,6 +114,7 @@ public class ShopOrderFragment extends Fragment {
                 try {
                     JsonObject jsonObject = new JsonObject();
                     jsonObject.addProperty("action", "getAll");
+                    jsonObject.addProperty("user_no", no);
                     String jsonOut = jsonObject.toString();
                     orderGetAllTask = new CommonTask(url, jsonOut);
                     String jsonIn = orderGetAllTask.execute().get();
@@ -298,9 +318,9 @@ public class ShopOrderFragment extends Fragment {
 
             viewHolder.tvorderno.setText("訂單標號:" + order.getOrder_no());
             viewHolder.tvorderdate.setText("訂單日期:" + order.getOrder_date());
-            viewHolder.tvpaymentmathon.setText("付款方式:" + order.getPayment_methon());
+            viewHolder.tvpaymentmathon.setText("付款方式:" + order.getPaymentText());
             viewHolder.tvordermoney.setText("金額:" + order.getOrder_money() + " ");
-            viewHolder.tvorderstatus.setText("訂單狀態:" + order.getOrder_status());
+            viewHolder.tvorderstatus.setText("訂單狀態:" + order.getorder_statustText());
             viewHolder.tvProduct.setText("商品編號:" +order.getProduct_no());
             viewHolder.tvShop_quantity.setText("商品數量:" +order.getQty() + " ");
             viewHolder.tvProduct_price.setText("訂單金額:" +order.getOrder_price() + " ");

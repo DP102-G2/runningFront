@@ -84,7 +84,7 @@
                 android:id="@+id/list_Detail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#2945B4"
+                android:background="#E2E2EE"
                 android:orientation="vertical"
                 android:visibility="gone">
 
