@@ -38,6 +38,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -98,9 +99,6 @@ public class RunStartFragment extends Fragment {
         public void onSnapshotReady(Bitmap bp) {
             if (bp != null) {
                 routeBitmap = bp;
-//                ByteArrayOutputStream out = new ByteArrayOutputStream();
-//                bp.compress(Bitmap.CompressFormat.JPEG, 100, out);
-//                route = out.toByteArray();
             }
         }
 
@@ -150,7 +148,7 @@ public class RunStartFragment extends Fragment {
                 if (runStates) {
                     lastLocationList.add(latLng);
                     drawMap(latLng);
-                    getDistance();
+                    getRunValue();
                 }
 
                 moveMap(latLng);
@@ -228,9 +226,9 @@ public class RunStartFragment extends Fragment {
         tvDistance = view.findViewById(R.id.runstart_tvDistance);
         tvSpeed = view.findViewById(R.id.runstart_tvSpeed);
 
-        tvTime.setText("0:0:0");
+        tvTime.setText("00:00:00");
         tvCalories.setText("0");
-        tvDistance.setText("0.000");
+        tvDistance.setText("0.00");
         tvSpeed.setText("0.0");
 
         btStart = view.findViewById(R.id.runstart_btStart);
@@ -283,7 +281,7 @@ public class RunStartFragment extends Fragment {
     }
 
     // 計算距離
-    private void getDistance() {
+    private void getRunValue() {
 
         //當超過兩個點時，才開始計算距離
         if (lastLocationList.size() > 2) {
@@ -317,28 +315,33 @@ public class RunStartFragment extends Fragment {
 
     private void moveMap(LatLng latLng) {
 
-        int zoom = 16;
-        if (distance > 600 && distance < 1000) {
-            zoom = 15;
-        } else if (distance > 1000) {
-            zoom = 13;
-        }
-
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(latLng)
-                .zoom(zoom)
+                .zoom(16)
                 .build();
-        CameraUpdate cameraUpdate = CameraUpdateFactory
-                .newCameraPosition(cameraPosition);
+        CameraUpdate cameraUpdate =null;
+
+        if (lastLocationList.size()<=5){
+            cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
+        }
+        else if (lastLocationList.size() > 5) {
+
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            for (LatLng marker : lastLocationList) {
+                builder.include(new LatLng(marker.latitude,marker.longitude));
+            }
+            LatLngBounds bounds = builder.build();
+
+            cameraUpdate = CameraUpdateFactory
+                    .newLatLngBounds(bounds,100);
+        }
+
         map.animateCamera(cameraUpdate);
 
-        /**
-        * 將zoom餵多點讓他適應大小*/
 
     }
 
     private void drawMap(LatLng latLng) {
-
 
         if (polyline == null) {
             polyline = map.addPolyline(polylineOptions.add(latLng));
@@ -346,7 +349,6 @@ public class RunStartFragment extends Fragment {
 
         polyline.setPoints(lastLocationList);
     }
-
 
     private void runStart() {
         timer = new Timer();
@@ -361,12 +363,11 @@ public class RunStartFragment extends Fragment {
                         int minutes = (((int) time) / 60) % 60;
                         int hours = ((int) time) / 3600;
 
-                        tvTime.setText(hours + ":" + minutes + ":" + seconds);
-
+                        tvTime.setText(hours + ":" + minutes + ":" +seconds);
                     }
                 });
             }
-        }, 0, 1000);
+        }, 1000, 1000);
 
         runStates = true;
         btComplete.setVisibility(View.VISIBLE);
@@ -391,7 +392,6 @@ public class RunStartFragment extends Fragment {
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 routeBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
                 route = out.toByteArray();
-                Common.toastShow(activity, route.toString());
             }
 
             if (Common.networkConnected(activity)) {
@@ -408,7 +408,7 @@ public class RunStartFragment extends Fragment {
                     String result = commonTask.execute().get();
 
                     if (result.equals("1"))
-                        Common.toastShow(activity, "新增成功");
+                        Common.toastShow(activity, "完成跑步");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

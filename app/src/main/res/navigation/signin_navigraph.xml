@@ -10,5 +10,13 @@
         android:name="com.g2.runningFront.SignInActivity.SignInMainFragment"
         android:label="fragment_signin_main"
         tools:layout="@layout/fragment_signin_main">
+        <action
+            android:id="@+id/action_signinMainFragment_to_signupFragment"
+            app:destination="@id/signupFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/signupFragment"
+        android:name="com.g2.runningFront.SignInActivity.SignupFragment"
+        android:label="fragment_signup"
+        tools:layout="@layout/fragment_signup" />
 </navigation>

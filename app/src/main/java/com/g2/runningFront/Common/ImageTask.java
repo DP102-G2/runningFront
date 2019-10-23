@@ -20,14 +20,15 @@ public class ImageTask extends AsyncTask<Object, Integer, Bitmap> {
 
     private final static String TAG = "ImageTask";
     private String url;
-    private int id, imageSize;
+    private int id,run_no, imageSize;
     private String pro_no;
     private WeakReference<ImageView> imageViewWeakReference;
 
-    public ImageTask(String url, int id, int imageSize) {
+    public ImageTask( String url,ImageView imageView , int id, int run_no) {
         this.url = url;
         this.id = id;
-        this.imageSize = imageSize;
+        this.run_no = run_no;
+        this.imageViewWeakReference = new WeakReference<>(imageView);
     }
 
     public ImageTask(String url, int id, int imageSize, ImageView imageView) {
@@ -49,6 +50,7 @@ public class ImageTask extends AsyncTask<Object, Integer, Bitmap> {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", "getImage");
         jsonObject.addProperty("id", id);
+        jsonObject.addProperty("run_no",run_no);
         jsonObject.addProperty("pro_no",pro_no);
         jsonObject.addProperty("follow_no", id);
         jsonObject.addProperty("imageSize", imageSize);

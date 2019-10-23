@@ -95,7 +95,7 @@ public class GroupFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         /* 使用 SearchView */
-        gp_sv = view.findViewById(R.id.gp_sv);
+        gp_sv = view.findViewById(R.id.searchView);
         gp_sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextChange(String newText) {
@@ -123,7 +123,7 @@ public class GroupFragment extends Fragment {
         });
 
         /* 使用 RecyclerView */
-        gp_rv = view.findViewById(R.id.gp_rv);
+        gp_rv = view.findViewById(R.id.recyclerView);
         gp_rv.setLayoutManager(new LinearLayoutManager(activity));
         follows = getFollows();
         showFollowList(follows);
@@ -156,18 +156,28 @@ public class GroupFragment extends Fragment {
             }
         });
 
-        /* ⚠️新增追蹤會員按鈕⚠️ */
-        //bt_addFollow.findViewById(R.id.bt_addFollow);
+        /* 新增追蹤會員按鈕 */
+        bt_addFollow = view.findViewById(R.id.addFollow);
+        bt_addFollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view)
+                        .navigate(R.id.action_runGroupFragment_to_groupSearchFragment);
+            }
+        });
     }
 
     private void showFollowList(List<Follow> follows) {
         if (follows == null || follows.isEmpty()){
             return;
         }
+
         FollowAdapter followAdapter = (FollowAdapter) gp_rv.getAdapter();
-        // 如果followAdapter不存在就建立新的，否則續用舊有的
+
+        // 如果 followAdapter 不存在就建立新的，否則續用舊有的
         if (followAdapter == null) {
             gp_rv.setAdapter(new FollowAdapter(activity, follows));
+
         } else {
             followAdapter.setFollows(follows);
             followAdapter.notifyDataSetChanged();
@@ -177,7 +187,7 @@ public class GroupFragment extends Fragment {
     private class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.MyViewHolder> {
         private LayoutInflater layoutInflater;
         private List<Follow> follows;
-        private final int IMAGE_SIZE = 80;
+        private final int IMAGE_SIZE = 90;
 
         FollowAdapter(Context context, List<Follow> follows) {
             layoutInflater = LayoutInflater.from(context);
@@ -225,7 +235,10 @@ public class GroupFragment extends Fragment {
             FollowImageTask = new ImageTask(url, no, IMAGE_SIZE, myViewHolder.gp_ivFriend);
             FollowImageTask.execute();
 
-            myViewHolder.gp_tvRank.setText(String.valueOf(position+1));
+            /* 名次用 position+1 來顯示 */
+            String rank = (position < 10)? "0"+(position+1) : String.valueOf(position+1);
+            myViewHolder.gp_tvRank.setText(rank);
+
             myViewHolder.gp_tvFriend.setText(follow.getName());
             String length = follow.getDistance() + " 公里";
             myViewHolder.gp_tvKm.setText(length);
@@ -251,7 +264,7 @@ public class GroupFragment extends Fragment {
                 public void onClick(View view) {
 
                     /* 改變愛心圖示，也改變 follow 的 isLove 布林值 */
-                    boolean isLove_new = changeLove(follow, myViewHolder.gp_ivHeart);
+                    boolean isLove_new = changeHeart(follow, myViewHolder.gp_ivHeart);
 
                     /* 連線 Servlet 修改愛心列表 */
                     changeLove(follow.getNo(), isLove_new);
@@ -276,12 +289,10 @@ public class GroupFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
 
-                    /* 從偏好設定存取使用者編號，再放入 bundle 中
-                     * 預設值為整數 0 */
                     Bundle bundle = new Bundle();
                     bundle.putInt("user_no", follow.getNo());
                     Navigation.findNavController(view)
-                            .navigate(R.id.action_runGroupFragment_to_FriendFragment2, bundle);
+                            .navigate(R.id.action_runGroupFragment_to_FriendFragment, bundle);
                 }
             });
 
@@ -297,7 +308,7 @@ public class GroupFragment extends Fragment {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()){
-                                /* ==================== ⬇️正在施工區域⬇️ ==================== */
+
                                 /* 刪除追蹤會員 */
                                 case R.id.deleteFollow:
                                     if (Common.networkConnected(activity)) {
@@ -347,9 +358,11 @@ public class GroupFragment extends Fragment {
 
     }
 
-    /* 取得追蹤資料集合 */
+    /* 取得追蹤會員資料集合 */
     private List<Follow> getFollows() {
+
         List<Follow> followList = null;
+
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "GroupServlet";
             JsonObject jo = new JsonObject();
@@ -376,6 +389,7 @@ public class GroupFragment extends Fragment {
                 Type listType = new TypeToken<List<Follow>>() {
                 }.getType();
                 followList = new Gson().fromJson(jsonIn, listType);
+
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
             }
@@ -386,7 +400,7 @@ public class GroupFragment extends Fragment {
     }
 
     /* 改變愛心圖示，也改變 follow 的 isLove 布林值 */
-    private boolean changeLove(Follow follow, ImageView imageView) {
+    private boolean changeHeart(Follow follow, ImageView imageView) {
 
         follow.setIsLove(!follow.getIsLove());
 
@@ -402,7 +416,7 @@ public class GroupFragment extends Fragment {
         return follow.getIsLove();
     }
 
-    /* 改變使用者的愛心列表 */
+    /* 連線資料庫更改使用者的愛心列表 */
     private void changeLove(int follow_no ,boolean isLove){
         if (Common.networkConnected(activity)) {
 
