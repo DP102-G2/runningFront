@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 
 
@@ -56,6 +57,7 @@ public class ShopOrderFragment extends Fragment {
     Button btoOrder_detail;
     List<Order> orders = new ArrayList<>();
     List<Order> orders_spinner = new ArrayList<>();
+    List<Order> orders_change = new ArrayList<>();
 
     private CommonTask orderGetAllTask;
     private CommonTask spotDeleteTask;
@@ -89,6 +91,15 @@ public class ShopOrderFragment extends Fragment {
 
 
     }
+//    private void change(){
+//        for (Order order : orders) {
+//            Switch(order.getOrder_status().equals()){
+//
+//
+//            }
+//        }
+//    }
+
 
     private void showAll() {
         if (activity != null) {

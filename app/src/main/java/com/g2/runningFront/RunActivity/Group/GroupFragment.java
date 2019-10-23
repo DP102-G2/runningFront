@@ -4,7 +4,6 @@ package com.g2.runningFront.RunActivity.Group;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;// 取得偏好設定
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -46,7 +45,6 @@ import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 /* 設定 View 的可見狀態 */
-import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 
@@ -136,8 +134,8 @@ public class GroupFragment extends Fragment {
         gp_btFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gp_btFriend.setTextColor(Color.parseColor("#36C2CF"));
-                gp_btAll.setTextColor(Color.parseColor("#000000"));
+//                gp_btFriend.setTextColor(Color.parseColor("#36C2CF"));
+//                gp_btAll.setTextColor(Color.parseColor("#000000"));
                 gp_rv.setVisibility(VISIBLE);
 
                 showFollowList(follows);
@@ -147,10 +145,12 @@ public class GroupFragment extends Fragment {
         gp_btAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                gp_btAll.setTextColor(Color.parseColor("#36C2CF"));
-                gp_btFriend.setTextColor(Color.parseColor("#000000"));
+//                gp_btAll.setTextColor(Color.parseColor("#36C2CF"));
+//                gp_btFriend.setTextColor(Color.parseColor("#000000"));
+                Navigation.findNavController(view)
+                        .navigate(R.id.action_runGroupFragment_to_nationalFragment);
 
-                gp_rv.setVisibility(GONE);
+//                gp_rv.setVisibility(GONE);
 
                 // 顯示 App 全體排行榜
             }
@@ -218,7 +218,7 @@ public class GroupFragment extends Fragment {
         public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, final int position) {
 
             final Follow follow = follows.get(position);
-            String url = Common.URL_SERVER + "GroupServlet";
+            String url = Common.URL_SERVER + "NationalServlet";
 
             /* 索取追蹤會員大頭貼 */
             int no = follow.getNo();

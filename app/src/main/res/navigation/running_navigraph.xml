@@ -32,6 +32,9 @@
         <action
             android:id="@+id/action_runGroupFragment_to_FriendFragment2"
             app:destination="@id/FriendFragment" />
+        <action
+            android:id="@+id/action_runGroupFragment_to_nationalFragment"
+            app:destination="@+id/NationalFragment" />
     </fragment>
     <fragment
         android:id="@+id/runAchieveFragment"
@@ -73,4 +76,16 @@
         android:name="com.g2.runningFront.RunActivity.Group.FriendFragment"
         android:label="fragment_run_detail"
         tools:layout="@layout/fragment_friend" />
+    <fragment
+        android:id="@+id/NationalFragment"
+        android:name="com.g2.runningFront.RunActivity.Group.NationalFragment"
+        android:label="@string/hello_blank_fragment"
+        tools:layout="@layout/fragment_national">
+        <action
+            android:id="@+id/action_nationalFragment_to_FriendFragment"
+            app:destination="@id/FriendFragment" />
+        <action
+            android:id="@+id/action_NationalFragment_to_runGroupFragment"
+            app:destination="@id/runGroupFragment" />
+    </fragment>
 </navigation>

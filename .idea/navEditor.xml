@@ -140,6 +140,32 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="NationalFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="251" />
+                            <option name="y" value="-334" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_NationalFragment_to_runGroupFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_nationalFragment_to_FriendFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="bmiResult">
                     <value>
                       <LayoutPositions>
@@ -189,7 +215,7 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
-                            <entry key="action_runGroupFragment_to_runDetailFragment">
+                            <entry key="action_runGroupFragment_to_nationalFragment">
                               <value>
                                 <LayoutPositions />
                               </value>

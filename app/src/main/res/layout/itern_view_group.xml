@@ -64,12 +64,13 @@
             android:textSize="17sp"
             app:layout_constraintStart_toStartOf="@+id/gp_tvFriend"
             app:layout_constraintTop_toBottomOf="@+id/gp_tvFriend" />
+
         <Button
             android:id="@+id/btyes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginStart="84dp"
+            android:layout_marginTop="24dp"
             android:background="@drawable/bt_style"
             android:text="追蹤"
             app:layout_constraintStart_toEndOf="@+id/gp_tvFriend"
