@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    tools:context=".RunActivity.Group.GroupFragment">
+    tools:context=".RunActivity.Group.NationalFragment">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -17,21 +17,25 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="34dp">
 
-        <!--點擊「First」按鈕會切換到第1個會員-->
-        <Button
-            android:id="@+id/gp_btAll"
-            style="?android:buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/btFirst" />
 
-        <!--點擊「Last」按鈕會切換到最後一個會員-->
+
         <Button
-            android:id="@+id/gp_btFriend"
+            android:id="@+id/na_btFriend"
             style="?android:buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/btLast" />
+            android:text="@string/btLast"
+            android:textColor="@android:color/black"
+            android:textSize="17sp" />
+
+        <Button
+            android:id="@+id/na_btAll"
+            style="?android:buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btFirst"
+            android:textColor="@color/colorMain"
+            android:textSize="17sp" />
 
 
     </LinearLayout>
@@ -51,7 +55,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/gp_rv"
+        android:id="@+id/na_rv"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
@@ -61,4 +65,5 @@
         app:layout_constraintTop_toBottomOf="@+id/gp_sv"
 
         android:scrollbars="vertical" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

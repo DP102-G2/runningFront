@@ -31,6 +31,8 @@ public class BmiResultFragment extends Fragment {
     private Activity activity;
     private Bundle bundle;
 
+    int user_no;
+
     View view;
     TextView tvBMI, tvSuggest;
     Button btConfirm;
@@ -52,6 +54,8 @@ public class BmiResultFragment extends Fragment {
         activity = getActivity();
         bundle = getArguments();
         pref = activity.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        user_no = Common.getUserNo(activity);
+
     }
 
     @Override
@@ -96,7 +100,7 @@ public class BmiResultFragment extends Fragment {
                 try {
                     JsonObject jsonObject = new JsonObject();
                     jsonObject.addProperty("action", "UpdateUserBasic");
-                    jsonObject.addProperty("UserNo", 1);
+                    jsonObject.addProperty("user_no", user_no);
                     jsonObject.addProperty("UserBasic", new Gson().toJson(userBasic));
 
                     commonTask = new CommonTask(url, jsonObject.toString());

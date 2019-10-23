@@ -89,7 +89,7 @@ public class RunInputFragment extends Fragment {
         etAge = view.findViewById(R.id.rip_etAge);
         btConfirm = view.findViewById(R.id.runinput_btConfirm);
 
-        if (userBasic.getHeight() != 0 & userBasic.getGender() != 0 & userBasic.getAge() != 0) {
+        if (userBasic.getHeight() != 0 & userBasic.getWeight() != 0 & userBasic.getAge() != 0) {
 
             etHeight.setText(String.valueOf(userBasic.getHeight()));
             etWeight.setText(String.valueOf(userBasic.getWeight()));

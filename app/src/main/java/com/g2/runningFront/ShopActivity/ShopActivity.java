@@ -23,7 +23,7 @@ import com.google.android.gms.wallet.PaymentData;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ShopActivity extends AppCompatActivity {
-    private BottomNavigationView btbShop;
+    public BottomNavigationView btbShop;
     private PaymentData paymentData;
     public static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 101;
 

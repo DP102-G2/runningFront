@@ -111,6 +111,7 @@ public class ShopCartAcpayFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
+
         pref = activity.getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
         // 抓取偏好設定
 

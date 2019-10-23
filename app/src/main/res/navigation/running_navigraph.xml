@@ -33,8 +33,11 @@
         tools:layout="@layout/fragment_run_group" >
 
         <action
-            android:id="@+id/action_runGroupFragment_to_FriendFragment"
-            app:destination="@+id/FriendFragment" />
+            android:id="@+id/action_runGroupFragment_to_FriendFragment2"
+            app:destination="@id/FriendFragment" />
+        <action
+            android:id="@+id/action_runGroupFragment_to_nationalFragment"
+            app:destination="@+id/NationalFragment" />
         <action
             android:id="@+id/action_runGroupFragment_to_groupSearchFragment"
             app:destination="@id/groupSearchFragment" />
@@ -80,13 +83,22 @@
         android:label="fragment_run_detail"
         tools:layout="@layout/fragment_friend" />
     <fragment
+        android:id="@+id/NationalFragment"
+        android:name="com.g2.runningFront.RunActivity.Group.NationalFragment"
+        android:label="@string/hello_blank_fragment"
+        tools:layout="@layout/fragment_national">
+        <action
+            android:id="@+id/action_nationalFragment_to_FriendFragment"
+            app:destination="@id/FriendFragment" />
+        <action
+            android:id="@+id/action_NationalFragment_to_runGroupFragment"
+            app:destination="@id/runGroupFragment" />
+    </fragment>
+    <fragment
         android:id="@+id/groupSearchFragment"
         android:name="com.g2.runningFront.RunActivity.Group.GroupSearchFragment"
         android:label="fragment_group_search"
         tools:layout="@layout/fragment_group_search" >
-        <action
-            android:id="@+id/action_groupSearchFragment_to_FriendFragment"
-            app:destination="@id/FriendFragment" />
         <action
             android:id="@+id/action_groupSearchFragment_to_groupQRcodeFragment"
             app:destination="@id/groupQRcodeFragment" />

@@ -2,6 +2,7 @@ package com.g2.runningFront.RunActivity.Run;
 
 
 import android.Manifest;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -14,10 +15,14 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
 import android.util.Base64;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -26,6 +31,7 @@ import android.widget.TextView;
 import com.g2.runningFront.Common.Common;
 import com.g2.runningFront.Common.CommonTask;
 import com.g2.runningFront.R;
+import com.g2.runningFront.RunActivity.MainActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -42,6 +48,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -57,8 +64,10 @@ public class RunStartFragment extends Fragment {
 
     private static final int PER_ACCESS_LOCATION = 0; //索引值
 
+    int user_no;
+
     private View view;
-    private Activity activity;
+    private MainActivity activity;
     private Button btStart, btComplete;
     private TextView tvTime, tvDistance, tvCalories, tvSpeed;
 
@@ -135,9 +144,8 @@ public class RunStartFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity = getActivity();
-
-
+        activity = (MainActivity)getActivity();
+        setHasOptionsMenu(true);
         locationCallback = new LocationCallback() {
             /* 一旦定位更新，就會呼叫 onLocationResult() */
             @Override
@@ -158,6 +166,9 @@ public class RunStartFragment extends Fragment {
 
         polylineOptions = new PolylineOptions().width(15).color(Color.BLUE);
         //設定線的顏色，屆時應該可根據時速變換顏色
+
+        Common.signIn(activity);
+        user_no = Common.getUserNo(activity);
     }
 
     @Override
@@ -185,8 +196,12 @@ public class RunStartFragment extends Fragment {
         });
 
         holdView();
+    }
 
-
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
     }
 
     @Override
@@ -221,6 +236,7 @@ public class RunStartFragment extends Fragment {
     }
 
     void holdView() {
+        activity.btbRun.setVisibility(View.GONE);
         tvTime = view.findViewById(R.id.runstart_tvTime);
         tvCalories = view.findViewById(R.id.runstart_tvCalories);
         tvDistance = view.findViewById(R.id.runstart_tvDistance);
@@ -261,8 +277,8 @@ public class RunStartFragment extends Fragment {
         if (result == PackageManager.PERMISSION_DENIED) {
             requestPermissions(permissions, PER_ACCESS_LOCATION);
         }
-
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -359,11 +375,8 @@ public class RunStartFragment extends Fragment {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        int seconds = ((int) time) % 60;
-                        int minutes = (((int) time) / 60) % 60;
-                        int hours = ((int) time) / 3600;
 
-                        tvTime.setText(hours + ":" + minutes + ":" +seconds);
+                        tvTime.setText(Common.secondToString((int)time));
                     }
                 });
             }
@@ -383,7 +396,7 @@ public class RunStartFragment extends Fragment {
         }else {
 //
             runStates = false;
-            run = new Run(1, time,
+            run = new Run(user_no, time,
                     Double.valueOf(tvDistance.getText().toString())*1000,
                     Double.valueOf(tvCalories.getText().toString()),
                     Double.valueOf(tvSpeed.getText().toString()));

@@ -13,7 +13,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.g2.runningFront.Common.Common;
 import com.g2.runningFront.R;
 import com.g2.runningFront.SettingActivity.SettingActivity;
 import com.g2.runningFront.ShopActivity.ShopActivity;
@@ -22,7 +24,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
-    private BottomNavigationView btbRun;
+    public BottomNavigationView btbRun;
 
 
     @Override

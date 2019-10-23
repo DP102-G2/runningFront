@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_shopMainFragment_to_productFragment"
             app:destination="@id/productFragment" />
+        <action
+            android:id="@+id/action_shopMainFragment_to_searchresultsFragment"
+            app:destination="@id/searchresultsFragment" />
     </fragment>
     <fragment
         android:id="@+id/shopOrderFragment"
@@ -30,7 +33,7 @@
     </fragment>
     <fragment
         android:id="@+id/shopServerFragment"
-        android:name="com.g2.runningFront.ShopActivity.ShopServerFragment"
+        android:name="com.g2.runningFront.ShopActivity.Server.ShopServerFragment"
         android:label="fragment_shop_server"
         tools:layout="@layout/fragment_shop_server" />
     <fragment
@@ -67,4 +70,9 @@
         android:name="com.g2.runningFront.ShopActivity.ShopCart.ShopCartCeditPayFragment"
         android:label="fragment_shop_cart_cedit_pay"
         tools:layout="@layout/fragment_shop_cart_cedit_pay" />
+    <fragment
+        android:id="@+id/searchresultsFragment"
+        android:name="com.g2.runningFront.ShopActivity.SearchresultsFragment"
+        android:label="fragment_searchresults"
+        tools:layout="@layout/fragment_searchresults" />
 </navigation>

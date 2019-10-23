@@ -12,9 +12,10 @@ public class Order implements Serializable {
     private String product_no;
     private int qty;
     private int order_price;
+    private  int user_no;
 
 
-    public Order(int order_no,  Timestamp order_date, int payment_methon, int order_money, String order_status, String product_no, int qty, int order_price) {
+    public Order(int order_no,  Timestamp order_date, int payment_methon, int order_money, String order_status, String product_no, int qty, int order_price,int user_no) {
         this.order_no = order_no;
         this.order_date = order_date;
         this.payment_methon = payment_methon;
@@ -23,8 +24,45 @@ public class Order implements Serializable {
         this.product_no = product_no;
         this.qty = qty;
         this.order_price = order_price;
+        this.user_no=user_no;
 
 
+    }
+
+    public String getPaymentText(){
+        String paymentText=null;
+        switch (payment_methon){
+            case 1:
+                paymentText = "貨到付款";
+                break;
+            case 2:
+                paymentText ="信用卡";
+                break;
+            case 3:
+                paymentText = "行動支付";
+                break;
+        }
+
+        return paymentText;
+    }
+    public String getorder_statustText(){
+        String orderText=null;
+        switch (order_status){
+            case "1":
+                orderText = "未出貨";
+                break;
+            case "2":
+                orderText ="已出貨";
+                break;
+            case "3":
+                orderText = "未送達";
+                break;
+            case "4":
+                orderText = "已送達";
+                break;
+        }
+
+        return orderText;
     }
 
     public int getOrder_no() {
@@ -81,6 +119,14 @@ public class Order implements Serializable {
 
     public void setQty(int qty) {
         this.qty = qty;
+    }
+
+    public int getUser_no() {
+        return user_no;
+    }
+
+    public void setUser_no(int user_no) {
+        this.user_no = user_no;
     }
 
     public int getOrder_price() {

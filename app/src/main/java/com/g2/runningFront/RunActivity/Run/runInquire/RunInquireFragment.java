@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,11 +89,16 @@ public class RunInquireFragment extends Fragment
     double sumDistance = 0;
     String distanceStr;
 
+    int user_no;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = getActivity();
+        setHasOptionsMenu(true);
+        Common.signIn(activity);
+        user_no = Common.getUserNo(activity);
     }
 
     @Override
@@ -109,43 +116,17 @@ public class RunInquireFragment extends Fragment
         startDate = new Timestamp(date.getTime());
         endDate = startDate;
         runList = getRunList();
-        if (runList != null) {
-            holdView();
-        }
-
+        holdView();
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private void holdView() {
+
+
         etInputTime = view.findViewById(R.id.inquire_etInputTime);
-        etInputTime.setText(String.format("%1$ty-%1$tm-%1$td", runList.get(0).getRun_date()));
-
-        /* 關閉鍵盤模式，並使用onTouch設定事件直接顯示選擇時間畫面 */
-        etInputTime.setShowSoftInputOnFocus(false);
-        etInputTime.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    DatePickerDialog datePicker = new DatePickerDialog(
-                            activity, RunInquireFragment.this,
-                            RunInquireFragment.year, RunInquireFragment.month, RunInquireFragment.day);
-
-                    // 設定可以選擇的最大/最小時間
-                    datePicker.getDatePicker().setMaxDate(runList.get(runList.size() - 1).getRun_date().getTime());
-                    datePicker.getDatePicker().setMinDate(runList.get(0).getRun_date().getTime());
-                    datePicker.show();
-                }
-                return false;
-            }
-        });
-
         rvRunList = view.findViewById(R.id.inquire_rv);
         rvRunList.setLayoutManager(new LinearLayoutManager(activity));
         rvRunList.setAdapter(new RunAdapter(activity, dpRunList));
-
-        /* 根據擷取到的列表， */
-        updateDisplay(new Timestamp(runList.get(runList.size() - 1).getRun_date().getTime() - dayTime * 6), runList.get(runList.size() - 1).getRun_date());
-
 
         /* 設定圓餅圖 */
         pieChart = view.findViewById(R.id.inquire_pieChart);
@@ -178,20 +159,53 @@ public class RunInquireFragment extends Fragment
         pieChart.invalidate();
         pieChart.setDrawSliceText(false);
 
-        // 圓餅圖被點選時顯示"時間＋距離"
-        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-            @Override
-            public void onValueSelected(Entry entry, Highlight highlight) {
-                PieEntry pieEntry = (PieEntry) entry;
-                String text = pieEntry.getLabel() + "\n" + valueFormat.format(pieEntry.getValue()) + " m";
-                Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
-            }
 
-            @Override
-            public void onNothingSelected() {
+        if (runList.size()!=0) {
 
-            }
-        });
+            etInputTime.setEnabled(true);
+            etInputTime.setText(String.format("%1$ty-%1$tm-%1$td", runList.get(0).getRun_date()));
+
+            /* 關閉鍵盤模式，並使用onTouch設定事件直接顯示選擇時間畫面 */
+            etInputTime.setShowSoftInputOnFocus(false);
+            etInputTime.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        DatePickerDialog datePicker = new DatePickerDialog(
+                                activity, RunInquireFragment.this,
+                                RunInquireFragment.year, RunInquireFragment.month, RunInquireFragment.day);
+
+                        // 設定可以選擇的最大/最小時間
+                        datePicker.getDatePicker().setMaxDate(runList.get(runList.size() - 1).getRun_date().getTime());
+                        datePicker.getDatePicker().setMinDate(runList.get(0).getRun_date().getTime());
+                        datePicker.show();
+                    }
+                    return false;
+                }
+            });
+
+
+            /* 根據擷取到的列表， */
+            updateDisplay(new Timestamp(runList.get(runList.size() - 1).getRun_date().getTime() - dayTime * 6), runList.get(runList.size() - 1).getRun_date());
+
+
+
+
+            // 圓餅圖被點選時顯示"時間＋距離"
+            pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+                @Override
+                public void onValueSelected(Entry entry, Highlight highlight) {
+                    PieEntry pieEntry = (PieEntry) entry;
+                    String text = pieEntry.getLabel() + "\n" + valueFormat.format(pieEntry.getValue()) + " m";
+                    Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onNothingSelected() {
+
+                }
+            });
+        }
     }
 
 
@@ -207,12 +221,15 @@ public class RunInquireFragment extends Fragment
         // 針對目前的時間，可以算出起始與七天後的時間
         Calendar calendar = new GregorianCalendar(year, month, day);
         startDate = new Timestamp(calendar.getTimeInMillis());
-        if (runList.get(runList.size() - 1).getRun_date().getTime() - endDate.getTime() < dayTime * 6) {
+
+        if (runList.get(runList.size() - 1).getRun_date().getTime() - startDate.getTime() < dayTime * 6) {
+
             endDate = new Timestamp(runList.get(runList.size() - 1).getRun_date().getTime());
 
         } else {
             endDate = new Timestamp(startDate.getTime() + dayTime * 6);
         }
+
         updateDisplay(startDate, endDate);
     }
 
@@ -328,7 +345,7 @@ public class RunInquireFragment extends Fragment
             /* 根據UserNo跟RunNo擷取圖片 */
             routeImageTask = new ImageTask(url, holder.ivImage, run.getUserNo(), run.getRunNo());
             routeImageTask.execute();
-
+//
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -355,7 +372,7 @@ public class RunInquireFragment extends Fragment
         List<Run> runs = new ArrayList<>();
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", "getRunList");
-        jsonObject.addProperty("userNo", 1);
+        jsonObject.addProperty("userNo", user_no);
         jsonObject.addProperty("startDate", gson.toJson(startDate));
 
         if (Common.networkConnected(activity)) {

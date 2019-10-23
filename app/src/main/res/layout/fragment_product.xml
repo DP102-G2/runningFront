@@ -7,9 +7,9 @@
     tools:context=".ShopActivity.ProductFragment">
 
     <ImageView
-        android:id="@+id/pro_picture"
+        android:id="@+id/pro_image"
         android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_height="200dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
@@ -18,21 +18,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <TextView
         android:id="@+id/pro_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="96dp"
+        android:gravity="center"
         android:text="TextView"
-        app:layout_constraintEnd_toEndOf="@+id/pro_picture"
-        app:layout_constraintStart_toStartOf="@+id/pro_picture"
-        app:layout_constraintTop_toBottomOf="@+id/pro_picture" />
+        android:textColor="#F44336"
+        app:layout_constraintEnd_toEndOf="@+id/pro_image"
+        app:layout_constraintStart_toStartOf="@+id/pro_image"
+        app:layout_constraintTop_toBottomOf="@+id/pro_image" />
 
     <TextView
         android:id="@+id/pro_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
         android:layout_marginTop="8dp"
+        android:gravity="center"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="@+id/pro_desc"
         app:layout_constraintStart_toStartOf="@+id/pro_desc"
@@ -40,36 +44,62 @@
 
     <TextView
         android:id="@+id/pro_price"
-        android:layout_width="61dp"
-        android:layout_height="15dp"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
         android:layout_marginTop="8dp"
+        android:gravity="center"
         android:text="TextView"
+        android:textColor="#F44336"
         app:layout_constraintEnd_toEndOf="@+id/pro_name"
         app:layout_constraintStart_toStartOf="@+id/pro_name"
         app:layout_constraintTop_toBottomOf="@+id/pro_name" />
 
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:background="#30E6C2"
-        android:text="加入購物車"
-        android:gravity="center"
-        android:textSize="17sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/textView8"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/tvproductdescription"
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="24dp"
+        android:paddingLeft="5dp"
+        android:background="@drawable/sreach_style"
+        app:layout_constraintStart_toStartOf="@+id/pro_image"
+        app:layout_constraintTop_toBottomOf="@+id/pro_price" />
+
+    <Button
+        android:id="@+id/btproductcart"
         android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:background="#FE4365"
-        android:text="直接購買"
-        android:gravity="center"
-        android:textAllCaps="false"
-        android:textSize="17sp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bt_style"
+        android:text="加入購物車"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView7" />
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/pro_image1"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_achieve"
+        app:layout_constraintStart_toStartOf="@+id/pro_image"
+        app:layout_constraintTop_toBottomOf="@+id/pro_image" />
+
+    <ImageView
+        android:id="@+id/pro_image2"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/ic_achieve"
+        app:layout_constraintEnd_toStartOf="@+id/pro_image3"
+        app:layout_constraintStart_toEndOf="@+id/pro_image1"
+        app:layout_constraintTop_toBottomOf="@+id/pro_image" />
+
+    <ImageView
+        android:id="@+id/pro_image3"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_achieve"
+        app:layout_constraintEnd_toEndOf="@+id/pro_image"
+        app:layout_constraintTop_toBottomOf="@+id/pro_image" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

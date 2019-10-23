@@ -3,50 +3,80 @@ package com.g2.runningFront.ShopActivity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
+import android.content.Intent;
+import android.graphics.Bitmap;
+
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.g2.runningFront.Common.CommonTask;
+import com.g2.runningFront.Common.Common;
+import com.g2.runningFront.Common.ImageTask;
 import com.g2.runningFront.R;
+import com.g2.runningFront.RunActivity.MainActivity;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import static com.g2.runningFront.Common.Common.showToast;
 
 
 public class ShopMainFragment extends Fragment {
 
+    private static final String TAG = "TAG_SpotListFragment";
     private Activity activity;
-    private AnimationDrawable animationDrawable;
     private SearchView searchView;
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerView, rvadimage;
     private List<Product> products;
-    private CommonTask retrieveFriendTask;
+    private CommonTask productGetAllTask, adGetAllTask;
+    private ImageTask productImageTask, adimageTask;
+    private List<Adimage> adimages;
+    private byte[] image;
+    private Bitmap picture;
+    private Timer mTimer;
+    int adimagetime = 0;
+    private CardView shoe;
+
+    ShopActivity shopActivity;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = getActivity();
+        shopActivity = (ShopActivity) getActivity();
+
+        // 廣告輪播init timer
+        mTimer = new Timer();
+        // start timer task
+        setTimerTask();
 
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,18 +88,32 @@ public class ShopMainFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        shopActivity.btbShop.setVisibility(View.VISIBLE);
 
+        shoe=view.findViewById((R.id.shoe));
         searchView = view.findViewById(R.id.searchView);
+
+        //每日推薦的recycleview
         recyclerView = view.findViewById(R.id.recyclerView);
         products = getProducts();
+        showProducts(products);
 //        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.setLayoutManager(
                 new StaggeredGridLayoutManager(2,
                         StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setAdapter(new ProductAdapter(activity, products));
+
+        //廣告輪播的recycleview
+        rvadimage = view.findViewById(R.id.rvadimage);
+        rvadimage.setLayoutManager(new StaggeredGridLayoutManager(1,
+                StaggeredGridLayoutManager.HORIZONTAL));
+        rvadimage.setAdapter(new ShopMainFragment.AdimageAdapter(activity, adimages));
+        adimages = getAdimages();
+        showAdimages(adimages);
+
+
+        //搜尋
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 ProductAdapter adapter = (ProductAdapter) recyclerView.getAdapter();
@@ -78,11 +122,16 @@ public class ShopMainFragment extends Fragment {
                     if (newText.isEmpty()) {
                         adapter.setProducts(products);
                     } else {
+
                         List<Product> searchProducts = new ArrayList<>();
                         // 搜尋原始資料內有無包含關鍵字(不區別大小寫)
                         for (Product product : products) {
-                            if (product.getname().toUpperCase().contains(newText.toUpperCase())) {
+                            if (product.getPro_name().toUpperCase().contains(newText.toUpperCase())) {
                                 searchProducts.add(product);
+
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable("product", product);
+
                             }
                         }
                         adapter.setProducts(searchProducts);
@@ -92,61 +141,158 @@ public class ShopMainFragment extends Fragment {
                 }
                 return false;
             }
+
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
             }
         });
 
+        //磁片區
+        shoe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v)
+                        .navigate(R.id.action_shopMainFragment_to_searchresultsFragment);
+            }
+        });
 
-        List<Drawable> drawables = new ArrayList<>();
-        Resources res = getResources();
-        /* API 21開始以Resources.getDrawable(int, Resources.Theme)取代
-           getDrawable(int)；建議先檢查系統版本，再決定要呼叫新/舊版的方法 */
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            /* Resources.getDrawable()並指定圖片ID可取得對應圖片。
-               圖片資料類型必須為Drawable方可用於動畫 */
-            drawables.add(res.getDrawable(R.drawable.ic_achieve, null));
-            drawables.add(res.getDrawable(R.drawable.ic_battle, null));
-            drawables.add(res.getDrawable(R.drawable.ic_clothes, null));
+    }
 
+
+    private class AdimageAdapter extends RecyclerView.Adapter<AdimageAdapter.MyViewHolder> {
+        private LayoutInflater layoutInflater;
+        //        private Context context;
+        private List<Adimage> adimages;
+        private int imageSize;
+
+
+        AdimageAdapter(Context context, List<Adimage> adimages) {
+            layoutInflater = LayoutInflater.from(context);
+            this.adimages = adimages;
+
+            /* 螢幕寬度除以4當作將圖的尺寸 */
+            imageSize = getResources().getDisplayMetrics().widthPixels / 4;
+
+        }
+
+        void setAdimages(List<Adimage> adimages) {
+            this.adimages = adimages;
+        }
+
+        class MyViewHolder extends RecyclerView.ViewHolder {
+            ImageView adimage;
+
+            MyViewHolder(View itemView) {
+                super(itemView);
+                adimage = itemView.findViewById(R.id.adimage);
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return adimages.size();
+        }
+
+        @NonNull
+        @Override
+        public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+            View itemView = layoutInflater.inflate(R.layout.item_view_adimage, viewGroup, false);
+            return new MyViewHolder(itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull MyViewHolder viewHolder, int position) {
+            final Adimage adimage = adimages.get(position);
+            String url = Common.URL_SERVER + "adproductServlet";
+            String pro_no = adimage.getPro_no();
+            adimageTask = new ImageTask(url, pro_no, imageSize, viewHolder.adimage);
+            adimageTask.execute();
+
+            viewHolder.adimage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("adimage", adimage);
+                    Navigation.findNavController(view)
+                            .navigate(R.id.action_shopMainFragment_to_productFragment, bundle);
+                }
+            });
+
+
+        }
+    }
+
+    public List<Adimage> getAdimages() {
+        List<Adimage> adimages = null;
+        if (Common.networkConnected(activity)) {
+            String url = Common.URL_SERVER + "/adproductServlet";
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("action", "getAll");
+            String jsonOut = jsonObject.toString();
+            adGetAllTask = new CommonTask(url, jsonOut);
+            try {
+                String jsonIn = adGetAllTask.execute().get();
+                Type listType = new TypeToken<List<Adimage>>() {
+                }.getType();
+                adimages = new Gson().fromJson(jsonIn, listType);
+            } catch (Exception e) {
+                Log.e(TAG, e.toString());
+            }
         } else {
-            drawables.add(res.getDrawable(R.drawable.ic_achieve));
-            drawables.add(res.getDrawable(R.drawable.ic_battle));
-            drawables.add(res.getDrawable(R.drawable.ic_battle));
-
+            Common.showToast(activity, R.string.textNoNetwork);
         }
-        animationDrawable = new AnimationDrawable();
-        animationDrawable.setOneShot(false);
-        int duration = 1000;
-        for (Drawable drawable : drawables) {
-            animationDrawable.addFrame(drawable, duration);
+        return adimages;
+    }
+
+    private void showAdimages(List<Adimage> adimages) {
+        if (adimages == null || adimages.isEmpty()) {
+            Common.showToast(activity, R.string.textNoProductsFound);
+            return;
         }
-
-        ImageView ivPicture = view.findViewById(R.id.ivPicture);
-        /* 呼叫View.setBackground()，該ImageView即可套用動畫設定 */
-        ivPicture.setBackground(animationDrawable);
-        /* AnimationDrawable.setOneShot()設定動畫是否只播放一次，
-           true代表只播放一次，false代表連續播放。
-           AnimationDrawable.addFrame()加入播放的圖片，
-           並設定該圖片持續顯示的時間
-
-        當ImageView被點擊，先呼叫isRunning()判斷是否在播放動畫；
-       如果正在播放動畫，就呼叫stop()停止播放；否則就呼叫start()播放 */
-        animationDrawable.start();
+        AdimageAdapter adimageAdapter = (AdimageAdapter) rvadimage.getAdapter();
+        // 如果spotAdapter不存在就建立新的，否則續用舊有的
+        if (adimageAdapter == null) {
+            rvadimage.setAdapter(new AdimageAdapter(activity, adimages));
+        } else {
+            adimageAdapter.setAdimages(adimages);
+            adimageAdapter.notifyDataSetChanged();
+        }
     }
 
 
     private class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHolder> {
-        Context context;
+        private LayoutInflater layoutInflater;
+        //Context context;
         List<Product> products;
-        public ProductAdapter(Context context, List<Product> products) {
-            this.context = context;
+        private int imageSize;
+
+
+        ProductAdapter(Context context, List<Product> products) {
+            layoutInflater = LayoutInflater.from(context);
+            //  this.context = context;
+            this.products = products;
+
+            /* 螢幕寬度除以4當作將圖的尺寸 */
+            imageSize = getResources().getDisplayMetrics().widthPixels / 4;
+
+        }
+
+        void setProducts(List<Product> products) {
             this.products = products;
         }
 
-        public void setProducts(List<Product> products) {
-            this.products = products;
+        class MyViewHolder extends RecyclerView.ViewHolder {
+            TextView pro_desc, pro_name, pro_price;
+            ImageView pro_image;
+
+            public MyViewHolder(View itemView) {
+                super(itemView);
+                pro_name = itemView.findViewById(R.id.pro_name);
+                pro_price = itemView.findViewById(R.id.pro_price);
+                pro_desc = itemView.findViewById(R.id.pro_desc);
+                pro_image = itemView.findViewById(R.id.pro_image);
+            }
         }
 
         @Override
@@ -154,32 +300,23 @@ public class ShopMainFragment extends Fragment {
             return products.size();
         }
 
-        private class MyViewHolder extends RecyclerView.ViewHolder {
-            TextView pro_desc, pro_name,pro_price;
-            ImageView pro_picture;
-            public MyViewHolder(View itemView) {
-                super(itemView);
-                pro_name = itemView.findViewById(R.id.pro_name);
-                pro_price = itemView.findViewById(R.id.pro_price);
-                pro_desc = itemView.findViewById(R.id.pro_desc);
-                pro_picture = itemView.findViewById(R.id.pro_picture);
-            }
-        }
-
         @NonNull
         @Override
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-            View itemView = LayoutInflater.from(context).inflate(R.layout.item_view_product, viewGroup, false);
+            View itemView = layoutInflater.inflate(R.layout.item_view_product, viewGroup, false);
             return new MyViewHolder(itemView);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull MyViewHolder viewHolder, int index) {
-            final Product product = products.get(index);
-            viewHolder.pro_desc.setText(product.getdesc());
-            viewHolder.pro_price.setText(String.valueOf(product.getprice()));
-            viewHolder.pro_name.setText(product.getname());
-            viewHolder.pro_picture.setImageResource(product.getImage());
+        public void onBindViewHolder(@NonNull final MyViewHolder viewHolder, final int postion) {
+            final Product product = products.get(postion);
+            String url = Common.URL_SERVER + "adproductshowServlet";
+            String pro_no = product.getPro_no();
+            productImageTask = new ImageTask(url, pro_no, imageSize, viewHolder.pro_image);
+            productImageTask.execute();
+            viewHolder.pro_desc.setText(product.getPro_desc());
+            viewHolder.pro_price.setText(String.valueOf(product.getPro_price()));
+            viewHolder.pro_name.setText(product.getPro_name());
 
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -188,52 +325,109 @@ public class ShopMainFragment extends Fragment {
                     bundle.putSerializable("product", product);
                     Navigation.findNavController(searchView)
                             .navigate(R.id.action_shopMainFragment_to_productFragment, bundle);
+
                 }
             });
         }
     }
 
-    private List<Product> getProducts() {
-        List<Product> products = new ArrayList<>();
-//        if (Common.networkConnected(activity)) {
-//            String url = Common.URL + "ProductsServlet";
-//            JsonObject jsonObject = new JsonObject();
-//            jsonObject.addProperty("action", "getAll");
-//            retrieveFriendTask = new CommonTask(url, jsonObject.toString());
-//            try {
-//                String jsonIn = retrieveFriendTask.execute().get();
-//                Type listType = new TypeToken<List<Product>>() {
-//                }.getType();
-//                products = new Gson().fromJson(jsonIn, listType);
-//            } catch (Exception e) {
-//                Log.e(TAG, e.toString());
-//            }
-//            if (products == null || products.isEmpty()) {
-//                Log.e(TAG, getString(R.string.textProductNotFound));
-//            }
-//        } else {
-//            Log.e(TAG, getString(R.string.textNoNetwork));
-//        }
-//        return products;
-//    }
-//
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//        if (retrieveFriendTask != null) {
-//            retrieveFriendTask.cancel(true);
-//            retrieveFriendTask = null;
-//        }
-//    }
+    //timetask 廣告輪播
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // cancel timer
+        mTimer.cancel();
+    }
 
-        products.add(new Product(111,"aaa","a",R.drawable.ic_achieve));
-        products.add(new Product(222,"bbb","b",R.drawable.ic_clothes));
-        products.add(new Product(333,"ccc","c",R.drawable.ic_run));
-        products.add(new Product(444,"ddd","d",R.drawable.ic_hat));
+    private void setTimerTask() {
+        mTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Message message = new Message();
+                message.what = 1;
+                doActionHandler.sendMessage(message);
+            }
+        }, 1000, 2000/* 表示1000毫秒之後，每隔1000毫秒執行一次 */);
+    }
+
+    private Handler doActionHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            int msgId = msg.what;
+            switch (msgId) {
+                case 1:
+                    rvadimage.smoothScrollToPosition(adimagetime);
+                    adimagetime++;
+                    if (adimagetime >= 3) {
+                        adimagetime = 0;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
+    //連線SQL抓取資料
+    private List<Product> getProducts() {
+        List<Product> products = null;
+        if (Common.networkConnected(activity)) {
+            String url = Common.URL_SERVER + "/adproductshowServlet";
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("action", "getAll");
+            String jsonOut = jsonObject.toString();
+            productGetAllTask = new CommonTask(url, jsonOut);
+            try {
+                String jsonIn = productGetAllTask.execute().get();
+                Type listType = new TypeToken<List<Product>>() {
+                }.getType();
+                products = new Gson().fromJson(jsonIn, listType);
+            } catch (Exception e) {
+                Log.e(TAG, e.toString());
+            }
+        } else {
+            showToast(activity, R.string.textNoNetwork);
+        }
         return products;
+    }
+
+    // check if the device connect to the network
+    private void showProducts(List<Product> products) {
+        if (products == null || products.isEmpty()) {
+            showToast(activity, R.string.textNoProductsFound);
+            return;
+        }
+        ProductAdapter productAdapter = (ProductAdapter) recyclerView.getAdapter();
+        // 如果spotAdapter不存在就建立新的，否則續用舊有的
+        if (productAdapter == null) {
+            recyclerView.setAdapter(new ProductAdapter(activity, products));
+        } else {
+            productAdapter.setProducts(products);
+            productAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (productGetAllTask != null) {
+            productGetAllTask.cancel(true);
+            productGetAllTask = null;
+        }
+        if (productImageTask != null) {
+            productImageTask.cancel(true);
+            productImageTask = null;
+        }
+        if (adGetAllTask != null) {
+            adGetAllTask.cancel(true);
+            adGetAllTask = null;
+        }
+        if (adimageTask != null) {
+            adimageTask.cancel(true);
+            adimageTask = null;
+        }
     }
 
 
 }
-
-
