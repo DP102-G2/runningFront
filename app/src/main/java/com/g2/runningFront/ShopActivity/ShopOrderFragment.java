@@ -2,13 +2,11 @@ package com.g2.runningFront.ShopActivity;
 
 
 import android.app.Activity;
-import android.content.ClipData;
 import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.view.menu.MenuView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -30,22 +27,11 @@ import com.g2.runningFront.Common.CommonTask;
 import com.g2.runningFront.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,7 +67,7 @@ public class ShopOrderFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView = view.findViewById(R.id.reachieve);
         spOrder = view.findViewById(R.id.spOrder);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         showAll();

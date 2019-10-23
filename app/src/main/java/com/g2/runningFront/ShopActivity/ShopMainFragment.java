@@ -60,7 +60,7 @@ public class ShopMainFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         searchView = view.findViewById(R.id.searchView);
-        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView = view.findViewById(R.id.reachieve);
         products = getProducts();
 //        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.setLayoutManager(
