@@ -108,7 +108,6 @@ public class RunInquireFragment extends Fragment
     }
 
 
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -117,42 +116,17 @@ public class RunInquireFragment extends Fragment
         startDate = new Timestamp(date.getTime());
         endDate = startDate;
         runList = getRunList();
-        if (runList != null) {
-            holdView();
-        }
+        holdView();
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private void holdView() {
+
+
         etInputTime = view.findViewById(R.id.inquire_etInputTime);
-        etInputTime.setText(String.format("%1$ty-%1$tm-%1$td", runList.get(0).getRun_date()));
-
-        /* 關閉鍵盤模式，並使用onTouch設定事件直接顯示選擇時間畫面 */
-        etInputTime.setShowSoftInputOnFocus(false);
-        etInputTime.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    DatePickerDialog datePicker = new DatePickerDialog(
-                            activity, RunInquireFragment.this,
-                            RunInquireFragment.year, RunInquireFragment.month, RunInquireFragment.day);
-
-                    // 設定可以選擇的最大/最小時間
-                    datePicker.getDatePicker().setMaxDate(runList.get(runList.size() - 1).getRun_date().getTime());
-                    datePicker.getDatePicker().setMinDate(runList.get(0).getRun_date().getTime());
-                    datePicker.show();
-                }
-                return false;
-            }
-        });
-
         rvRunList = view.findViewById(R.id.inquire_rv);
         rvRunList.setLayoutManager(new LinearLayoutManager(activity));
         rvRunList.setAdapter(new RunAdapter(activity, dpRunList));
-
-        /* 根據擷取到的列表， */
-        updateDisplay(new Timestamp(runList.get(runList.size() - 1).getRun_date().getTime() - dayTime * 6), runList.get(runList.size() - 1).getRun_date());
-
 
         /* 設定圓餅圖 */
         pieChart = view.findViewById(R.id.inquire_pieChart);
@@ -185,20 +159,53 @@ public class RunInquireFragment extends Fragment
         pieChart.invalidate();
         pieChart.setDrawSliceText(false);
 
-        // 圓餅圖被點選時顯示"時間＋距離"
-        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-            @Override
-            public void onValueSelected(Entry entry, Highlight highlight) {
-                PieEntry pieEntry = (PieEntry) entry;
-                String text = pieEntry.getLabel() + "\n" + valueFormat.format(pieEntry.getValue()) + " m";
-                Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
-            }
 
-            @Override
-            public void onNothingSelected() {
+        if (runList.size()!=0) {
 
-            }
-        });
+            etInputTime.setEnabled(true);
+            etInputTime.setText(String.format("%1$ty-%1$tm-%1$td", runList.get(0).getRun_date()));
+
+            /* 關閉鍵盤模式，並使用onTouch設定事件直接顯示選擇時間畫面 */
+            etInputTime.setShowSoftInputOnFocus(false);
+            etInputTime.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        DatePickerDialog datePicker = new DatePickerDialog(
+                                activity, RunInquireFragment.this,
+                                RunInquireFragment.year, RunInquireFragment.month, RunInquireFragment.day);
+
+                        // 設定可以選擇的最大/最小時間
+                        datePicker.getDatePicker().setMaxDate(runList.get(runList.size() - 1).getRun_date().getTime());
+                        datePicker.getDatePicker().setMinDate(runList.get(0).getRun_date().getTime());
+                        datePicker.show();
+                    }
+                    return false;
+                }
+            });
+
+
+            /* 根據擷取到的列表， */
+            updateDisplay(new Timestamp(runList.get(runList.size() - 1).getRun_date().getTime() - dayTime * 6), runList.get(runList.size() - 1).getRun_date());
+
+
+
+
+            // 圓餅圖被點選時顯示"時間＋距離"
+            pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+                @Override
+                public void onValueSelected(Entry entry, Highlight highlight) {
+                    PieEntry pieEntry = (PieEntry) entry;
+                    String text = pieEntry.getLabel() + "\n" + valueFormat.format(pieEntry.getValue()) + " m";
+                    Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onNothingSelected() {
+
+                }
+            });
+        }
     }
 
 
@@ -339,15 +346,15 @@ public class RunInquireFragment extends Fragment
             routeImageTask = new ImageTask(url, holder.ivImage, run.getUserNo(), run.getRunNo());
             routeImageTask.execute();
 //
-//            holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Bundle bundle = new Bundle();
-//                    bundle.putSerializable("Run", run);
-//                    Navigation.findNavController(view).navigate(R.id.action_runInquireFragment_to_runDetailFragment, bundle);
-//
-//                }
-//            });
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("Run", run);
+                    Navigation.findNavController(view).navigate(R.id.action_runInquireFragment_to_runDetailFragment, bundle);
+
+                }
+            });
         }
 
     }

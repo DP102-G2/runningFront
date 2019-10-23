@@ -60,9 +60,10 @@ public class ShopOrderFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = getActivity();
-        no=Common.getUserNo(activity);
 
         Common.signIn(activity);
+        no=Common.getUserNo(activity);
+
     }
 
     @Override

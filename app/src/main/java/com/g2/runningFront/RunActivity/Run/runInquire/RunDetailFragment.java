@@ -69,10 +69,10 @@ public class RunDetailFragment extends Fragment {
         Run run = (Run) bundle.getSerializable("Run");
 
         tvDate.setText("運動日期： " + String.format("%1$tm 月 %1$td 日", run.getRun_date()));
-        tvCalorie.setText("消耗卡路里： " + String.valueOf(run.getCalorie()));
-        tvDistance.setText("跑步距離： " + String.valueOf(run.getDistance()));
-        tvTime.setText("累計時間： " + String.valueOf(run.getTime()));
-        tvSpeed.setText("跑步時速： " + String.valueOf(run.getSpeed()));
+        tvCalorie.setText("消耗卡路里： " + (run.getCalorie()+"  (卡)"));
+        tvDistance.setText("跑步距離： " + (run.getDistance())+"  (公尺)");
+        tvTime.setText("累計時間： " + Common.secondToString((int)run.getTime()));
+        tvSpeed.setText("跑步時速： " + (run.getSpeed())+"  (公尺/秒)");
         getImage(ivRoute,run);
 
     }

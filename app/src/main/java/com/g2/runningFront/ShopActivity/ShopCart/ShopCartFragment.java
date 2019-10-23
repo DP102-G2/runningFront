@@ -358,7 +358,7 @@ public class ShopCartFragment extends Fragment {
             try {
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("action", "getAll");
-                jsonObject.addProperty("user_no", 1);
+                jsonObject.addProperty("user_no", user_no);
                 // 屆時要更換成抓取偏好設定裡的使用者編號
 
                 String jsonOut = jsonObject.toString();

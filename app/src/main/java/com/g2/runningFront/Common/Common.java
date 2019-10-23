@@ -319,4 +319,15 @@ public class Common {
         return srcBitmap;
     }
 
+    public static String secondToString(int time){
+        String text ="";
+        int seconds = ((int) time) % 60;
+        int minutes = (((int) time) / 60) % 60;
+        int hours = ((int) time) / 3600;
+
+        text = formatNum(hours) + " : " + formatNum(minutes) + " : " + formatNum(seconds);
+
+        return text;
+    }
+
 }

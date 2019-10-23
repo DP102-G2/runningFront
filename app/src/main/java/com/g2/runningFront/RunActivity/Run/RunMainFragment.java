@@ -24,6 +24,7 @@ import com.g2.runningFront.Common.Common;
 import com.g2.runningFront.Common.CommonTask;
 import com.g2.runningFront.Common.TimestampTypeAdapter;
 import com.g2.runningFront.R;
+import com.g2.runningFront.RunActivity.MainActivity;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
@@ -77,10 +78,13 @@ public class RunMainFragment extends Fragment {
 
     int user_no;
 
+    MainActivity mainActivity;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = getActivity();
+        mainActivity = (MainActivity) getActivity();
         Common.signIn(activity);
         user_no = Common.getUserNo(activity);
     }
@@ -96,7 +100,7 @@ public class RunMainFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
-
+        mainActivity.btbRun.setVisibility(View.VISIBLE);
         pref = activity.getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
         runList = getRun();
         getUserBasic();
@@ -237,7 +241,7 @@ public class RunMainFragment extends Fragment {
             try {
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("action", "getUserBasic");
-                jsonObject.addProperty("userNo", user_no);
+                jsonObject.addProperty("user_no", user_no);
                 uDataTask = new CommonTask(url, jsonObject.toString());
                 String ubStr = uDataTask.execute().get();
                 Log.d("ubStr", ubStr);
@@ -245,7 +249,7 @@ public class RunMainFragment extends Fragment {
                 userBasic.setUser_no(user_no);
                 pref.edit().putString("UserBasic", new Gson().toJson(userBasic)).apply();
 
-                if (userBasic.getHeight() == 0 | userBasic.getGender() == 0 | userBasic.getAge() == 0) {
+                if (userBasic.getHeight() == 0 | userBasic.getWeight() == 0 |  userBasic.getAge() == 0) {
                     Navigation.findNavController(view).navigate(R.id.action_runMain_to_runInput);
                 }
 

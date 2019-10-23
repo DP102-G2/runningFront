@@ -63,10 +63,13 @@ public class ShopMainFragment extends Fragment {
     int adimagetime = 0;
     private CardView shoe;
 
+    ShopActivity shopActivity;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = getActivity();
+        shopActivity = (ShopActivity) getActivity();
 
         // 廣告輪播init timer
         mTimer = new Timer();
@@ -85,6 +88,8 @@ public class ShopMainFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        shopActivity.btbShop.setVisibility(View.VISIBLE);
+
         shoe=view.findViewById((R.id.shoe));
         searchView = view.findViewById(R.id.searchView);
 

@@ -36,8 +36,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 /**
@@ -97,12 +100,15 @@ public class ShopServerFragment extends Fragment {
         this.view =view;
         messageList = getMessageList();
         holdView();
+        rvList.scrollToPosition(adapter.getItemCount()-1);
     }
+
 
     private class mesAdapter extends RecyclerView.Adapter<mesAdapter.messageViewHolder> {
         Activity activity;
         List<Message> messages;
         LayoutInflater layoutInflater;
+        int imageSize;
 
         public void setMessages(List<Message> messages) {
             this.messages = messages;
@@ -112,6 +118,8 @@ public class ShopServerFragment extends Fragment {
             this.activity = activity;
             this.messages = messageList;
             layoutInflater = LayoutInflater.from(activity);
+            imageSize = getResources().getDisplayMetrics().widthPixels;
+
         }
 
         @NonNull
@@ -132,17 +140,19 @@ public class ShopServerFragment extends Fragment {
 
             }else {
                 holder.cardView.setCardBackgroundColor(activity.getColor(R.color.colorPrimary));
-
-                holder.cardView.setTranslationX(250);
-
+                holder.cardView.setTranslationX(imageSize-800);
             }
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Common.toastShow(activity, message.getMsg_by());
+                    Common.toastShow(activity, message.msg_time.toString());
+                    rvList.smoothScrollToPosition(adapter.getItemCount());
+
                 }
             });
+
+
 
         }
 
@@ -185,12 +195,8 @@ public class ShopServerFragment extends Fragment {
                     insertMessage();
                     pushToSocket();
                 }
-
-
             }
         });
-
-        rvList.smoothScrollToPosition(adapter.getItemCount());
 
     }
 
@@ -198,7 +204,7 @@ public class ShopServerFragment extends Fragment {
     private void insertMessage() {
         String text = etMessage.getText().toString();
 
-        Message message = new Message(user_no, 1, text, 0);
+        Message message = new Message(user_no, 1, text, 1);
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", "insertMessage");
         jsonObject.addProperty("message", new Gson().toJson(message));
@@ -255,7 +261,7 @@ public class ShopServerFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             String message = intent.getStringExtra("message");
             // 拿到完整的資料
-            Message chatMessage = new Gson().fromJson(message, Message.class);
+            Message chatMessage = gson.fromJson(message, Message.class);
             messageList.add(chatMessage);
             adapter.setMessages(messageList);
             adapter.notifyDataSetChanged();
@@ -269,7 +275,7 @@ public class ShopServerFragment extends Fragment {
 
         String text = etMessage.getText().toString();
         Message message = new Message(user_no, 1, text, 1);
-        ServiceCommon.chatWebSocketClient.send(new Gson().toJson(message));
+        ServiceCommon.chatWebSocketClient.send(gson.toJson(message));
     }
 
 

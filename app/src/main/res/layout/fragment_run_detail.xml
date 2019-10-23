@@ -24,9 +24,10 @@
         style="@style/normalText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:text="TextView"
-        app:layout_constraintStart_toStartOf="@+id/rd_ivImage"
+        app:layout_constraintStart_toStartOf="@+id/rd_tvDate"
         app:layout_constraintTop_toBottomOf="@+id/rd_tvDate" />
 
     <TextView
@@ -34,7 +35,7 @@
         style="@style/normalText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="208dp"
+        android:layout_marginTop="16dp"
         android:text="TextView"
         app:layout_constraintStart_toStartOf="@+id/rd_tvSpeed"
         app:layout_constraintTop_toBottomOf="@+id/rd_tvSpeed" />
@@ -44,20 +45,20 @@
         style="@style/normalText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="34dp"
+        android:layout_marginTop="16dp"
         android:text="TextView"
         app:layout_constraintStart_toStartOf="@+id/rd_tvDistance"
         app:layout_constraintTop_toBottomOf="@+id/rd_tvDistance" />
 
     <TextView
         android:id="@+id/rd_tvDate"
-        style="@style/normalText"
+        style="@style/titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="16dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.791"
+        app:layout_constraintHorizontal_bias="0.197"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rd_ivImage" />
 
@@ -66,7 +67,7 @@
         style="@style/normalText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="34dp"
+        android:layout_marginTop="16dp"
         android:text="TextView"
         app:layout_constraintStart_toStartOf="@+id/rd_tvTime"
         app:layout_constraintTop_toBottomOf="@+id/rd_tvTime" />

@@ -375,11 +375,8 @@ public class RunStartFragment extends Fragment {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        int seconds = ((int) time) % 60;
-                        int minutes = (((int) time) / 60) % 60;
-                        int hours = ((int) time) / 3600;
 
-                        tvTime.setText(Common.formatNum(hours) + ":" + Common.formatNum(minutes) + ":" +Common.formatNum(seconds));
+                        tvTime.setText(Common.secondToString((int)time));
                     }
                 });
             }
