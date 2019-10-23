@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.Context;
 import android.content.SharedPreferences;
 /* 有關隱藏鍵盤 */
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 /* 有關大頭貼改成圓形 */
@@ -31,6 +32,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 
 public class Common {
+    private static final String TAG = "Common";
+
 
     public static String URL_SERVER = "http://10.0.2.2:8080/RunningWeb/";
     // 底下為安裝至手機時改用的位址（必須在連線同一個區域網路）
@@ -86,6 +89,15 @@ public class Common {
                 return;
             }
         }
+    }
+
+
+    public static void showToast(Context context, int messageResId) {
+        Toast.makeText(context, messageResId, Toast.LENGTH_SHORT).show();
+    }
+
+    public static void showToast(Context context, String message) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
     public static void signIn(Activity activity, int requestCode) {
@@ -252,6 +264,32 @@ public class Common {
         // 長度4以上的密碼 --                  ^[A-Za-z0-9]+.{3,}$
         // Email --                         ^\w+(\w+)@\w+([-.]\w+).\w+([-.]\w+)*$
         // 由數字或英文字母組成 --              ^[A-Za-z0-9]+$
+    }
+
+
+    // 設定長寬不超過scaleSize
+    public static Bitmap downSize(Bitmap srcBitmap, int newSize) {
+        // 如果欲縮小的尺寸過小，就直接定為128
+        if (newSize <= 50) {
+            newSize = 300;
+        }
+        int srcWidth = srcBitmap.getWidth();
+        int srcHeight = srcBitmap.getHeight();
+        String text = "source image size = " + srcWidth + "x" + srcHeight;
+        Log.d(TAG, text);
+        int longer = Math.max(srcWidth, srcHeight);
+
+        if (longer > newSize) {
+            double scale = longer / (double) newSize;
+            int dstWidth = (int) (srcWidth / scale);
+            int dstHeight = (int) (srcHeight / scale);
+            srcBitmap = Bitmap.createScaledBitmap(srcBitmap, dstWidth, dstHeight, false);
+            System.gc();
+            text = "\nscale = " + scale + "\nscaled image size = " +
+                    srcBitmap.getWidth() + "x" + srcBitmap.getHeight();
+            Log.d(TAG, text);
+        }
+        return srcBitmap;
     }
 
 }

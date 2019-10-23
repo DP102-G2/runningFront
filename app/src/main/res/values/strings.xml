@@ -33,6 +33,10 @@
     <string name="achieve">achieve</string>
     <string name="textNoAchievesFound">沒有成就</string>
     <string name="textSearchFriend">請輸入想找的人名或帳號</string>
+    <string name="textNoProductsFound">找不到商品</string>
+    <string name="searchresults">商品瀏覽</string>
+    <string name="textUpdateFail">加入購物車失敗</string>
+    <string name="textUpdateSuccess">加入購物車成功</string>
     <string-array name="textOrderArray">
         <item>全部</item>
         <item>未出貨</item>

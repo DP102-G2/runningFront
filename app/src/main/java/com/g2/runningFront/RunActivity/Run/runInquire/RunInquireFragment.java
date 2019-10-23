@@ -328,16 +328,16 @@ public class RunInquireFragment extends Fragment
             /* 根據UserNo跟RunNo擷取圖片 */
             routeImageTask = new ImageTask(url, holder.ivImage, run.getUserNo(), run.getRunNo());
             routeImageTask.execute();
-
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("Run", run);
-                    Navigation.findNavController(view).navigate(R.id.action_runInquireFragment_to_runDetailFragment, bundle);
-
-                }
-            });
+//
+//            holder.itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Bundle bundle = new Bundle();
+//                    bundle.putSerializable("Run", run);
+//                    Navigation.findNavController(view).navigate(R.id.action_runInquireFragment_to_runDetailFragment, bundle);
+//
+//                }
+//            });
         }
 
     }

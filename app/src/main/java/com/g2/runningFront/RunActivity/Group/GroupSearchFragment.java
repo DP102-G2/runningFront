@@ -92,13 +92,13 @@ public class GroupSearchFragment extends Fragment {
 
         });
 
-        view.findViewById(R.id.bt_qrCode).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(view)
-                        .navigate(R.id.action_groupSearchFragment_to_groupQRcodeFragment);
-            }
-        });
+//        view.findViewById(R.id.bt_qrCode).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Navigation.findNavController(view)
+//                        .navigate(R.id.action_groupSearchFragment_to_groupQRcodeFragment);
+//            }
+//        });
     }
 
     private void showSearched(List<Follow> searchedList) {
@@ -170,15 +170,15 @@ public class GroupSearchFragment extends Fragment {
             SearchImageTask = new ImageTask(url, no, IMAGE_SIZE, myViewHolder.imageView);
             SearchImageTask.execute();
 
-            myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("user_no", follow.getNo());
-                    Navigation.findNavController(view)
-                            .navigate(R.id.action_groupSearchFragment_to_FriendFragment, bundle);
-                }
-            });
+//            myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Bundle bundle = new Bundle();
+//                    bundle.putInt("user_no", follow.getNo());
+//                    Navigation.findNavController(view)
+//                            .navigate(R.id.action_groupSearchFragment_to_FriendFragment2, bundle);
+//                }
+//            });
 
         }
     }
