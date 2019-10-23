@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignInActivity.SignupFragment">
+
+    <Button
+        android:id="@+id/btSignup"
+        style="@style/bt_radius_main"
+        android:layout_width="217dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="45dp"
+        android:text="確認註冊"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etEmail" />
+
+    <EditText
+        android:id="@+id/etId"
+        style="@style/type_radius"
+        android:layout_width="300dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="106dp"
+        android:ems="10"
+        android:hint="請輸入16字內的英數字"
+        android:inputType="text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/etName"
+        style="@style/type_radius"
+        android:layout_width="300dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="60dp"
+        android:ems="10"
+        android:hint="請輸入您的暱稱"
+        android:inputType="textShortMessage|textPersonName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etId" />
+
+    <EditText
+        android:id="@+id/etPW"
+        style="@style/type_radius"
+        android:layout_width="300dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="60dp"
+        android:ems="10"
+        android:hint="請輸入4位以上的密碼"
+        android:inputType="textPassword"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etName" />
+
+    <EditText
+        android:id="@+id/etEmail"
+        style="@style/type_radius"
+        android:layout_width="300dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="60dp"
+        android:ems="10"
+        android:hint="請輸入電子信箱"
+        android:inputType="textEmailAddress"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPW" />
+
+    <ImageView
+        android:id="@+id/ivIdCheck"
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_check_green"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/etId"
+        app:layout_constraintStart_toEndOf="@+id/etId"
+        app:layout_constraintTop_toTopOf="@+id/etId" />
+
+    <ImageView
+        android:id="@+id/ivIdCross"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_cross_red"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/etId"
+        app:layout_constraintStart_toEndOf="@+id/etId"
+        app:layout_constraintTop_toTopOf="@+id/etId" />
+
+    <ImageView
+        android:id="@+id/ivNameCheck"
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_check_green"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/etName"
+        app:layout_constraintStart_toEndOf="@+id/etName"
+        app:layout_constraintTop_toTopOf="@+id/etName" />
+
+    <ImageView
+        android:id="@+id/ivNameCross"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_cross_red"
+        app:layout_constraintBottom_toBottomOf="@+id/etName"
+        app:layout_constraintStart_toEndOf="@+id/etName"
+        app:layout_constraintTop_toTopOf="@+id/etName"
+        tools:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/ivPWCheck"
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_check_green"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/etPW"
+        app:layout_constraintStart_toEndOf="@+id/etPW"
+        app:layout_constraintTop_toTopOf="@+id/etPW" />
+
+    <ImageView
+        android:id="@+id/ivPWCross"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_cross_red"
+        app:layout_constraintBottom_toBottomOf="@+id/etPW"
+        app:layout_constraintStart_toEndOf="@+id/etPW"
+        app:layout_constraintTop_toTopOf="@+id/etPW"
+        tools:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/ivEmailCheck"
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_check_green"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/etEmail"
+        app:layout_constraintStart_toEndOf="@+id/etEmail"
+        app:layout_constraintTop_toTopOf="@+id/etEmail" />
+
+    <ImageView
+        android:id="@+id/ivEmailCross"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_cross_red"
+        app:layout_constraintBottom_toBottomOf="@+id/etEmail"
+        app:layout_constraintStart_toEndOf="@+id/etEmail"
+        app:layout_constraintTop_toTopOf="@+id/etEmail"
+        tools:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/ivCheckBig"
+        android:layout_width="220dp"
+        android:layout_height="158dp"
+        android:src="@drawable/img_checkhuge"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvId"
+        style="@style/lilText"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginBottom="7dp"
+        android:text="帳號"
+        app:layout_constraintBottom_toTopOf="@+id/etId"
+        app:layout_constraintStart_toStartOf="@+id/etId" />
+
+    <TextView
+        android:id="@+id/tvIdBtn"
+        style="@style/tv_warning_red"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="＊必填"
+        app:layout_constraintStart_toStartOf="@+id/etId"
+        app:layout_constraintTop_toBottomOf="@+id/etId" />
+
+    <TextView
+        android:id="@+id/tvName"
+        style="@style/lilText"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginBottom="7dp"
+        android:text="暱稱"
+        app:layout_constraintBottom_toTopOf="@+id/etName"
+        app:layout_constraintStart_toStartOf="@+id/etName" />
+
+    <TextView
+        android:id="@+id/tvNameBtn"
+        style="@style/tv_warning_red"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="＊必填"
+        app:layout_constraintStart_toStartOf="@+id/etName"
+        app:layout_constraintTop_toBottomOf="@+id/etName" />
+
+    <TextView
+        android:id="@+id/tvPW"
+        style="@style/lilText"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginBottom="7dp"
+        android:text="密碼"
+        app:layout_constraintBottom_toTopOf="@+id/etPW"
+        app:layout_constraintStart_toStartOf="@+id/etPW" />
+
+    <TextView
+        android:id="@+id/tvPWBtn"
+        style="@style/tv_warning_red"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="＊必填"
+        app:layout_constraintStart_toStartOf="@+id/etPW"
+        app:layout_constraintTop_toBottomOf="@+id/etPW" />
+
+    <TextView
+        android:id="@+id/tvEmail"
+        style="@style/lilText"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginBottom="7dp"
+        android:text="電子信箱"
+        app:layout_constraintBottom_toTopOf="@+id/etEmail"
+        app:layout_constraintStart_toStartOf="@+id/etEmail" />
+
+    <TextView
+        android:id="@+id/tvEmailBtn"
+        style="@style/tv_warning_red"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="＊必填"
+        app:layout_constraintStart_toStartOf="@+id/etEmail"
+        app:layout_constraintTop_toBottomOf="@+id/etEmail" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

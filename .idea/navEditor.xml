@@ -128,18 +128,68 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
+                  <entry key="FriendFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="bmiResult">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="500" />
-                            <option name="y" value="732" />
+                            <option name="x" value="270" />
+                            <option name="y" value="433" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
                             <entry key="action_bmiResult_to_runMain">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="groupQRcodeFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="534" />
+                            <option name="y" value="-370" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="groupSearchFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="250" />
+                            <option name="y" value="-369" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_groupSearchFragment_to_FriendFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_groupSearchFragment_to_groupQRcodeFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -166,18 +216,9 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="744" />
-                            <option name="y" value="12" />
+                            <option name="x" value="-498" />
+                            <option name="y" value="13" />
                           </Point>
-                        </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="action_runDetailFragment_to_runInquireFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -187,13 +228,18 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="504" />
-                            <option name="y" value="-334" />
+                            <option name="x" value="-246" />
+                            <option name="y" value="-370" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_runGroupFragment_to_runDetailFragment">
+                            <entry key="action_runGroupFragment_to_FriendFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_runGroupFragment_to_groupSearchFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -208,8 +254,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="256" />
-                            <option name="y" value="775" />
+                            <option name="x" value="12" />
+                            <option name="y" value="434" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -229,12 +275,17 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="500" />
-                            <option name="y" value="12" />
+                            <option name="x" value="-248" />
+                            <option name="y" value="13" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_runInquireFragment_to_FriendFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_runInquireFragment_to_runDetailFragment">
                               <value>
                                 <LayoutPositions />
@@ -250,8 +301,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="12" />
-                            <option name="y" value="698" />
+                            <option name="x" value="-246" />
+                            <option name="y" value="431" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -276,8 +327,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="256" />
-                            <option name="y" value="419" />
+                            <option name="x" value="8" />
+                            <option name="y" value="856" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -305,6 +356,12 @@
                   <entry key="settingMainFragment">
                     <value>
                       <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
                         <option name="myPositions">
                           <map>
                             <entry key="action_settingMainFragment_to_settingUpadteFragment">
@@ -319,7 +376,14 @@
                   </entry>
                   <entry key="settingUpadteFragment">
                     <value>
-                      <LayoutPositions />
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="256" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
                     </value>
                   </entry>
                 </map>
@@ -508,6 +572,27 @@
                         <option name="myPosition">
                           <Point>
                             <option name="x" value="12" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_signinMainFragment_to_signupFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="signupFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="268" />
                             <option name="y" value="12" />
                           </Point>
                         </option>

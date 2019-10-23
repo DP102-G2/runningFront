@@ -1,7 +1,6 @@
 package com.g2.runningFront.SignInActivity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,8 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,26 +27,26 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
-import static android.app.Activity.RESULT_OK;
+import java.util.Date;
+
 import static android.content.Context.MODE_PRIVATE;
-import static android.view.View.GONE;
 
 /* Google 登入 imports */
 
 public class SignInMainFragment extends Fragment {
     private static final String TAG = "TAG_SignIn_Main";
     private Activity activity;
+    private EditText etId, etPassword;
 
     /* Google 登入宣告 */
     private GoogleSignInClient googleSignInClient;
     private static final int GSIGN_CODE = 101;
-
-    private EditText etId, etPassword;
-    private TextView textView;
 
     private Gson gson;
 
@@ -73,14 +70,15 @@ public class SignInMainFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_signin_main, container, false);
     }
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         etId = view.findViewById(R.id.etId);
         etPassword = view.findViewById(R.id.etPassword);
-        textView = view.findViewById(R.id.textView2);
 
+        /* 會員登入按鈕 */
         view.findViewById(R.id.btSignIn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,70 +88,72 @@ public class SignInMainFragment extends Fragment {
 
                 String id = etId.getText().toString().trim();
                 String password = etPassword.getText().toString().trim();
-                User user = new User(0, id, password);
 
-                if (Common.networkConnected(activity)) {
-                    String url = Common.URL_SERVER + "SettingServlet";
+                if (id.length() <= 0 || password.length() <= 0) {
+                    Common.toastShow(activity, "請輸入有效的帳號密碼");
+                } else {
 
-                    JsonObject jo = new JsonObject();
-                    jo.addProperty("action", "signin");
-                    jo.addProperty("user", new Gson().toJson(user));
-                    String outStr = jo.toString();
+                    User user = new User(0, id, "NONE", password);
 
-                    CommonTask signInTask = new CommonTask(url, outStr);
+                    if (Common.networkConnected(activity)) {
+                        String url = Common.URL_SERVER + "SettingServlet";
 
-                    try {
+                        JsonObject jo = new JsonObject();
+                        jo.addProperty("action", "signin");
+                        jo.addProperty("user", new Gson().toJson(user));
+                        String outStr = jo.toString();
 
-                        String strIn = signInTask.execute().get();
-                        user = gson.fromJson(strIn, User.class);
+                        CommonTask signInTask = new CommonTask(url, outStr);
 
-                        if(user == null){
-                            textView.setText("輸入之帳號或密碼不正確");
-                            Common.toastShow(activity, "輸入之帳號或密碼不正確");
-                        } else {
+                        try {
 
-                            textView.setText("一般登入成功\n"+"User_ID:\t\t"+user.getId()
-                                    +"\nUser_PW:\t\t"+user.getPassword()
-                                    +"\nUser_No:\t\t"+user.getNo());
-                            Common.toastShow(activity,"一般登入成功");
+                            String strIn = signInTask.execute().get();
+                            user = gson.fromJson(strIn, User.class);
 
-                            /* 將登入資料存入偏好設定 */
-                            SharedPreferences pref = activity.getSharedPreferences("preference",
-                                    MODE_PRIVATE);
-                            pref.edit()
-                                    .putInt("user_no", user.getNo())
-                                    .putString("user_id", user.getId())
-                                    .putBoolean("isSignIn", true)
-                                    .apply();
+                            if (user == null) {
+                                Common.toastShow(activity, "輸入之帳號或密碼不正確");
 
-//                            /* 回應成功代碼（傳回去發出 Intent 的頁面） */
-//                            setResult(RESULT_OK);
+                            } else {
 
-                            /* 延時執行 */
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
+                                Common.toastShow(activity, "一般登入成功");
 
-                                    Log.d(TAG, "登入成功，此頁消失");
-                                    activity.finish();// finish() 讓視窗（Activity）消失
-                                }
-                            },2000);// 延後2秒
+                                /* 將登入的會員資料存入偏好設定 */
+                                SharedPreferences pref = activity.getSharedPreferences("preference",
+                                        MODE_PRIVATE);
+                                pref.edit()
+                                        .putInt("user_no", user.getNo())
+                                        .putString("user_id", user.getId())
+                                        .putString("user_name", user.getName())
+                                        .putBoolean("isSignIn", true)
+                                        .apply();
+
+                                /* 回應成功代碼（傳回去發出 Intent 的頁面） */
+                                /*setResult(RESULT_OK); */
+
+                                /* 延時執行 */
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        Log.d(TAG, "登入成功，此頁消失");
+                                        activity.finish();// finish() 讓視窗（Activity）消失
+
+                                    }
+                                }, 2 * 1000);// 延後2秒
+                            }
+
+                        } catch (Exception e) {
+                            Log.e(TAG, e.getMessage());
                         }
-
-                    } catch (Exception e) {
-                        Log.e(TAG, e.getMessage());
+                    } else {
+                        Common.toastShow(activity, R.string.textNoNetwork);
                     }
                 }
 
             }
         });
 
-        /*============================== Google 登入程式碼 ==============================*/
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-
-        googleSignInClient = GoogleSignIn.getClient(activity, gso);
+        /* ============================== Google 登入程式碼 ============================== */
 
         /* Google 登入按鈕 */
         view.findViewById(R.id.btGSignIn).setOnClickListener(new View.OnClickListener() {
@@ -165,18 +165,21 @@ public class SignInMainFragment extends Fragment {
 
             }
         });
-
         SignInButton signInButton = view.findViewById(R.id.btGSignIn);
         signInButton.setSize(SignInButton.SIZE_WIDE);
 
-        /* 登出按鈕 */
-        view.findViewById(R.id.btSignOut).setOnClickListener(new View.OnClickListener() {
+        /* 註冊會員按鈕 */
+        view.findViewById(R.id.btSignUp).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                googleSignInClient.signOut();
-                textView.setText("Google 已登出");
+                Navigation.findNavController(view)
+                        .navigate(R.id.action_signinMainFragment_to_signupFragment);
             }
         });
+
+        /* 登出 Google */
+        //signOut();
+
     }
 
     /* 承接 Google 登入結果 */
@@ -185,6 +188,8 @@ public class SignInMainFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == GSIGN_CODE){
+            // The Task returned from this call is always completed,
+            // no need to attach a listener.
             Task<GoogleSignInAccount> gTask = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(gTask);
         }
@@ -198,22 +203,105 @@ public class SignInMainFragment extends Fragment {
 
             // 取得使用者的資料，取得後再看你想要對這些資料做什麼用途
             // getId 21位 Google帳戶編號
-            Log.d(TAG, "handleSignInResult getId:\n" + acct.getId());
+            Log.e(TAG, "handleSignInResult getId: " + acct.getId());
             // getDisplayName Google 名稱
-            Log.d(TAG, "handleSignInResult getName: " + acct.getDisplayName());
+            Log.e(TAG, "handleSignInResult getName: " + acct.getDisplayName());
             // getEmail Google 信箱
-            Log.d(TAG, "handleSignInResult getEmail: " + acct.getEmail());
+            Log.e(TAG, "handleSignInResult getEmail: " + acct.getEmail());
             // getPhotoUrl Google 大頭照圖片連結
-            Log.d(TAG, "handleSignInResult getPhotoUrl: " + acct.getPhotoUrl());
+            Log.e(TAG, "handleSignInResult getPhotoUrl: " + acct.getPhotoUrl());
 
-            Bundle bundle = new Bundle();
-            bundle.putString("image" ,String.valueOf(acct.getPhotoUrl()));
-            Navigation.findNavController(textView)
-                    .navigate(R.id.action_settingMainFragment_to_settingUpadteFragment, bundle);
+
+            String id = acct.getId();
+            String name = acct.getDisplayName();
+            String email = acct.getEmail();
+
+            String url = Common.URL_SERVER + "SettingServlet";
+
+            JsonObject jo = new JsonObject();
+            jo.addProperty("action", "googleSignIn");
+            jo.addProperty("user_id", id);
+            jo.addProperty("user_pw", id);// Google 登入的話，帳號同密碼
+            jo.addProperty("user_name", name);
+            jo.addProperty("user_email", email);
+
+            /* 會員註冊日期 */
+            Gson gson = new GsonBuilder()
+                    .setDateFormat("yyyy-MM-dd")// 2020-01-02
+                    .create();
+            /* 將 new Date() 轉為 Json，並且要符合以上的日期表示法
+             * 但是在 Servlet 端會變成字串型態，需要再利用 Gson 轉成 Date */
+            String date = gson.toJson(new Date());
+            jo.addProperty("user_regtime", date);
+
+            Log.d(TAG, "即將送出的註冊資料：\n" + jo);
+            String outStr = jo.toString();
+
+            CommonTask signUpTask = new CommonTask(url, outStr);
+
+            boolean isSignIn = false;
+
+            try {
+                String jsonIn = signUpTask.execute().get();
+                jo = gson.fromJson(jsonIn, JsonObject.class);
+
+                isSignIn = jo.get("GoogleSignIn").getAsBoolean();
+
+                Log.e(TAG, "GoogleSignIn = " + isSignIn);
+
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+
+            if (isSignIn) {
+
+                Log.d(TAG, "Google 登入成功。");
+                Common.toastShow(activity, "Google 登入成功");
+
+                /* 將登入的會員資料存入偏好設定 */
+                SharedPreferences pref = activity.getSharedPreferences("preference",
+                        MODE_PRIVATE);
+                pref.edit()
+                        .putInt("user_no", jo.get("user_no").getAsInt())
+                        .putString("user_id", id)
+                        .putString("user_name", name)
+                        .putBoolean("isSignIn", true)
+                        .apply();
+
+                /* 延時執行 */
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Log.d(TAG, "登入成功，此頁消失");
+                        activity.finish();
+                        // finish() 讓視窗（Activity）消失
+
+                    }
+                }, 2 * 1000);// 延後2秒
+
+            } else{
+                Log.e(TAG, "Google 登入失敗。");
+                Common.toastShow(activity, "Google 登入失敗");
+            }
+
 
         } catch (ApiException e){
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w(TAG, "SignInResult: failed code = " + e.getStatusCode());
         }
+    }
+
+    /* Google 登出 */
+    private void signOut() {
+        googleSignInClient.signOut()
+                .addOnCompleteListener(activity, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // Clear Preferences
+                    }
+                });
     }
 
     /* 隱藏鍵盤方法 */

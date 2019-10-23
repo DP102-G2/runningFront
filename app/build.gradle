@@ -32,17 +32,20 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:17.0.0'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
 
-
-
     //TAP PAY
     implementation(name: 'tpdirect', ext: 'aar')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    //GOOGLE登入
+    //Google 登入
     implementation 'com.google.android.gms:play-services-wallet:18.0.0'
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
 
+    //Gson
     implementation 'com.google.code.gson:gson:2.8.5'
+
+    //QR Code
+    implementation 'com.google.zxing:core:3.3.3'
+    implementation 'com.journeyapps:zxing-android-embedded:3.4.0'
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'

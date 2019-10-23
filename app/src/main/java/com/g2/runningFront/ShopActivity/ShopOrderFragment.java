@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 
 
@@ -42,6 +43,7 @@ public class ShopOrderFragment extends Fragment {
     Button btoOrder_detail;
     List<Order> orders = new ArrayList<>();
     List<Order> orders_spinner = new ArrayList<>();
+    List<Order> orders_change = new ArrayList<>();
 
     private CommonTask orderGetAllTask;
     private CommonTask spotDeleteTask;
@@ -75,6 +77,15 @@ public class ShopOrderFragment extends Fragment {
 
 
     }
+//    private void change(){
+//        for (Order order : orders) {
+//            Switch(order.getOrder_status().equals()){
+//
+//
+//            }
+//        }
+//    }
+
 
     private void showAll() {
         if (activity != null) {
@@ -116,7 +127,7 @@ public class ShopOrderFragment extends Fragment {
             }
         }
     }
-
+ //
     public void spcon() {
         spOrder = getView().findViewById(R.id.spOrder);
 
@@ -133,7 +144,7 @@ public class ShopOrderFragment extends Fragment {
                                 orders_spinner.add(order);
                             }
                         }
-
+ 
                         OrderAdapter adapter = (OrderAdapter) recyclerView.getAdapter();
                         adapter.setOrders(orders_spinner);
                         adapter.notifyDataSetChanged();
@@ -212,7 +223,7 @@ public class ShopOrderFragment extends Fragment {
         private LayoutInflater layoutInflater;
         //  Context context;
         private List<Order> orders;
-        private boolean[] orderExpanded;
+      //  private boolean[] orderExpanded;
 
         public OrderAdapter(Context context, List<Order> orders) {
             layoutInflater = LayoutInflater.from(context);
@@ -290,9 +301,9 @@ public class ShopOrderFragment extends Fragment {
             viewHolder.tvpaymentmathon.setText("付款方式:" + order.getPayment_methon());
             viewHolder.tvordermoney.setText("金額:" + order.getOrder_money() + " ");
             viewHolder.tvorderstatus.setText("訂單狀態:" + order.getOrder_status());
-            viewHolder.tvProduct.setText(order.getProduct_no());
-            viewHolder.tvShop_quantity.setText(order.getQty() + " ");
-            viewHolder.tvProduct_price.setText(order.getOrder_price() + " ");
+            viewHolder.tvProduct.setText("商品編號:" +order.getProduct_no());
+            viewHolder.tvShop_quantity.setText("商品數量:" +order.getQty() + " ");
+            viewHolder.tvProduct_price.setText("訂單金額:" +order.getOrder_price() + " ");
 
         }
 

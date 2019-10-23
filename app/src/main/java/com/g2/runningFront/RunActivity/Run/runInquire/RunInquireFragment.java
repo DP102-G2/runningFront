@@ -54,7 +54,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -62,30 +61,31 @@ public class RunInquireFragment extends Fragment
         implements DatePickerDialog.OnDateSetListener {
 
 
-    int dayTime = 3600*1000*24;
+    int dayTime = 3600 * 1000 * 24;
+    private Timestamp startDate, endDate;
 
+    private List<Run> runList = new ArrayList<>();
+    // 資料庫取出的List
 
-    Activity activity;
-    EditText etInputTime;
-    View view;
-    private static int year, month, day;
+    private List<Run> dpRunList = new ArrayList<>();
+    // 實際顯示的List
 
-    Timestamp startDate,endDate;
-    List<Run> runList = new ArrayList<>();
-    List<Run> dpRunList = new ArrayList<>();
-    RecyclerView rv;
-
+    private Activity activity;
+    private View view;
+    private RecyclerView rvRunList;
+    private EditText etInputTime;
 
     CommonTask getRunListTask;
     ImageTask routeImageTask;
     private static final String url = Common.URL_SERVER + "RunServlet";
+    private static int year, month, day;
 
 
     PieChart pieChart;
     List<PieEntry> pieEntryList = new ArrayList<>();
-    DecimalFormat format = new DecimalFormat(("0.00"));
-    double wDistance = 0;
-    String distanceStr ;
+    DecimalFormat valueFormat = new DecimalFormat(("0.00"));
+    double sumDistance = 0;
+    String distanceStr;
 
 
     @Override
@@ -118,57 +118,72 @@ public class RunInquireFragment extends Fragment
     @SuppressLint("ClickableViewAccessibility")
     private void holdView() {
         etInputTime = view.findViewById(R.id.inquire_etInputTime);
-        etInputTime.setText(String.format("%1$ty-%1$tm-%1$td",runList.get(0).getRun_date()));
-        etInputTime.setShowSoftInputOnFocus(false);
+        etInputTime.setText(String.format("%1$ty-%1$tm-%1$td", runList.get(0).getRun_date()));
 
+        /* 關閉鍵盤模式，並使用onTouch設定事件直接顯示選擇時間畫面 */
+        etInputTime.setShowSoftInputOnFocus(false);
         etInputTime.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     DatePickerDialog datePicker = new DatePickerDialog(
-                            activity, RunInquireFragment.this, // 間聽器
+                            activity, RunInquireFragment.this,
                             RunInquireFragment.year, RunInquireFragment.month, RunInquireFragment.day);
-                    //預選日期，抓取時間;
 
-                    datePicker.getDatePicker().setMaxDate(runList.get(runList.size()-1).getRun_date().getTime());
-                    // 限定最多查到當天
-
+                    // 設定可以選擇的最大/最小時間
+                    datePicker.getDatePicker().setMaxDate(runList.get(runList.size() - 1).getRun_date().getTime());
                     datePicker.getDatePicker().setMinDate(runList.get(0).getRun_date().getTime());
-                    // 限定開始時間，這要查
-
                     datePicker.show();
                 }
                 return false;
-
             }
         });
 
-        rv = view.findViewById(R.id.inquire_rv);
+        rvRunList = view.findViewById(R.id.inquire_rv);
+        rvRunList.setLayoutManager(new LinearLayoutManager(activity));
+        rvRunList.setAdapter(new RunAdapter(activity, dpRunList));
 
-        rv.setLayoutManager(new LinearLayoutManager(activity));
-        rv.setAdapter(new RunAdapter(activity, dpRunList));
+        /* 根據擷取到的列表， */
+        updateDisplay(new Timestamp(runList.get(runList.size() - 1).getRun_date().getTime() - dayTime * 6), runList.get(runList.size() - 1).getRun_date());
 
-        updateDisplay(runList.get(0).getRun_date(),runList.get(runList.size()-1).getRun_date());
 
+        /* 設定圓餅圖 */
         pieChart = view.findViewById(R.id.inquire_pieChart);
         pieChart.setRotationEnabled(true);
-        pieChart.setCenterText("跑步距離 \n" + distanceStr + " km ");
+        // 是否選轉
+        pieChart.getLegend().setEnabled(false);
+        // 是否顯示下方資料來源
+
+        String pieChartStr;
+        if (pieEntryList.isEmpty()) {
+            pieChartStr = "目前尚無跑步資訊";
+        } else {
+            pieChartStr = "跑步距離 \n" + distanceStr + " km ";
+
+        }
+
+        // 設定中間圓心的文字
+        pieChart.setCenterText(pieChartStr);
         pieChart.setCenterTextSize(25);
 
+        // 設定圓餅圖的文字
         PieDataSet pieDataSet = new PieDataSet(pieEntryList, "Run WeekData");
         pieDataSet.setValueTextSize(0);
         pieDataSet.setSliceSpace(2);
-
         pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        // 圓餅圖顯示的顏色
+
         PieData pieData = new PieData(pieDataSet);
         pieChart.setData(pieData);
         pieChart.invalidate();
+        pieChart.setDrawSliceText(false);
 
+        // 圓餅圖被點選時顯示"時間＋距離"
         pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry entry, Highlight highlight) {
                 PieEntry pieEntry = (PieEntry) entry;
-                String text = pieEntry.getLabel() + "\n" + format.format(pieEntry.getValue()) + " m";
+                String text = pieEntry.getLabel() + "\n" + valueFormat.format(pieEntry.getValue()) + " m";
                 Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
             }
 
@@ -177,64 +192,81 @@ public class RunInquireFragment extends Fragment
 
             }
         });
-
-
-
     }
 
 
+    /* 當DatePicker被選擇時自動啟動 */
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        RunInquireFragment.year = year; //存入預設的時間
+
+        //存入預設的時間，由於為static因此需使用fragment
+        RunInquireFragment.year = year;
         RunInquireFragment.month = month;
         RunInquireFragment.day = day;
 
+        // 針對目前的時間，可以算出起始與七天後的時間
         Calendar calendar = new GregorianCalendar(year, month, day);
         startDate = new Timestamp(calendar.getTimeInMillis());
-        endDate = new Timestamp(startDate.getTime()+dayTime*7);
+        if (runList.get(runList.size() - 1).getRun_date().getTime() - endDate.getTime() < dayTime * 6) {
+            endDate = new Timestamp(runList.get(runList.size() - 1).getRun_date().getTime());
 
-        updateDisplay(startDate,endDate);
+        } else {
+            endDate = new Timestamp(startDate.getTime() + dayTime * 6);
+        }
+        updateDisplay(startDate, endDate);
     }
 
-    private void updateDisplay(Timestamp startDate,Timestamp endDate) {
+    /* 根據輸入的起始與結束時間，計算出需顯示的資訊(距離、列表) */
+    private void updateDisplay(Timestamp startDate, Timestamp endDate) {
 
-        wDistance=0;
+        /* 重置所有數值 */
+        sumDistance = 0;
         dpRunList.clear();
         pieEntryList.clear();
 
-        for(Run run :runList){
-            if(startDate.getTime()<=run.getRun_date().getTime()&run.getRun_date().getTime()<endDate.getTime()){
+        /* 判斷輸入的開始/結束時間，抓出符合的列表 */
+        for (Run run : runList) {
+            if (startDate.getTime() <= run.getRun_date().getTime() & run.getRun_date().getTime() <= endDate.getTime()) {
                 dpRunList.add(run);
-                wDistance+=run.getDistance();
+                sumDistance += run.getDistance();
                 float iDistance = (float) run.getDistance();
-                pieEntryList.add(new PieEntry(iDistance, Common.getWeekDay(run.getRun_date())));
+                pieEntryList.add(new PieEntry(iDistance, Common.getDay(run.getRun_date())));
+                // 圓餅圖專用的List
             }
         }
 
-        distanceStr = format.format(wDistance / 1000);
+        distanceStr = valueFormat.format(sumDistance / 1000);
 
-        RunAdapter runAdapter = (RunAdapter) rv.getAdapter();
+        /* 更新RecyclerView */
+
+        RunAdapter runAdapter = (RunAdapter) rvRunList.getAdapter();
         runAdapter.setRuns(dpRunList);
         runAdapter.notifyDataSetChanged();
 
-        if(pieChart!=null) {
+        /* 更新圓餅圖 */
+
+        if (pieChart != null) {
             pieChart.notifyDataSetChanged();
             pieChart.invalidate();
             pieChart.setCenterText("跑步距離 \n" + distanceStr + " km ");
         }
-        String startTime = String.format("20%1$ty-%1$tm-%1$td",startDate);
-        String endTime = String.format("20%1$ty-%1$tm-%1$td",endDate);
 
+
+//      /* 判斷時間會不會超過 */
+
+
+
+        /* 更新EditText */
+
+        String startTime = String.format("20%1$ty-%1$tm-%1$td", startDate);
+        String endTime = String.format("20%1$ty-%1$tm-%1$td", endDate);
 
         StringBuilder set = new StringBuilder();
-        set.append(startTime+"   ~   "+endTime);
+        set.append(startTime + "   ~   " + endTime);
 
         etInputTime.setText(set);
     }
 
-    /**
-     * 從這邊開始寫
-     */
 
     private class RunAdapter extends RecyclerView.Adapter<RunAdapter.InquireHolder> {
 
@@ -289,19 +321,20 @@ public class RunInquireFragment extends Fragment
             final Run run = runs.get(position);
 
             holder.tvDate.setText("運動日期： " + String.format("%1$tm 月 %1$td 日", run.getRun_date()));
-            holder.tvCalorie.setText("消耗卡路里： " + String.valueOf(run.getCalorie()));
-            holder.tvDistance.setText("跑步距離： " + String.valueOf(run.getDistance()));
-            holder.tvTime.setText("累計時間： " + String.valueOf(run.getTime()));
+            holder.tvCalorie.setText("消耗卡路里： " + run.getCalorie());
+            holder.tvDistance.setText("跑步距離： " + run.getDistance());
+            holder.tvTime.setText("累計時間： " + run.getTime());
 
-            routeImageTask = new ImageTask(url, run.getUserNo(),run.getRunNo() , holder.ivImage);
+            /* 根據UserNo跟RunNo擷取圖片 */
+            routeImageTask = new ImageTask(url, holder.ivImage, run.getUserNo(), run.getRunNo());
             routeImageTask.execute();
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("Run",run);
-                    Navigation.findNavController(view).navigate(R.id.action_runInquireFragment_to_runDetailFragment,bundle);
+                    bundle.putSerializable("Run", run);
+                    Navigation.findNavController(view).navigate(R.id.action_runInquireFragment_to_runDetailFragment, bundle);
 
                 }
             });
@@ -310,6 +343,9 @@ public class RunInquireFragment extends Fragment
     }
 
 
+    /**
+     * 根據UserNo抓取對應資料，之後要補抓取UserNo
+     */
     private List<Run> getRunList() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setDateFormat("yyyyMMddhhmmss");
@@ -322,21 +358,23 @@ public class RunInquireFragment extends Fragment
         jsonObject.addProperty("userNo", 1);
         jsonObject.addProperty("startDate", gson.toJson(startDate));
 
-        try {
-            getRunListTask = new CommonTask(url, jsonObject.toString());
-            String runListStr = getRunListTask.execute().get();
-            Log.d("TAG", runListStr);
+        if (Common.networkConnected(activity)) {
 
-            Type listTpye = new TypeToken<List<Run>>() {
-            }.getType();
+            try {
+                getRunListTask = new CommonTask(url, jsonObject.toString());
+                String runListStr = getRunListTask.execute().get();
+                Log.d("TAG", runListStr);
 
-            runs = gson.fromJson(runListStr, listTpye);
+                Type listTpye = new TypeToken<List<Run>>() {
+                }.getType();
+
+                runs = gson.fromJson(runListStr, listTpye);
 
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-
         return runs;
 
     }

@@ -80,7 +80,7 @@ public class RunDetailFragment extends Fragment {
 
     private void getImage(ImageView imageView,Run run){
 
-        routeImageTask = new ImageTask(url, run.getUserNo(),run.getRunNo() , imageView);
+        routeImageTask = new ImageTask(url,imageView, run.getUserNo(),run.getRunNo());
         routeImageTask.execute();
 
 
