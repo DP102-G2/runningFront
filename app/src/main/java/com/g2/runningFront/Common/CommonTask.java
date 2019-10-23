@@ -1,8 +1,6 @@
 package com.g2.runningFront.Common;
 
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
 

@@ -28,7 +28,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/gp_tvRank"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@drawable/user_no_image" />
+            tools:srcCompat="@drawable/user_no_image_cute" />
 
         <TextView
             android:id="@+id/gp_tvRank"

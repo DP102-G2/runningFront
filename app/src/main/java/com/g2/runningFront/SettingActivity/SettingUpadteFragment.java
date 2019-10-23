@@ -2,6 +2,7 @@ package com.g2.runningFront.SettingActivity;
 
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.Matrix;
 import android.os.Bundle;
 
@@ -49,6 +50,8 @@ import android.widget.TextView;
 
 import com.g2.runningFront.Common.Common;
 import com.g2.runningFront.Common.CommonTask;
+/* 圖片資源載入優化套件 */
+import com.squareup.picasso.Picasso;
 
 import static com.g2.runningFront.Common.Common.PREF;
 import static android.content.Context.MODE_PRIVATE;
@@ -63,8 +66,10 @@ public class SettingUpadteFragment extends Fragment {
     private TextView tvId;
     private ImageView imageView;
     private EditText etPW, etName, etEmail;
-
     private RadioGroup radioGroup;
+
+    /* 偏好設定檔案 */
+    private SharedPreferences pref;
 
     private Gson gson;
 
@@ -105,14 +110,18 @@ public class SettingUpadteFragment extends Fragment {
         /* 隱私單選按鈕群組 */
         radioGroup = view.findViewById(R.id.radioGroup);
 
+        /* 列印出該會員名字（Google登入）或者帳號（一般登入） */
+        pref = activity.getSharedPreferences(PREF, MODE_PRIVATE);
+        tvId.setText((pref.getBoolean("GoogleSignIn",false)) ?
+                pref.getString("user_name","") : pref.getString("user_id",""));
+
         /* 列印出該會員資料 */
         final Bundle bundle = getArguments();
-        tvId.setText(activity.getSharedPreferences(PREF, MODE_PRIVATE).getString("user_id",""));
-
         if (bundle == null || bundle.getInt("user_no") == 0) {
-            Log.e(TAG, "讀入的 user_no 不被許可");
+            Log.e(TAG, "bundle 中的 user_no 為0或空值");
             return;// 沒通過 bundle 檢驗,就跳出
         } else {
+
             int no = bundle.getInt("user_no");
             Log.d(TAG, "讀入的 user_no：" + no);
 
@@ -161,29 +170,44 @@ public class SettingUpadteFragment extends Fragment {
                 }
 
                 /* 取得會員大頭貼圖像 */
-                JsonObject jo_image = new JsonObject();
-                jo_image.addProperty("action","getImage");
-                jo_image.addProperty("user_no", no);
+                // 如果是 Google 登入，則從 Google 網址抓取大頭貼
+                if (pref.getBoolean("GoogleSignIn",false) == true){
 
-                String url_image = Common.URL_SERVER + "SettingServlet";
-                CommonTask imageTask = new CommonTask(url_image, jo_image.toString());
+                    String imgUrl = pref.getString("GoogleUserImage", "No URL");
 
-                Bitmap bitmap = null;
+                    Picasso
+                            .with(activity)
+                            .load(imgUrl)
+                            .error(R.drawable.user_no_image)
+                            //.resize(140, 140)
+                            .into(imageView);
 
-                try {
-                    /* 用 Base64 解碼 Servlet 端 編碼而成的文字變成 byte[]
-                     * 再用 BitmapFactory 把 byte[] 換成 bitmap 以供 UI 元件貼圖 */
-                    byte[] image = Base64.decode(imageTask.execute().get(), Base64.DEFAULT);
-                    bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
-
-                } catch (Exception e) {
-                    Log.e(TAG, e.toString());
-                }
-                if (bitmap != null) {
-                    imageView.setImageBitmap(round(bitmap));
                 } else {
-                    bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.user_no_image);
-                    imageView.setImageBitmap(round(bitmap));
+                    String url_image = Common.URL_SERVER + "SettingServlet";
+
+                    JsonObject jo_image = new JsonObject();
+                    jo_image.addProperty("action","getImage");
+                    jo_image.addProperty("user_no", no);
+
+                    CommonTask imageTask = new CommonTask(url_image, jo_image.toString());
+
+                    Bitmap bitmap = null;
+
+                    try {
+                        /* 用 Base64 解碼 Servlet 端 編碼而成的文字變成 byte[]
+                         * 再用 BitmapFactory 把 byte[] 換成 bitmap 以供 UI 元件貼圖 */
+                        byte[] image = Base64.decode(imageTask.execute().get(), Base64.DEFAULT);
+                        bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+
+                    } catch (Exception e) {
+                        Log.e(TAG, e.toString());
+                    }
+                    if (bitmap != null) {
+                        imageView.setImageBitmap(round(bitmap));
+                    } else {
+                        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.user_no_image);
+                        imageView.setImageBitmap(round(bitmap));
+                    }
                 }
 
             }
@@ -344,9 +368,7 @@ public class SettingUpadteFragment extends Fragment {
                         try {
                             bitmap = BitmapFactory.decodeStream(
                                     activity.getContentResolver().openInputStream(uri));// 從 uri 讀取的檔案,編碼轉檔成為 bitmap 格式
-                            if (bitmap != null) {
-                                imageView.setImageBitmap(round(bitmap));
-                            }
+
                             ByteArrayOutputStream out = new ByteArrayOutputStream();
                             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);// 把 bitmap 壓縮進 out
                             image = out.toByteArray();
@@ -361,7 +383,7 @@ public class SettingUpadteFragment extends Fragment {
                     if (bitmap != null) {
                         imageView.setImageBitmap(round(bitmap));
                     } else {
-                        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.user_no_image);
+                        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.user_no_image_cute);
                         imageView.setImageBitmap(round(bitmap));
                     }
                     break;
