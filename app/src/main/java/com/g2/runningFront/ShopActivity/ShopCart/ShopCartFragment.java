@@ -202,7 +202,13 @@ public class ShopCartFragment extends Fragment {
 
             holder.etProNum.setText(String.valueOf(Qty));
             holder.tvTotal.setText("小計： " + shopCart.getTotal());
-            holder.tvStock.setText("庫存： " + shopCart.getStock());
+            if(shopCart.getStock() <1){
+                holder.tvStock.setText("庫存不足");
+            }else {
+                holder.tvStock.setText("庫存： " + shopCart.getStock());
+
+            }
+
 
             //監測文字改變
             holder.etProNum.addTextChangedListener(new TextWatcher() {
@@ -231,7 +237,7 @@ public class ShopCartFragment extends Fragment {
                             checked = false;
                             holder.cbSelect.setChecked(false);
                             nQty = 0;
-                            Common.toastShow(activity, "庫存不足");
+                            Common.toastShow(activity, "請再次確認數量");
                         } else {
                             holder.cbSelect.setChecked(true);
                             checked = true;

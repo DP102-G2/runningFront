@@ -21,10 +21,11 @@
                 android:layout_width="300dp"
                 android:layout_height="264dp"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="50dp"
                 android:src="@drawable/ic_run" />
 
             <LinearLayout
-                android:layout_width="356dp"
+                android:layout_width="351dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="12dp"
@@ -32,36 +33,35 @@
 
                 <TextView
                     android:id="@+id/lbId"
-                    android:layout_width="48dp"
-                    android:layout_height="36dp"
-                    android:layout_marginStart="24dp"
+                    android:layout_width="76dp"
+                    android:layout_height="wrap_content"
                     android:text="ID"
-                    android:textSize="18sp" />
+                    android:textSize="17sp" />
 
                 <TextView
                     android:id="@+id/tvId"
-                    android:layout_width="93dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     android:textColor="@color/colorAccent"
-                    android:textSize="24sp"
+                    android:textSize="17sp"
                     tools:text="13" />
 
                 <TextView
                     android:id="@+id/lbName"
-                    android:layout_width="wrap_content"
+                    android:layout_width="76dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
+                    android:layout_marginStart="12dp"
                     android:text="@string/lbName"
-                    android:textSize="18sp" />
+                    android:textSize="17sp" />
 
                 <TextView
                     android:id="@+id/tvName"
-                    android:layout_width="106dp"
-                    android:layout_height="46dp"
+                    android:layout_width="76dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="24sp"
+                    android:textSize="17sp"
                     tools:text="John" />
             </LinearLayout>
 
@@ -77,24 +77,24 @@
                     android:layout_width="70dp"
                     android:layout_height="32dp"
                     android:text="總時間"
-                    android:textSize="18sp" />
+                    android:textSize="17sp" />
 
                 <TextView
                     android:id="@+id/tvtotal_time"
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     android:textColor="@color/colorAccent"
-                    android:textSize="24sp"
+                    android:textSize="17sp"
                     tools:text="2:13:13" />
 
                 <TextView
                     android:id="@+id/lbcalories"
-                    android:layout_width="wrap_content"
+                    android:layout_width="76dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
+                    android:layout_marginStart="12dp"
                     android:text="總距離"
-                    android:textSize="18sp" />
+                    android:textSize="17sp" />
 
                 <TextView
                     android:id="@+id/tvdis"
@@ -102,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="24sp"
+                    android:textSize="17sp"
                     tools:text="4500" />
             </LinearLayout>
 
@@ -115,36 +115,35 @@
 
                 <TextView
                     android:id="@+id/lbtotal_d"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
+                    android:layout_width="70dp"
+                    android:layout_height="32dp"
                     android:text="加入時間"
-                    android:textSize="18sp" />
+                    android:textSize="17sp" />
 
                 <TextView
                     android:id="@+id/tvjoin"
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="24sp"
+                    android:textSize="17sp"
                     tools:text="00.00KM" />
 
                 <TextView
                     android:id="@+id/lblove"
-                    android:layout_width="wrap_content"
+                    android:layout_width="76dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
+                    android:layout_marginStart="12dp"
                     android:text="愛心"
-                    android:textSize="18sp" />
+                    android:textSize="17sp" />
 
                 <TextView
                     android:id="@+id/tvlove"
                     android:layout_width="41dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="24sp"
+                    android:textSize="17sp"
                     tools:text="8" />
             </LinearLayout>
 

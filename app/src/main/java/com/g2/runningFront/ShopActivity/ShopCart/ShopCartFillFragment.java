@@ -104,30 +104,36 @@ public class ShopCartFillFragment extends Fragment {
                 sumTotal = bundle.getInt("SumTotal");
                 // 抓取總值
 
-                receiverName = etReceiver.getText().toString();
-                receiverAddress = etAddress.getText().toString();
-                receiverPhone = etPhone.getText().toString();
+                receiverName = etReceiver.getText().toString().trim();
+                receiverAddress = etAddress.getText().toString().trim();
+                receiverPhone = etPhone.getText().toString().trim();
 
                 if (receiverName.equals("") || receiverAddress.equals("") || receiverPhone.equals("")) {
                     Common.toastShow(activity, "請填寫你的收件人資料");
-                } else {
-                    CartOrder or = new CartOrder(user_no,receiverName, receiverAddress, receiverPhone, receiverPayment,0,sumTotal);
-                    // 訂單狀態先預設為0，代表尚未付款，等到下一頁要上傳取訂單編號用
-                    // 未來要補上USERNO
-                    pref.edit().putString("CartOrder", new Gson().toJson(or)).apply();
-                    // 將得到的訂單資料傳入下一頁
+                    return;
+                }
+                if (!Common.isCellPhoneNo(receiverPhone)) {
+                    Common.toastShow(activity, "電話格式不正確");
+                    return;
+                }
 
-                    switch (receiverPayment) {
-                        case -1:
-                            Common.toastShow(activity, "請選擇您的支付方式");
-                            break;
-                        case 0:
-                            Navigation.findNavController(view).navigate(R.id.action_shopCartFillFragment_to_shopCartCeditPayFragment);
-                            break;
-                        case 1:
-                            Navigation.findNavController(view).navigate(R.id.action_shopCartFillFragment_to_shopCartAcpayFragment);
-                            break;
-                    }
+                CartOrder or = new CartOrder(user_no, receiverName, receiverAddress, receiverPhone, receiverPayment, 0, sumTotal);
+                // 訂單狀態先預設為0，代表尚未付款，等到下一頁要上傳取訂單編號用
+                // 未來要補上USERNO
+                pref.edit().putString("CartOrder", new Gson().toJson(or)).apply();
+                // 將得到的訂單資料傳入下一頁
+
+                switch (receiverPayment) {
+                    case -1:
+                        Common.toastShow(activity, "請選擇您的支付方式");
+                        break;
+                    case 0:
+                        Navigation.findNavController(view).navigate(R.id.action_shopCartFillFragment_to_shopCartCeditPayFragment);
+                        break;
+                    case 1:
+                        Navigation.findNavController(view).navigate(R.id.action_shopCartFillFragment_to_shopCartAcpayFragment);
+                        break;
+
 
                 }
             }
@@ -185,7 +191,7 @@ public class ShopCartFillFragment extends Fragment {
         }
     }
 
-    private void checkToInt(){
+    private void checkToInt() {
         //將被選擇的結果轉換成數字
         switch (rgPayment.getCheckedRadioButtonId()) {
             case (R.id.cartfill_rbCredit):

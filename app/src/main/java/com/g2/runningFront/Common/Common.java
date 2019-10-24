@@ -27,6 +27,8 @@ import com.google.gson.GsonBuilder;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import tech.cherri.tpdirect.api.TPDCard;
 
@@ -236,18 +238,18 @@ public class Common {
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(timestamp);
-        cal.add(Calendar.DAY_OF_MONTH, -1);
+        cal.add(Calendar.MONTH, 1);
 
         cal.setFirstDayOfWeek(Calendar.MONDAY);
         String day = "";
         String month = "";
-        if (cal.get(Calendar.DAY_OF_WEEK) < 10) {
+        if (cal.get(Calendar.DAY_OF_MONTH) < 10) {
             day += "0";
         }
         if (cal.get(Calendar.MONTH) < 10) {
             month += "0";
         }
-        day += String.valueOf(cal.get(Calendar.DAY_OF_WEEK));
+        day += String.valueOf(cal.get(Calendar.DAY_OF_MONTH));
         month += cal.get(Calendar.MONTH);
         String dayStr = month + "/" + day;
 
@@ -328,6 +330,20 @@ public class Common {
         text = formatNum(hours) + " : " + formatNum(minutes) + " : " + formatNum(seconds);
 
         return text;
+    }
+
+    public static boolean isCellPhoneNo(String telephone) {
+        boolean result = false;
+
+        Pattern pattern = Pattern.compile("09[0-9]{8}");
+        Matcher matcher = pattern.matcher(telephone);
+
+        if (matcher.matches()) {
+            result =false;
+            return true;
+        }
+        return result;
+
     }
 
 }

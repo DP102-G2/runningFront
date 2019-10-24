@@ -127,7 +127,6 @@ public class ShopOrderFragment extends Fragment {
                 if (orders == null || orders.isEmpty()) {
                     Common.toastShow(activity, R.string.textNoNewsFound);
                 } else {
-                    Common.toastShow(activity, "Complete");
                     recyclerView.setAdapter(new OrderAdapter(activity, orders));
                 }
             } else {

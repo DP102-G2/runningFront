@@ -43,7 +43,7 @@ public class BmiResultFragment extends Fragment {
     String bmiSuggest;
 
     SharedPreferences pref;
-    final private static String PREFERENCES_NAME = "UserBasic";
+    final private static String PREFERENCES_NAME = "preference";
 
     CommonTask commonTask;
     private static final String url = Common.URL_SERVER + "RunServlet";

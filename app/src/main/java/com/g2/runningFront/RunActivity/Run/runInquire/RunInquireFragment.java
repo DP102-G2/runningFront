@@ -90,6 +90,7 @@ public class RunInquireFragment extends Fragment
     String distanceStr;
 
     int user_no;
+    Gson gson;
 
 
     @Override
@@ -99,6 +100,7 @@ public class RunInquireFragment extends Fragment
         setHasOptionsMenu(true);
         Common.signIn(activity);
         user_no = Common.getUserNo(activity);
+        gson = Common.getTimeStampGson();
     }
 
     @Override
@@ -112,16 +114,12 @@ public class RunInquireFragment extends Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
-        Date date = new Date();
-        startDate = new Timestamp(date.getTime());
-        endDate = startDate;
         runList = getRunList();
         holdView();
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private void holdView() {
-
 
         etInputTime = view.findViewById(R.id.inquire_etInputTime);
         rvRunList = view.findViewById(R.id.inquire_rv);
@@ -163,7 +161,6 @@ public class RunInquireFragment extends Fragment
         if (runList.size()!=0) {
 
             etInputTime.setEnabled(true);
-            etInputTime.setText(String.format("%1$ty-%1$tm-%1$td", runList.get(0).getRun_date()));
 
             /* 關閉鍵盤模式，並使用onTouch設定事件直接顯示選擇時間畫面 */
             etInputTime.setShowSoftInputOnFocus(false);
@@ -189,15 +186,13 @@ public class RunInquireFragment extends Fragment
             updateDisplay(new Timestamp(runList.get(runList.size() - 1).getRun_date().getTime() - dayTime * 6), runList.get(runList.size() - 1).getRun_date());
 
 
-
-
             // 圓餅圖被點選時顯示"時間＋距離"
             pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
                 @Override
                 public void onValueSelected(Entry entry, Highlight highlight) {
                     PieEntry pieEntry = (PieEntry) entry;
                     String text = pieEntry.getLabel() + "\n" + valueFormat.format(pieEntry.getValue()) + " m";
-                    Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
+                    Common.toastShow(activity,text);
                 }
 
                 @Override
@@ -338,9 +333,9 @@ public class RunInquireFragment extends Fragment
             final Run run = runs.get(position);
 
             holder.tvDate.setText("運動日期： " + String.format("%1$tm 月 %1$td 日", run.getRun_date()));
-            holder.tvCalorie.setText("消耗卡路里： " + run.getCalorie());
-            holder.tvDistance.setText("跑步距離： " + run.getDistance());
-            holder.tvTime.setText("累計時間： " + run.getTime());
+            holder.tvCalorie.setText("消耗卡路里： " + run.getCalorie()+"卡");
+            holder.tvDistance.setText("跑步距離： " + run.getDistance()+"公尺");
+            holder.tvTime.setText("累計時間： " + Common.secondToString((int)run.getTime()));
 
             /* 根據UserNo跟RunNo擷取圖片 */
             routeImageTask = new ImageTask(url, holder.ivImage, run.getUserNo(), run.getRunNo());
@@ -352,7 +347,6 @@ public class RunInquireFragment extends Fragment
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("Run", run);
                     Navigation.findNavController(view).navigate(R.id.action_runInquireFragment_to_runDetailFragment, bundle);
-
                 }
             });
         }
@@ -364,11 +358,6 @@ public class RunInquireFragment extends Fragment
      * 根據UserNo抓取對應資料，之後要補抓取UserNo
      */
     private List<Run> getRunList() {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.setDateFormat("yyyyMMddhhmmss");
-        gsonBuilder.registerTypeAdapter(Timestamp.class, new TimestampTypeAdapter());
-        Gson gson = gsonBuilder.create();
-
         List<Run> runs = new ArrayList<>();
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", "getRunList");

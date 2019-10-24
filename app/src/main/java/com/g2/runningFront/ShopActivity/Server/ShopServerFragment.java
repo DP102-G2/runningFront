@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.g2.runningFront.Common.Common;
@@ -60,7 +61,7 @@ public class ShopServerFragment extends Fragment {
     mesAdapter adapter;
     RecyclerView rvList;
     EditText etMessage;
-    Button btSubmit;
+    ImageView btSubmit;
     View view;
 
     int user_no;

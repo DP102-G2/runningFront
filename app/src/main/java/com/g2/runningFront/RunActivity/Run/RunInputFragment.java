@@ -38,7 +38,7 @@ public class RunInputFragment extends Fragment {
     int height, weight, age, gender = 1;
 
     SharedPreferences pref;
-    final private static String PREFERENCES_NAME = "UserBasic";
+    final private static String PREFERENCES_NAME = "preference";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

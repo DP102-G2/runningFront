@@ -27,6 +27,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -108,8 +109,13 @@ public class FriendFragment extends Fragment {
                         int i=10;
                         /* 印出會員資料 */
                         tvName.setText(jo.get("user_name").getAsString());
-                        tvtotal_time.setText(String.valueOf(jo.get("user_runtime").getAsDouble()));
+                        tvtotal_time.setText(Common.secondToString((int)jo.get("user_runtime").getAsDouble()));
                         tvId.setText(String.valueOf(jo.get("user_id").getAsString()));
+
+//                        double distance = jo.get("user_rundis").getAsDouble();
+//                        DecimalFormat df = new DecimalFormat("##.00");
+//                        String distanceStr = df.format(distance/1000);
+
                         tvtotal_dis.setText(String.valueOf(jo.get("user_rundis").getAsDouble()));
                         tvjoin.setText(jo.get("user_regtime").getAsString());
 //                        tvjoin.setText("99999999");

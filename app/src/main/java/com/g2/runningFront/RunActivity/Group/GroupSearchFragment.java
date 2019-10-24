@@ -47,6 +47,8 @@ public class GroupSearchFragment extends Fragment {
     private CommonTask SearchTask;
     private ImageTask SearchImageTask;
 
+    View view;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +66,9 @@ public class GroupSearchFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        /* 使用 RecyclerView */
+        this.view = view;
+
+                /* 使用 RecyclerView */
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
 
@@ -92,13 +96,13 @@ public class GroupSearchFragment extends Fragment {
 
         });
 
-//        view.findViewById(R.id.bt_qrCode).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Navigation.findNavController(view)
-//                        .navigate(R.id.action_groupSearchFragment_to_groupQRcodeFragment);
-//            }
-//        });
+        view.findViewById(R.id.bt_qrCode).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view)
+                        .navigate(R.id.action_groupSearchFragment_to_groupQRcodeFragment);
+            }
+        });
     }
 
     private void showSearched(List<Follow> searchedList) {
@@ -172,11 +176,11 @@ public class GroupSearchFragment extends Fragment {
 
             myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
+                public void onClick(View v) {
                     Bundle bundle = new Bundle();
                     bundle.putInt("user_no", follow.getNo());
-                    Navigation.findNavController(view)
-                            .navigate(R.id.action_runGroupFragment_to_FriendFragment2, bundle);
+                    Navigation.findNavController(view).navigate(R.id.action_groupSearchFragment_to_FriendFragment,bundle);
+
                 }
             });
 

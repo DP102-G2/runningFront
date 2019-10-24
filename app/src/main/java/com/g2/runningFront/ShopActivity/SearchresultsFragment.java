@@ -122,17 +122,6 @@ public class SearchresultsFragment extends Fragment {
             viewHolder.pro_desc.setText(product.getPro_desc());
             viewHolder.pro_price.setText(String.valueOf(product.getPro_price()));
             viewHolder.pro_name.setText(product.getPro_name());
-
-            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("product", product);
-                    Navigation.findNavController(v)
-                            .navigate(R.id.action_shopMainFragment_to_productFragment, bundle);
-
-                }
-            });
         }
     }
 

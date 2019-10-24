@@ -69,7 +69,7 @@ public class RunMainFragment extends Fragment {
     private static final String url = Common.URL_SERVER + "RunServlet";
 
     SharedPreferences pref;
-    private final static String PREFERENCES_NAME = "UserBasic";
+    private final static String PREFERENCES_NAME = "preference";
 
     PieChart pieChart;
     List<PieEntry> pieEntries = new ArrayList<>();
@@ -77,6 +77,7 @@ public class RunMainFragment extends Fragment {
     DecimalFormat format = new DecimalFormat(("0.00"));
 
     int user_no;
+    Gson gson;
 
     MainActivity mainActivity;
 
@@ -87,6 +88,7 @@ public class RunMainFragment extends Fragment {
         mainActivity = (MainActivity) getActivity();
         Common.signIn(activity);
         user_no = Common.getUserNo(activity);
+        gson = Common.getTimeStampGson();
     }
 
     @Override
@@ -205,10 +207,6 @@ public class RunMainFragment extends Fragment {
 
 
         List<Run> runs = new ArrayList<>();
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.setDateFormat("yyyyMMddhhmmss");
-        gsonBuilder.registerTypeAdapter(Timestamp.class, new TimestampTypeAdapter());
-        Gson gson = gsonBuilder.create();
 
         if(Common.networkConnected(activity)){
 

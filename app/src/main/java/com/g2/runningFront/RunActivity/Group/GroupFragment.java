@@ -157,14 +157,14 @@ public class GroupFragment extends Fragment {
         });
 
         /* 新增追蹤會員按鈕 */
-//        bt_addFollow = view.findViewById(R.id.addFollow);
-//        bt_addFollow.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Navigation.findNavController(view)
-//                        .navigate(R.id.action_runGroupFragment_to_groupSearchFragment);
-//            }
-//        });
+        bt_addFollow = view.findViewById(R.id.addFollow);
+        bt_addFollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view)
+                        .navigate(R.id.action_runGroupFragment_to_groupSearchFragment);
+            }
+        });
     }
 
     private void showFollowList(List<Follow> follows) {
@@ -228,7 +228,7 @@ public class GroupFragment extends Fragment {
         public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, final int position) {
 
             final Follow follow = follows.get(position);
-            String url = Common.URL_SERVER + "NationalServlet";
+            String url = Common.URL_SERVER + "GroupServlet";
 
             /* 索取追蹤會員大頭貼 */
             int no = follow.getNo();
@@ -292,7 +292,7 @@ public class GroupFragment extends Fragment {
                     Bundle bundle = new Bundle();
                     bundle.putInt("user_no", follow.getNo());
                     Navigation.findNavController(view)
-                            .navigate(R.id.action_runGroupFragment_to_FriendFragment2, bundle);
+                            .navigate(R.id.action_runGroupFragment_to_FriendFragment, bundle);
                 }
             });
 

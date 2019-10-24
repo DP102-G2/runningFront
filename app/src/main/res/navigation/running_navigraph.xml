@@ -33,14 +33,14 @@
         tools:layout="@layout/fragment_run_group" >
 
         <action
-            android:id="@+id/action_runGroupFragment_to_FriendFragment2"
-            app:destination="@id/FriendFragment" />
-        <action
             android:id="@+id/action_runGroupFragment_to_nationalFragment"
             app:destination="@+id/NationalFragment" />
         <action
             android:id="@+id/action_runGroupFragment_to_groupSearchFragment"
             app:destination="@id/groupSearchFragment" />
+        <action
+            android:id="@+id/action_runGroupFragment_to_FriendFragment"
+            app:destination="@id/FriendFragment" />
     </fragment>
     <fragment
         android:id="@+id/runAchieveFragment"
@@ -102,6 +102,9 @@
         <action
             android:id="@+id/action_groupSearchFragment_to_groupQRcodeFragment"
             app:destination="@id/groupQRcodeFragment" />
+        <action
+            android:id="@+id/action_groupSearchFragment_to_FriendFragment"
+            app:destination="@id/FriendFragment" />
     </fragment>
     <fragment
         android:id="@+id/groupQRcodeFragment"
