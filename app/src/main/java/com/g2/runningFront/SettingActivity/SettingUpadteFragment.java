@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 /* 有關 Layout */
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -336,10 +337,15 @@ public class SettingUpadteFragment extends Fragment {
         view.findViewById(R.id.btCancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
 
-                Navigation.findNavController(radioGroup)
-                        .popBackStack();
+                        Navigation.findNavController(radioGroup)
+                                .popBackStack();
 
+                    }
+                },1500);// 延後 1.5 秒
             }
         });
 
