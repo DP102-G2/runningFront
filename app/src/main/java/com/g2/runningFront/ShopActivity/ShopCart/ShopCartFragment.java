@@ -54,7 +54,7 @@ public class ShopCartFragment extends Fragment {
 
     private static final String url = Common.URL_SERVER + "ShopCartServlet";
     private static final String TAG = "TAG_SHOPCART";
-    private final static String PREFERENCES_NAME = "preferences";
+    private final static String PREFERENCES_NAME = "preference";
     // 偏好設定的名稱
 
     // VIEW
@@ -85,7 +85,6 @@ public class ShopCartFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = getActivity();
-        activity.setTitle("購物車");
         Common.signIn(activity);
         user_no = Common.getUserNo(activity);
     }
@@ -103,6 +102,7 @@ public class ShopCartFragment extends Fragment {
         pref = activity.getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
         shopCartList = getShopCartList();
         // 一開始取伺服器的購物車資料
+        activity.setTitle("購物車");
 
             holdView();
             setSumTotal(shopCartList);
@@ -304,7 +304,7 @@ public class ShopCartFragment extends Fragment {
                         shopCart.setQty(0);
                         holder.tvTotal.setText("小計： " + shopCart.getTotal());
                         holder.etProNum.setText(String.valueOf(0));
-                        Common.toastShow(activity, "庫存不足");
+                        Common.toastShow(activity, "請再次確認數量");
                     } else if (isChecked) {
                         buttonView.setChecked(true);
                         isCheckedList.set(index, true);

@@ -89,12 +89,12 @@ public class RunMainFragment extends Fragment {
         Common.signIn(activity);
         user_no = Common.getUserNo(activity);
         gson = Common.getTimeStampGson();
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        activity.setTitle("運動");
         return inflater.inflate(R.layout.fragment_run_main, container, false);
     }
 
@@ -102,6 +102,7 @@ public class RunMainFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
+        activity.setTitle("本週跑步一覽");
         mainActivity.btbRun.setVisibility(View.VISIBLE);
         pref = activity.getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
         runList = getRun();

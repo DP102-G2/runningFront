@@ -51,7 +51,6 @@ public class RunInputFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        activity.setTitle("輸入資訊");
         return inflater.inflate(R.layout.fragment_run_input, container, false);
     }
 
@@ -59,6 +58,7 @@ public class RunInputFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getUserBasic();
+        activity.setTitle("修改健康資訊");
         this.view = view;
         holdView();
     }
@@ -89,13 +89,15 @@ public class RunInputFragment extends Fragment {
         etAge = view.findViewById(R.id.rip_etAge);
         btConfirm = view.findViewById(R.id.runinput_btConfirm);
 
+        if(userBasic!=null){
+
         if (userBasic.getHeight() != 0 & userBasic.getWeight() != 0 & userBasic.getAge() != 0) {
 
             etHeight.setText(String.valueOf(userBasic.getHeight()));
             etWeight.setText(String.valueOf(userBasic.getWeight()));
             etAge.setText(String.valueOf(userBasic.getAge()));
 
-            switch (userBasic.getGender()){
+            switch (userBasic.getGender()) {
                 case 0:
                     rbMan.setChecked(false);
                     rbWoman.setChecked(true);
@@ -106,7 +108,7 @@ public class RunInputFragment extends Fragment {
                     break;
 
             }
-
+        }
         }
 
 
@@ -137,8 +139,8 @@ public class RunInputFragment extends Fragment {
     }
 
     private void getUserBasic() {
-        String obStr = pref.getString("UserBasic", "No Data");
-        if (obStr != null) {
+        String obStr = pref.getString("UserBasic",null);
+        if (obStr!=null) {
             userBasic = new Gson().fromJson(obStr, UserBasic.class);
         }
     }

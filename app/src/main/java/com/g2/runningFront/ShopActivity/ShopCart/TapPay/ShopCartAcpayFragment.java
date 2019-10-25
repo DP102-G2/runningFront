@@ -65,7 +65,7 @@ public class ShopCartAcpayFragment extends Fragment {
     public static PaymentData paymentData = null;
 
     private static final String url = Common.URL_SERVER + "ShopCartServlet";
-    private final static String PREFERENCES_NAME = "preferences";
+    private final static String PREFERENCES_NAME = "preference";
 
 
     String receiverName, receiverPayment, receiverAddress, receiverPhone;
@@ -111,7 +111,7 @@ public class ShopCartAcpayFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
-
+        activity.setTitle("結帳");
         pref = activity.getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
         // 抓取偏好設定
 

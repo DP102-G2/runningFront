@@ -61,13 +61,13 @@ public class BmiResultFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        activity.setTitle("BMI");
         return inflater.inflate(R.layout.fragment_bmi_result, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        activity.setTitle("BMI");
         this.view = view;
         setUserBasic();
         holdView();

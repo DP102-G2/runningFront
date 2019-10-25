@@ -101,6 +101,7 @@ public class RunInquireFragment extends Fragment
         Common.signIn(activity);
         user_no = Common.getUserNo(activity);
         gson = Common.getTimeStampGson();
+
     }
 
     @Override
@@ -114,6 +115,7 @@ public class RunInquireFragment extends Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
+        activity.setTitle("查詢跑步記錄");
         runList = getRunList();
         holdView();
     }

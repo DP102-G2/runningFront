@@ -55,7 +55,7 @@ public class ShopCartFillFragment extends Fragment {
     int user_no;
 
     private final static String DEFAULT_ERROR = "null";
-    private final static String PREFERENCES_NAME = "preferences";
+    private final static String PREFERENCES_NAME = "preference";
 
     private SharedPreferences pref;
     String orderReceiver;
@@ -67,6 +67,7 @@ public class ShopCartFillFragment extends Fragment {
         activity = getActivity();
         bundle = getArguments();
         user_no = Common.getUserNo(activity);
+
     }
 
     @Override
@@ -79,6 +80,8 @@ public class ShopCartFillFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        activity.setTitle("填寫購物資訊");
+
         pref = activity.getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
         this.view = view;
         holdView();

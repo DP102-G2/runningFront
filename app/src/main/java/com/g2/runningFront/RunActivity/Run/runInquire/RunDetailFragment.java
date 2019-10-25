@@ -40,6 +40,7 @@ public class RunDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         bundle=getArguments();
         activity=getActivity();
+
     }
 
     @Override
@@ -53,6 +54,7 @@ public class RunDetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
+        activity.setTitle("跑步明細");
         holdView();
 
     }
