@@ -1,29 +1,366 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorBackground"
-    tools:context=".RunActivity.RunAchieveFragment">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/reachieve"
-        android:layout_width="0dp"
-        android:layout_height="273dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="6dp">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/reachieve2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/reachieve" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="6dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageView
+                    android:id="@+id/ivachieve1"
+                    android:layout_width="93dp"
+                    android:layout_height="101dp"
+                    android:padding="6dp"
+                    app:srcCompat="@drawable/ic_01" />
+
+                <TextView
+                    android:id="@+id/tvachieve_no1"
+                    android:layout_width="93dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="跑步最遠距離"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvachieve_value1"
+                    android:layout_width="93dp"
+                    android:layout_height="36dp"
+                    android:gravity="center"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvunit1"
+                    android:layout_width="93dp"
+                    android:layout_height="36dp"
+                    android:gravity="center"
+                    android:text="km"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="6dp">
+
+                <ImageView
+                    android:id="@+id/ivachieve2"
+                    android:layout_width="93dp"
+                    android:layout_height="101dp"
+                    android:padding="6dp"
+                    app:srcCompat="@drawable/ic_02" />
+
+                <TextView
+                    android:id="@+id/tvachieve_no2"
+                    android:layout_width="93dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="跑步最久距離"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvachieve_value2"
+                    android:layout_width="93dp"
+                    android:layout_height="36dp"
+                    android:gravity="center"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvunit2"
+                    android:layout_width="93dp"
+                    android:layout_height="36dp"
+                    android:gravity="center"
+                    android:text="km"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="6dp">
+
+                <ImageView
+                    android:id="@+id/ivachieve3"
+                    android:layout_width="93dp"
+                    android:layout_height="101dp"
+                    android:padding="6dp"
+                    app:srcCompat="@drawable/ic_03" />
+
+                <TextView
+                    android:id="@+id/tvachieve_no3"
+                    android:layout_width="93dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="一公里時間"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvachieve_value3"
+                    android:layout_width="93dp"
+                    android:layout_height="36dp"
+                    android:gravity="center"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvunit3"
+                    android:layout_width="93dp"
+                    android:layout_height="36dp"
+                    android:gravity="center"
+                    android:text="分鐘"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="6dp">
+
+                <ImageView
+                    android:id="@+id/ivachieve4"
+                    android:layout_width="93dp"
+                    android:layout_height="101dp"
+                    android:padding="6dp"
+                    app:srcCompat="@drawable/ic_11" />
+
+                <TextView
+                    android:id="@+id/tvachieve_no4"
+                    android:layout_width="93dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="季軍" />
+
+                <TextView
+                    android:id="@+id/tvachieve_value4"
+                    android:layout_width="93dp"
+                    android:layout_height="36dp"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/tvunit4"
+                    android:layout_width="93dp"
+                    android:layout_height="36dp"
+                    android:gravity="center"
+                    android:text="次" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="6dp">
+
+                <ImageView
+                    android:id="@+id/ivachieve5"
+                    android:layout_width="93dp"
+                    android:layout_height="101dp"
+                    android:padding="6dp"
+                    app:srcCompat="@drawable/ic_12" />
+
+                <TextView
+                    android:id="@+id/tvachieve_no5"
+                    android:layout_width="93dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="亞軍" />
+
+                <TextView
+                    android:id="@+id/tvachieve_value5"
+                    android:layout_width="93dp"
+                    android:layout_height="36dp"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/tvunit5"
+                    android:layout_width="93dp"
+                    android:layout_height="36dp"
+                    android:gravity="center"
+                    android:text="次" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="6dp">
+
+                <ImageView
+                    android:id="@+id/ivachieve6"
+                    android:layout_width="93dp"
+                    android:layout_height="101dp"
+                    android:padding="6dp"
+                    app:srcCompat="@drawable/ic_13" />
+
+                <TextView
+                    android:id="@+id/tvachieve_no6"
+                    android:layout_width="93dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="冠軍" />
+
+                <TextView
+                    android:id="@+id/tvachieve_value6"
+                    android:layout_width="93dp"
+                    android:layout_height="36dp"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/tvunit6"
+                    android:layout_width="93dp"
+                    android:layout_height="36dp"
+                    android:gravity="center"
+                    android:text="次" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="6dp">
+
+                <ImageView
+                    android:id="@+id/ivachieve7"
+                    android:layout_width="93dp"
+                    android:layout_height="101dp"
+                    app:srcCompat="@drawable/ic_21" />
+
+                <TextView
+                    android:id="@+id/tvachieve_no7"
+                    android:layout_width="93dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="週" />
+
+                <TextView
+                    android:id="@+id/tvachieve_value7"
+                    android:layout_width="93dp"
+                    android:layout_height="36dp"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/tvunit7"
+                    android:layout_width="93dp"
+                    android:layout_height="36dp"
+                    android:gravity="center"
+                    android:text="次" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="6dp">
+
+                <ImageView
+                    android:id="@+id/ivachieve8"
+                    android:layout_width="93dp"
+                    android:layout_height="101dp"
+                    app:srcCompat="@drawable/ic_22" />
+
+                <TextView
+                    android:id="@+id/tvachieve_no8"
+                    android:layout_width="93dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="月" />
+
+                <TextView
+                    android:id="@+id/tvachieve_value8"
+                    android:layout_width="93dp"
+                    android:layout_height="36dp"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/tvunit8"
+                    android:layout_width="93dp"
+                    android:layout_height="36dp"
+                    android:gravity="center"
+                    android:text="次" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="6dp">
+
+                <ImageView
+                    android:id="@+id/ivachieve9"
+                    android:layout_width="93dp"
+                    android:layout_height="101dp"
+                    app:srcCompat="@drawable/ic_23" />
+
+                <TextView
+                    android:id="@+id/tvachieve_no9"
+                    android:layout_width="93dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="年" />
+
+                <TextView
+                    android:id="@+id/tvachieve_value9"
+                    android:layout_width="93dp"
+                    android:layout_height="36dp"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/tvunit9"
+                    android:layout_width="93dp"
+                    android:layout_height="36dp"
+                    android:gravity="center"
+                    android:text="次" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
