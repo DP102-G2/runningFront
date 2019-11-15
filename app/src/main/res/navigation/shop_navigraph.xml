@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_shopMainFragment_to_searchresultsFragment"
             app:destination="@id/searchresultsFragment" />
+        <action
+            android:id="@+id/action_shopMainFragment_to_productsearchFragment"
+            app:destination="@id/productsearchFragment" />
     </fragment>
     <fragment
         android:id="@+id/shopOrderFragment"
@@ -74,5 +77,18 @@
         android:id="@+id/searchresultsFragment"
         android:name="com.g2.runningFront.ShopActivity.SearchresultsFragment"
         android:label="fragment_searchresults"
-        tools:layout="@layout/fragment_searchresults" />
+        tools:layout="@layout/fragment_searchresults" >
+        <action
+            android:id="@+id/action_searchresultsFragment_to_productFragment"
+            app:destination="@id/productFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/productsearchFragment"
+        android:name="com.g2.runningFront.ShopActivity.productsearchFragment"
+        android:label="fragment_productsearch"
+        tools:layout="@layout/fragment_productsearch" >
+        <action
+            android:id="@+id/action_productsearchFragment_to_productFragment"
+            app:destination="@id/productFragment" />
+    </fragment>
 </navigation>

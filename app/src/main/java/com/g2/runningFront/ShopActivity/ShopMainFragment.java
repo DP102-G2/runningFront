@@ -2,8 +2,8 @@ package com.g2.runningFront.ShopActivity;
 
 
 import android.app.Activity;
+import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 
 
@@ -23,9 +23,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -33,13 +31,11 @@ import com.g2.runningFront.Common.CommonTask;
 import com.g2.runningFront.Common.Common;
 import com.g2.runningFront.Common.ImageTask;
 import com.g2.runningFront.R;
-import com.g2.runningFront.RunActivity.MainActivity;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -61,7 +57,7 @@ public class ShopMainFragment extends Fragment {
     private Bitmap picture;
     private Timer mTimer;
     int adimagetime = 0;
-    private CardView shoe;
+    private CardView shoe, clothes, battle, hat, sock;
 
     ShopActivity shopActivity;
 
@@ -86,12 +82,16 @@ public class ShopMainFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         shopActivity.btbShop.setVisibility(View.VISIBLE);
 
-        shoe=view.findViewById((R.id.shoe));
-        searchView = view.findViewById(R.id.searchView);
+        shoe = view.findViewById((R.id.shoe));
+        clothes = view.findViewById((R.id.clothes));
+        battle = view.findViewById((R.id.battle));
+        hat = view.findViewById((R.id.hat));
+        sock = view.findViewById((R.id.sock));
+        searchView = view.findViewById(R.id.searchview);
 
         //每日推薦的recycleview
         recyclerView = view.findViewById(R.id.recyclerView);
@@ -111,8 +111,6 @@ public class ShopMainFragment extends Fragment {
         adimages = getAdimages();
         showAdimages(adimages);
 
-
-        //搜尋
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextChange(String newText) {
@@ -121,41 +119,88 @@ public class ShopMainFragment extends Fragment {
                     // 如果搜尋條件為空字串，就顯示原始資料；否則就顯示搜尋後結果
                     if (newText.isEmpty()) {
                         adapter.setProducts(products);
-                    } else {
-
-                        List<Product> searchProducts = new ArrayList<>();
-                        // 搜尋原始資料內有無包含關鍵字(不區別大小寫)
-                        for (Product product : products) {
-                            if (product.getPro_name().toUpperCase().contains(newText.toUpperCase())) {
-                                searchProducts.add(product);
-
-                                Bundle bundle = new Bundle();
-                                bundle.putSerializable("product", product);
-
-                            }
-                        }
-                        adapter.setProducts(searchProducts);
                     }
-                    adapter.notifyDataSetChanged();
-                    return true;
                 }
+
                 return false;
             }
 
             @Override
             public boolean onQueryTextSubmit(String query) {
+
+
+                String product_name = searchView.getQuery().toString();
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("product_name", product_name);
+
+                Navigation.findNavController(view)
+                        .navigate(R.id.action_shopMainFragment_to_productsearchFragment, bundle);
+
                 return false;
             }
         });
 
-        //磁片區
+        //磁片區 鞋子
         shoe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String name = "shoe";
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("name", name);
                 Navigation.findNavController(v)
-                        .navigate(R.id.action_shopMainFragment_to_searchresultsFragment);
+                        .navigate(R.id.action_shopMainFragment_to_searchresultsFragment, bundle);
             }
         });
+
+        //磁片區 衣服
+        clothes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = "clothes";
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("name", name);
+                Navigation.findNavController(v)
+                        .navigate(R.id.action_shopMainFragment_to_searchresultsFragment, bundle);
+            }
+        });
+
+        //磁片區 水壺
+        battle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = "battle";
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("name", name);
+                Navigation.findNavController(v)
+                        .navigate(R.id.action_shopMainFragment_to_searchresultsFragment, bundle);
+            }
+        });
+
+        //磁片區 帽子
+        hat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = "hat";
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("name", name);
+                Navigation.findNavController(v)
+                        .navigate(R.id.action_shopMainFragment_to_searchresultsFragment, bundle);
+            }
+        });
+
+        //磁片區 襪子
+        sock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = "sock";
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("name", name);
+                Navigation.findNavController(v)
+                        .navigate(R.id.action_shopMainFragment_to_searchresultsFragment, bundle);
+            }
+        });
+
 
     }
 
@@ -204,9 +249,9 @@ public class ShopMainFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder viewHolder, int position) {
             final Adimage adimage = adimages.get(position);
+            int ad_no = (position < 3) ? 0 + (position + 1) : (position + 1);
             String url = Common.URL_SERVER + "adproductServlet";
-            String pro_no = adimage.getPro_no();
-            adimageTask = new ImageTask(url, pro_no, imageSize, viewHolder.adimage);
+            adimageTask = new ImageTask(url, ad_no, imageSize, viewHolder.adimage);
             adimageTask.execute();
 
             viewHolder.adimage.setOnClickListener(new View.OnClickListener() {
@@ -329,6 +374,7 @@ public class ShopMainFragment extends Fragment {
                 }
             });
         }
+
     }
 
     //timetask 廣告輪播

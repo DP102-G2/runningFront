@@ -52,9 +52,22 @@
             android:id="@+id/pro_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="1dp"
             android:layout_marginTop="16dp"
             android:text="TextView"
+            android:gravity="left"
+            android:textColor="#F44336"
+            android:textSize="17dp"
+            app:layout_constraintStart_toEndOf="@+id/textView6"
+            app:layout_constraintTop_toBottomOf="@+id/pro_name" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="16dp"
+            android:text="$"
             android:textColor="#F44336"
             android:textSize="17dp"
             app:layout_constraintStart_toEndOf="@+id/pro_image"

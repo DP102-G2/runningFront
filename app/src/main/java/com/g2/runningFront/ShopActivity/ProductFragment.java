@@ -83,6 +83,8 @@ public class ProductFragment extends Fragment {
         if (bundle != null) {
             Product product = (Product) bundle.getSerializable("product");
             Adimage adimage = (Adimage) bundle.getSerializable("adimage");
+            Commodity commodity = (Commodity) bundle.getSerializable("commodity");
+
 
             if (product != null) {
                 pro_price.setText(String.valueOf(product.getPro_price()));
@@ -109,20 +111,35 @@ public class ProductFragment extends Fragment {
                     adGetimageTask = new AdimageaTask(url, pro_no, imageSize, imageView);
                     adGetimageTask.execute();
                 }
+            }else if (commodity != null) {
+                pro_price.setText(String.valueOf(commodity.getPro_price()));
+                pro_name.setText(commodity.getPro_name());
+                pro_desc.setText(commodity.getPro_desc());
+                productdescription.setText(commodity.getPro_info());
+
+                if (Common.networkConnected(activity)) {
+                    String url = Common.URL_SERVER + "adproductServlet";
+                    String pro_no = commodity.getPro_no();
+                    adGetimageTask = new AdimageaTask(url, pro_no, imageSize, imageView);
+                    adGetimageTask.execute();
+                }
             }
+
+
         }
 
         //加入購物車
         btproductcart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Common.signIn(activity);
                 if (Common.networkConnected(activity)) {
 
                     Bundle bundle = getArguments();
                     Product product = (Product) bundle.getSerializable("product");
                     Adimage adimage = (Adimage) bundle.getSerializable("adimage");
+                    Commodity commodity = (Commodity) bundle.getSerializable("commodity");
+
                     String url = Common.URL_SERVER + "adproductshowServlet";
                     int user_no;
                     user_no = Common.getUserNo(activity);
@@ -130,9 +147,12 @@ public class ProductFragment extends Fragment {
                     String pro_no = null;
                     if (product != null) {
                         pro_no = product.getPro_no();
-                    } else {
+                    } else if (adimage != null) {
                         pro_no = adimage.getPro_no();
+                    }else if (commodity != null) {
+                        pro_no = commodity.getPro_no();
                     }
+
                     Product productcart = new Product(user_no, pro_no, 1);
                     JsonObject jsonObject = new JsonObject();
                     jsonObject.addProperty("action", "adproductshowInsert");
@@ -158,12 +178,16 @@ public class ProductFragment extends Fragment {
         //抓取3張小圖
         Product product = (Product) bundle.getSerializable("product");
         Adimage adimage = (Adimage) bundle.getSerializable("adimage");
+        Commodity commodity = (Commodity) bundle.getSerializable("commodity");
+
 
         String pro_no = null;
         if (product != null) {
             pro_no = product.getPro_no();
-        } else {
+        } else if (adimage != null) {
             pro_no = adimage.getPro_no();
+        }else if (commodity != null) {
+            pro_no = commodity.getPro_no();
         }
 
         if (Common.networkConnected(activity)) {
