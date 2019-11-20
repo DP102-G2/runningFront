@@ -4,7 +4,6 @@ package com.g2.runningFront.RunActivity.Group;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -25,14 +24,12 @@ import android.widget.TextView;
 import com.g2.runningFront.Common.Common;
 import com.g2.runningFront.Common.CommonTask;
 import com.g2.runningFront.R;
-import com.g2.runningFront.RunActivity.Group.Common.ImageTask;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.Date;
 import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -42,15 +39,16 @@ public class NationalFragment extends Fragment {
 
 
     private Activity activity;
-    private static String TAG = "TAG_GroupFragment";
+    private static String TAG = "TAG_National";
     private Button na_btFriend, na_btAll,btyes;
 
     /* 用於 RecyclerView 查詢、承接資料 */
     private int no;
     private RecyclerView na_rv;
     private CommonTask GetFollowsTask;
-    private ImageTask FollowImageTask;
+    private ImageTask_Rk NationalImageTask;
     private int j;
+    private  List<National> nationals ;
 
 
     @Override
@@ -85,7 +83,8 @@ public class NationalFragment extends Fragment {
         /* 使用 RecyclerView */
         na_rv = view.findViewById(R.id.na_rv);
         na_rv.setLayoutManager(new LinearLayoutManager(activity));
-        List<National> nationals = getNational();
+//        List<National> nationals = getNational();
+      nationals = getNational();
         showNationalList(nationals);
 
         na_btFriend = view.findViewById(R.id.na_btFriend);
@@ -152,22 +151,23 @@ public class NationalFragment extends Fragment {
 
 
 
-                btyes.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        j++;
-                        if (j % 2 > 0) {
 
-                            btyes.setBackgroundDrawable(getResources().getDrawable(R.drawable.nobt_style));
-                            btyes.setText("已追蹤");
-
-                        } else {
-                            btyes.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_style));
-                            btyes.setText("追蹤");
-                        }
-                    }
-
-                });
+//                btyes.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        j++;
+//                        if (j % 2 > 0) {
+//
+//                            btyes.setBackgroundDrawable(getResources().getDrawable(R.drawable.nobt_style));
+//                            btyes.setText("已追蹤");
+//
+//                        } else {
+//                            btyes.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_style));
+//                            btyes.setText("追蹤");
+//                        }
+//                    }
+//
+//                });
 
 
             }
@@ -194,13 +194,126 @@ public class NationalFragment extends Fragment {
             String url = Common.URL_SERVER + "NationalServlet";
 
             /* 索取追蹤會員大頭貼 */
-            int no = national.getUser_no();
-            FollowImageTask = new ImageTask(url, no, IMAGE_SIZE, myViewHolder.gp_ivFriend);
-            FollowImageTask.execute();
+            int rkuser_no = national.getNo();
+            //Log.e(TAG, "rkuser_no = " + rkuser_no);
+            NationalImageTask = new ImageTask_Rk(url, rkuser_no, IMAGE_SIZE, myViewHolder.gp_ivFriend);
+            NationalImageTask.execute();
 
             myViewHolder.gp_tvRank.setText(String.valueOf(position+1));
             myViewHolder.gp_tvFriend.setText(national.getName());
             myViewHolder.gp_tvKm.setText((national.getDistance()) + " 公里");
+
+
+
+//            boolean isFollow = national.isFollow();
+            int follow = national.getFollow_no();
+            if(follow > 0){
+                myViewHolder.btyes.setBackgroundDrawable(getResources().getDrawable(R.drawable.nobt_style));
+                myViewHolder.btyes.setText("已追蹤");
+            } else if(follow == 0){
+                myViewHolder.btyes.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_style));
+                myViewHolder.btyes.setText("追蹤");
+            }
+
+            myViewHolder.btyes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    int follow_inner = national.getFollow_no();
+
+                    if(follow_inner > 0){
+//                        national.setfollow_no(0);
+
+                        myViewHolder.btyes.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_style));
+                        myViewHolder.btyes.setText("追蹤");
+
+                        // 取消追蹤 Task
+                        if (Common.networkConnected(activity)) {
+                            String url = Common.URL_SERVER + "NationalServlet";
+                            JsonObject jo = new JsonObject();
+                            jo.addProperty("action", "unfollow");
+                            jo.addProperty("user_no",
+                                    activity.getSharedPreferences(Common.PREF, MODE_PRIVATE)
+                                            .getInt("user_no",0));
+                            jo.addProperty("follow_no", national.getFollow_no());
+
+                            int count = 0;
+
+                            try {
+                                CommonTask deleteTask = new CommonTask(url, jo.toString());
+                                String result = deleteTask.execute().get();
+                                count = Integer.valueOf(result);
+                            } catch (Exception e) {
+                                Log.e(TAG, e.toString());
+                            }
+                            if (count == 0) {
+                                Common.toastShow(activity,"取消追蹤失敗");
+                            } else {
+
+//                            if(follow > 0){
+//                                myViewHolder.btyes.setBackgroundDrawable(getResources().getDrawable(R.drawable.nobt_style));
+//                                myViewHolder.btyes.setText("已追蹤");
+//                            } else if(follow == 0){
+//                                myViewHolder.btyes.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_style));
+//                                myViewHolder.btyes.setText("追蹤");
+//                            }
+
+
+//                            nationals.set(position, national);
+//                            NationalFragment.this.nationals.set(position, national);
+
+                                NationalAdapter.this.notifyDataSetChanged();
+                                Common.toastShow(activity,"已取消追蹤");
+                            }
+                        } else {
+                            Common.toastShow(activity,"取消追蹤失敗");
+                        }
+
+                    } else if(follow_inner == 0){
+                        national.setfollow_no(national.getNo());
+
+                        myViewHolder.btyes.setBackgroundDrawable(getResources().getDrawable(R.drawable.nobt_style));
+                        myViewHolder.btyes.setText("已追蹤");
+
+                        //  追蹤 Task
+                        if (Common.networkConnected(activity)) {
+                            String url = Common.URL_SERVER + "NationalServlet";
+                            JsonObject jo = new JsonObject();
+                            jo.addProperty("action", "follow");
+                            jo.addProperty("user_no",
+                                    activity.getSharedPreferences(Common.PREF, MODE_PRIVATE)
+                                            .getInt("user_no",0));
+                            jo.addProperty("follow_no", national.getNo());
+
+                            int count = 0;
+
+                            try {
+                                CommonTask deleteTask = new CommonTask(url, jo.toString());
+                                String result = deleteTask.execute().get();
+                                count = Integer.valueOf(result);
+                            } catch (Exception e) {
+                                Log.e(TAG, e.toString());
+                            }
+                            if (count == 0) {
+                                Common.toastShow(activity,"追蹤失敗");
+                            } else {
+
+                                /* 移除適配器內指定的 follow 物件
+                                 * 並提醒適配器即時更新
+                                 * 最後更新此頁面屬性之一的 follows 物件集合 */
+//                                follows.remove(follow);
+                                NationalFragment. NationalAdapter.this.notifyDataSetChanged();
+//                                NationalFragment.this.nationals.remove(national);
+                                Common.toastShow(activity,"已追蹤");
+
+                            }
+                        } else {
+                            Common.toastShow(activity,"連不到");
+                        }
+                    }
+
+                }
+            });
 
 
 
@@ -225,31 +338,8 @@ public class NationalFragment extends Fragment {
                 }
             });
 
-            /* 長按追蹤卡片，可以停止追蹤（刪除該筆追蹤資料） */
-//            myViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-//                @Override
-//                public boolean onLongClick(View view) {
-//
-//                    PopupMenu popup = new PopupMenu(activity, view);
-//                    popup.inflate(R.menu.group_follow_menu);
-//                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//                        @Override
-//                        public boolean onMenuItemClick(MenuItem item) {
-//                            switch (item.getItemId()){
-//
-//                                /* ==================== ⬇️正在施工區域⬇️ ==================== */
-//
-//                                case R.id.deleteFollow:
-//                                    return true;
-//                                default:
-//                                    return false;
-//                            }
-//                        }
-//                    });
-//                    popup.show();
-//                    return false;
-//                }
-//            });
+
+
         }
 
     }
@@ -299,9 +389,9 @@ public class NationalFragment extends Fragment {
             GetFollowsTask.cancel(true);
             GetFollowsTask = null;
         }
-        if(FollowImageTask != null){
-            FollowImageTask.cancel(true);
-            FollowImageTask = null;
+        if(NationalImageTask != null){
+            NationalImageTask.cancel(true);
+            NationalImageTask = null;
         }
     }
 

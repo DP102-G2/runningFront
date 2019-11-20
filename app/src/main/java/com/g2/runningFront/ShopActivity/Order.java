@@ -1,5 +1,7 @@
 package com.g2.runningFront.ShopActivity;
 
+import com.google.gson.JsonObject;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -13,9 +15,17 @@ public class Order implements Serializable {
     private int qty;
     private int order_price;
     private  int user_no;
+//    private  Order_Detail order_detail;
+//
+//    public String getOrder_detail() {
+//        String name = order_detail.getName;
+//
+//
+//
+//        return text;
+//    }
 
-
-    public Order(int order_no,  Timestamp order_date, int payment_methon, int order_money, String order_status, String product_no, int qty, int order_price,int user_no) {
+    public Order(int order_no, Timestamp order_date, int payment_methon, int order_money, String order_status, String product_no, int qty, int order_price, int user_no) {
         this.order_no = order_no;
         this.order_date = order_date;
         this.payment_methon = payment_methon;

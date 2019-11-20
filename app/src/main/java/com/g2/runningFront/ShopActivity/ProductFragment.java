@@ -40,6 +40,8 @@ import static com.g2.runningFront.Common.Common.round;
 import static com.g2.runningFront.Common.Common.showToast;
 
 
+
+
 public class ProductFragment extends Fragment {
     private final static String TAG = "TAG_ProductFragment";
     private Activity activity;

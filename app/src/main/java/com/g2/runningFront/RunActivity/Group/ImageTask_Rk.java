@@ -1,4 +1,4 @@
-package com.g2.runningFront.RunActivity.Group.Common;
+package com.g2.runningFront.RunActivity.Group;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,16 +18,16 @@ import java.net.URL;
 
 import static com.g2.runningFront.Common.Common.round;
 
-public class ImageTask extends AsyncTask<Object, Integer, Bitmap> {
+public class ImageTask_Rk extends AsyncTask<Object, Integer, Bitmap> {
 
     private final static String TAG = "TAG_ImageTask";
     private String url;
-    private int no, imageSize;
+    private int rkuser_no, imageSize;
     private WeakReference<ImageView> imageViewWeakReference;
 
-    public ImageTask(String url, int no, int imageSize, ImageView imageView) {
+    public ImageTask_Rk(String url, int rkuser_no, int imageSize, ImageView imageView) {
         this.url = url;
-        this.no = no;
+        this.rkuser_no = rkuser_no;
         this.imageSize = imageSize;
         this.imageViewWeakReference = new WeakReference<>(imageView);
     }
@@ -36,9 +36,8 @@ public class ImageTask extends AsyncTask<Object, Integer, Bitmap> {
     protected Bitmap doInBackground(Object... objects) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", "getImage");
-        jsonObject.addProperty("user_no", no);
-        jsonObject.addProperty("user_no", no);
-        jsonObject.addProperty("follow_no", no);
+        jsonObject.addProperty("rkuser_no", rkuser_no);
+//        jsonObject.addProperty("follow_no", no);
         jsonObject.addProperty("imageSize", imageSize);
         return getRemoteImage(url, jsonObject.toString());
     }
@@ -87,3 +86,4 @@ public class ImageTask extends AsyncTask<Object, Integer, Bitmap> {
 
     }
 }
+
