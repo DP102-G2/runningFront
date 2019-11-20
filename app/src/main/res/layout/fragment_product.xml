@@ -27,6 +27,7 @@
         android:gravity="center"
         android:text="TextView"
         android:textColor="#F44336"
+        android:textSize="17dp"
         app:layout_constraintEnd_toEndOf="@+id/pro_image"
         app:layout_constraintStart_toStartOf="@+id/pro_image"
         app:layout_constraintTop_toBottomOf="@+id/pro_image" />
@@ -38,22 +39,24 @@
         android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="TextView"
+        android:textSize="17dp"
         app:layout_constraintEnd_toEndOf="@+id/pro_desc"
         app:layout_constraintStart_toStartOf="@+id/pro_desc"
         app:layout_constraintTop_toBottomOf="@+id/pro_desc" />
 
+
     <TextView
         android:id="@+id/pro_price"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:layout_marginTop="8dp"
-        android:gravity="center"
+        android:gravity="left"
         android:text="TextView"
         android:textColor="#F44336"
+        android:textSize="17dp"
         app:layout_constraintEnd_toEndOf="@+id/pro_name"
         app:layout_constraintStart_toStartOf="@+id/pro_name"
         app:layout_constraintTop_toBottomOf="@+id/pro_name" />
-
 
     <TextView
         android:id="@+id/tvproductdescription"
@@ -77,17 +80,19 @@
 
     <ImageView
         android:id="@+id/pro_image1"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:src="@drawable/ic_achieve"
         app:layout_constraintStart_toStartOf="@+id/pro_image"
         app:layout_constraintTop_toBottomOf="@+id/pro_image" />
 
     <ImageView
         android:id="@+id/pro_image2"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
         android:src="@drawable/ic_achieve"
         app:layout_constraintEnd_toStartOf="@+id/pro_image3"
         app:layout_constraintStart_toEndOf="@+id/pro_image1"
@@ -95,11 +100,23 @@
 
     <ImageView
         android:id="@+id/pro_image3"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:src="@drawable/ic_achieve"
         app:layout_constraintEnd_toEndOf="@+id/pro_image"
         app:layout_constraintTop_toBottomOf="@+id/pro_image" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="$"
+        android:textColor="#F44336"
+        android:textSize="17dp"
+        app:layout_constraintEnd_toStartOf="@+id/pro_price"
+        app:layout_constraintTop_toBottomOf="@+id/pro_name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

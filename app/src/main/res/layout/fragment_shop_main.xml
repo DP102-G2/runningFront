@@ -7,7 +7,7 @@
     tools:context=".ShopActivity.ShopMainFragment">
 
     <SearchView
-        android:id="@+id/searchView"
+        android:id="@+id/searchview"
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_marginStart="16dp"
@@ -32,8 +32,8 @@
         app:cardBackgroundColor="#ffffff"
         app:cardCornerRadius="0dp"
         app:cardElevation="0dp"
-        app:layout_constraintStart_toStartOf="@+id/searchView"
-        app:layout_constraintTop_toBottomOf="@+id/searchView">
+        app:layout_constraintStart_toStartOf="@+id/searchview"
+        app:layout_constraintTop_toBottomOf="@+id/searchview">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -71,7 +71,7 @@
         app:cardElevation="0dp"
         app:layout_constraintEnd_toStartOf="@+id/battle"
         app:layout_constraintStart_toEndOf="@+id/shoe"
-        app:layout_constraintTop_toBottomOf="@+id/searchView">
+        app:layout_constraintTop_toBottomOf="@+id/searchview">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -108,7 +108,7 @@
         app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView">
+        app:layout_constraintTop_toBottomOf="@+id/searchview">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -146,7 +146,7 @@
         app:cardElevation="0dp"
         app:layout_constraintEnd_toStartOf="@+id/sock"
         app:layout_constraintStart_toEndOf="@+id/battle"
-        app:layout_constraintTop_toBottomOf="@+id/searchView">
+        app:layout_constraintTop_toBottomOf="@+id/searchview">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -181,8 +181,8 @@
         app:cardBackgroundColor="#ffffff"
         app:cardCornerRadius="0dp"
         app:cardElevation="0dp"
-        app:layout_constraintEnd_toEndOf="@+id/searchView"
-        app:layout_constraintTop_toBottomOf="@+id/searchView">
+        app:layout_constraintEnd_toEndOf="@+id/searchview"
+        app:layout_constraintTop_toBottomOf="@+id/searchview">
 
         <LinearLayout
             android:layout_width="match_parent"

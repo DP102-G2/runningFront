@@ -60,6 +60,7 @@ public class SearchresultsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         recyclerView = view.findViewById(R.id.rvsearchresult);
+
         products = getProducts();
         showProducts(products);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
@@ -122,7 +123,21 @@ public class SearchresultsFragment extends Fragment {
             viewHolder.pro_desc.setText(product.getPro_desc());
             viewHolder.pro_price.setText(String.valueOf(product.getPro_price()));
             viewHolder.pro_name.setText(product.getPro_name());
+
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("product", product);
+                    Navigation.findNavController(v)
+                            .navigate(R.id.action_searchresultsFragment_to_productFragment, bundle);
+
+                }
+            });
+
+
         }
+
     }
 
     //連線SQL抓取資料
@@ -131,7 +146,31 @@ public class SearchresultsFragment extends Fragment {
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "/adproductshowServlet";
             JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("action", "getAll");
+
+            Bundle bundle = getArguments();
+            String name = bundle.getString("name");
+            if (bundle != null) {
+                switch (name) {
+                    case "shoe":
+                        jsonObject.addProperty("action", "getAllshoe");
+                        break;
+                    case "clothes":
+                        jsonObject.addProperty("action", "getAllclothes");
+                        break;
+                    case "battle":
+                        jsonObject.addProperty("action", "getAllbattle");
+                        break;
+                    case "hat":
+                        jsonObject.addProperty("action", "getAllhat");
+                        break;
+                    case "sock":
+                        jsonObject.addProperty("action", "getAllsock");
+                        break;
+                    default:
+                        //要執行動作
+                        break;
+                }
+            }
             String jsonOut = jsonObject.toString();
             productGetAllTask = new CommonTask(url, jsonOut);
             try {

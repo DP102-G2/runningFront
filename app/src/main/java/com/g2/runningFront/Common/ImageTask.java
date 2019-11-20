@@ -49,10 +49,11 @@ public class ImageTask extends AsyncTask<Object, Integer, Bitmap> {
     protected Bitmap doInBackground(Object... objects) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", "getImage");
+        jsonObject.addProperty("pro_no",pro_no);
         jsonObject.addProperty("id", id);
         jsonObject.addProperty("run_no",run_no);
-        jsonObject.addProperty("pro_no",pro_no);
         jsonObject.addProperty("follow_no", id);
+        jsonObject.addProperty("ad_no", id);
         jsonObject.addProperty("imageSize", imageSize);
         return getRemoteImage(url, jsonObject.toString());
     }
