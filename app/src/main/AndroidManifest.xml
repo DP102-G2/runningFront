@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <!-- WAKE_LOCK 背景執行程式 -->
 
@@ -25,6 +26,11 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
 
+        <service
+            android:name=".ShopActivity.Server.CommonServer.CustomerService"
+            android:enabled="true"
+            android:exported="false"
+            />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -59,7 +65,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ShopActivity.ShopActivity">
+        <activity android:name=".ShopActivity.ShopActivity"
+            android:launchMode="singleTask">
 
         </activity>
 

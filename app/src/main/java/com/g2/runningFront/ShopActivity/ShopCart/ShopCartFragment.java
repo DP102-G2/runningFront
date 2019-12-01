@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -204,11 +205,25 @@ public class ShopCartFragment extends Fragment {
             holder.tvTotal.setText("小計： " + shopCart.getTotal());
             if(shopCart.getStock() <1){
                 holder.tvStock.setText("庫存不足");
+                holder.etProNum.setText("0");
+                holder.cardView.setCardBackgroundColor(activity.getColor(R.color.colorBrown));
+                holder.cbSelect.setChecked(false);
+                holder.cbSelect.setEnabled(false);
+                holder.ivPlus.setEnabled(false);
+                holder.ivMinus.setEnabled(false);
+                holder.etProNum.setEnabled(false);
+                shopCart.setQty(0);
+                holder.tvTotal.setText("小計： " + shopCart.getTotal());
+                holder.etProNum.setText(String.valueOf(0));
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Common.showToast(activity,"庫存不足");
+                    }
+                });
             }else {
                 holder.tvStock.setText("庫存： " + shopCart.getStock());
-
             }
-
 
             //監測文字改變
             holder.etProNum.addTextChangedListener(new TextWatcher() {
@@ -226,18 +241,18 @@ public class ShopCartFragment extends Fragment {
                 public void afterTextChanged(Editable s) {
                     String b = s.toString().trim();
                     int nQty;
-                    boolean checked = false;
+                    boolean checked ;
                     if (b.equals("")) {
                         nQty = 0;
                         holder.cbSelect.setChecked(false);
                         checked = false;
                     } else {
                         nQty = Integer.parseInt(b);
-                        if (nQty > shopCart.getStock() | shopCart.getStock() <= 0 | nQty == 0) {
+                        if (nQty > shopCart.getStock() | nQty == 0) {
                             checked = false;
                             holder.cbSelect.setChecked(false);
                             nQty = 0;
-                            Common.toastShow(activity, "請再次確認數量");
+                            Common.toastShow(activity, "選擇數量已大於庫存");
                         } else {
                             holder.cbSelect.setChecked(true);
                             checked = true;
@@ -299,7 +314,7 @@ public class ShopCartFragment extends Fragment {
                         nQty = Integer.valueOf(holder.etProNum.getText().toString().trim());
                     }
 
-                    if (!isChecked | shopCart.getStock() < nQty | shopCart.stock <= 0 | nQty == 0) {
+                    if (!isChecked | shopCart.getStock() < nQty  | nQty == 0) {
                         buttonView.setChecked(false);
                         shopCart.setQty(0);
                         holder.tvTotal.setText("小計： " + shopCart.getTotal());
@@ -315,17 +330,15 @@ public class ShopCartFragment extends Fragment {
                 }
             });
 
-
-            // 點選CHECKBOX時，更改clecklist裡的資料(計算時不要計算到)
-            if (shopCart.getStock() <= 0) {
-                holder.cbSelect.setChecked(false);
-                holder.etProNum.setText("0");
-            }
             setSumTotal(shopCarts);
+
         }
 
 
         private class myViewHolder extends RecyclerView.ViewHolder {
+
+            CardView cardView;
+
             CheckBox cbSelect;
 
             ImageView ivProImage;
@@ -351,6 +364,7 @@ public class ShopCartFragment extends Fragment {
                 tvTotal = itemView.findViewById(R.id.cart_tvTotal);
                 btDelete = itemView.findViewById(R.id.cart_btDelete);
                 tvStock = itemView.findViewById(R.id.cart_tvStock);
+                cardView = itemView.findViewById(R.id.cart_CardView);
             }
         }
     }
@@ -417,42 +431,14 @@ public class ShopCartFragment extends Fragment {
     // 離開始顯示提醒事項
     @Override
     public void onPause() {
+        super.onPause();
+
         if (!Confirl && shopCartList != null) {
 
+            updateShopCart();
+            Common.toastShow(activity, "儲存購物車成功");
 
-            PopupMenu popupMenu = new PopupMenu(activity, view);
-            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    return false;
-                }
-            });
-
-            new AlertDialog.Builder(activity)
-                    /* 設定標題 */
-                    .setTitle("是否要儲存購物車？")
-                    /* 設定圖示 */
-                    .setIcon(R.drawable.ic_shopcart)
-                    /* 設定訊息文字 */
-                    .setMessage("你好好考慮清楚")
-                    /* 設定positive與negative按鈕上面的文字與點擊事件監聽器 */
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            updateShopCart();
-
-                        }
-                    })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            /* 關閉對話視窗 */
-                            dialog.cancel();
-                        }
-                    })
-                    .show();
         }
-        super.onPause();
 
     }
 
@@ -472,7 +458,7 @@ public class ShopCartFragment extends Fragment {
             shopCartGetAllTask = new CommonTask(url, jsonOut);
             try {
                 String jsonIn = shopCartGetAllTask.execute().get();
-                Common.toastShow(activity, "成功");
+                Common.toastShow(activity, "儲存購物車成功");
 
             } catch (Exception e) {
                 Log.e(TAG, e.toString());

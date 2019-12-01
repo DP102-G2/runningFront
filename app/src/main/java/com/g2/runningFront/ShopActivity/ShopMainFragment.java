@@ -81,6 +81,7 @@ public class ShopMainFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_shop_main, container, false);
     }
 
+
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -400,6 +401,9 @@ public class ShopMainFragment extends Fragment {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            if (rvadimage==null){
+                return;
+            }
             int msgId = msg.what;
             switch (msgId) {
                 case 1:

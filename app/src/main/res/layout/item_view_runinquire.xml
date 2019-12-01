@@ -44,6 +44,7 @@
 
             <TextView
                 android:id="@+id/iqItem_tvDate"
+                style="@style/markText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
@@ -56,17 +57,17 @@
                 android:id="@+id/iqItem_tvDistance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="45dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:hint="Distance"
-                app:layout_constraintStart_toEndOf="@+id/iqItem_image"
+                app:layout_constraintStart_toStartOf="@+id/iqItem_tvDate"
                 app:layout_constraintTop_toBottomOf="@+id/iqItem_tvDate" />
 
             <TextView
                 android:id="@+id/iqItem_tvTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:hint="Time"
                 app:layout_constraintStart_toStartOf="@+id/iqItem_tvDistance"
                 app:layout_constraintTop_toBottomOf="@+id/iqItem_tvDistance" />
@@ -75,7 +76,7 @@
                 android:id="@+id/iqItem_tvCalorie"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:hint="Calorie"
                 app:layout_constraintStart_toStartOf="@+id/iqItem_tvTime"
                 app:layout_constraintTop_toBottomOf="@+id/iqItem_tvTime" />

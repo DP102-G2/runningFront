@@ -16,9 +16,10 @@ public class Message {
         this.msg_read = msg_read;
     }
 
-    public Message(int user_no, int msg_by, String msg_text, int msg_read) {
+    public Message(int user_no, int msg_by, String msg_text, int msg_read,Timestamp msg_time) {
         this.user_no = user_no;
         this.msg_by = msg_by;
+        this.msg_time = msg_time;
         this.msg_text = msg_text;
         this.msg_read = msg_read;
     }

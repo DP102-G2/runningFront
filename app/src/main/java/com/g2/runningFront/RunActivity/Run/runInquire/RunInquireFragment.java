@@ -49,6 +49,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -56,9 +57,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class RunInquireFragment extends Fragment
         implements DatePickerDialog.OnDateSetListener {
 
@@ -266,12 +264,8 @@ public class RunInquireFragment extends Fragment
         }
 
 
-//      /* 判斷時間會不會超過 */
-
-
 
         /* 更新EditText */
-
         String startTime = String.format("20%1$ty-%1$tm-%1$td", startDate);
         String endTime = String.format("20%1$ty-%1$tm-%1$td", endDate);
 
@@ -334,10 +328,11 @@ public class RunInquireFragment extends Fragment
 
             final Run run = runs.get(position);
 
-            holder.tvDate.setText("運動日期： " + String.format("%1$tm 月 %1$td 日", run.getRun_date()));
-            holder.tvCalorie.setText("消耗卡路里： " + run.getCalorie()+"卡");
-            holder.tvDistance.setText("跑步距離： " + run.getDistance()+"公尺");
-            holder.tvTime.setText("累計時間： " + Common.secondToString((int)run.getTime()));
+            String formatTS = new SimpleDateFormat("日期:  yyyy年 MM月 dd日").format(run.getRun_date());
+            holder.tvDate.setText(formatTS);
+            holder.tvCalorie.setText("消耗卡路里: " + run.getCalorie()+"卡");
+            holder.tvDistance.setText("跑步距離: " + run.getDistance()+"公尺");
+            holder.tvTime.setText("累計時間: " + Common.secondToString((int)run.getTime()));
 
             /* 根據UserNo跟RunNo擷取圖片 */
             routeImageTask = new ImageTask(url, holder.ivImage, run.getUserNo(), run.getRunNo());
@@ -355,16 +350,11 @@ public class RunInquireFragment extends Fragment
 
     }
 
-
-    /**
-     * 根據UserNo抓取對應資料，之後要補抓取UserNo
-     */
     private List<Run> getRunList() {
         List<Run> runs = new ArrayList<>();
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", "getRunList");
-        jsonObject.addProperty("userNo", user_no);
-        jsonObject.addProperty("startDate", gson.toJson(startDate));
+        jsonObject.addProperty("user_no", user_no);
 
         if (Common.networkConnected(activity)) {
 

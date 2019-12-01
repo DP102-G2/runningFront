@@ -1,15 +1,22 @@
 package com.g2.runningFront.ShopActivity;
 
 import android.content.Intent;
+
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
@@ -18,14 +25,26 @@ import com.g2.runningFront.Common.Common;
 import com.g2.runningFront.R;
 import com.g2.runningFront.RunActivity.MainActivity;
 import com.g2.runningFront.SettingActivity.SettingActivity;
+import com.g2.runningFront.ShopActivity.Server.CommonServer.CustomerService;
+
+import com.g2.runningFront.ShopActivity.Server.ShopServerFragment;
 import com.g2.runningFront.ShopActivity.ShopCart.TapPay.ShopCartAcpayFragment;
 import com.google.android.gms.wallet.PaymentData;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 
 public class ShopActivity extends AppCompatActivity {
     public BottomNavigationView btbShop;
     private PaymentData paymentData;
     public static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 101;
+    private boolean isNew = true;
+    NavController navCtrShop;
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        navCtrShop.navigate(R.id.shopServerFragment);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,7 +52,12 @@ public class ShopActivity extends AppCompatActivity {
         setContentView(R.layout.activity_shop);
         holdNavigraph();
         setTitle(R.string.shop_name);
+        Intent intent = getIntent();
+        if (intent.getStringExtra("action")!=null) {
+            navCtrShop.navigate(R.id.shopServerFragment);
+        }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -90,8 +114,9 @@ public class ShopActivity extends AppCompatActivity {
 
     private void holdNavigraph() {
         btbShop = findViewById(R.id.btbShop);
-        NavController navCtrShop = Navigation.findNavController(ShopActivity.this, R.id.Shop_fgNavigrath);
+        navCtrShop = Navigation.findNavController(ShopActivity.this, R.id.Shop_fgNavigrath);
         NavigationUI.setupWithNavController(btbShop, navCtrShop);
-
     }
+
+
 }

@@ -126,7 +126,7 @@ public class Common {
      * @param activity  目前使用的 Activity
      * @return          返回使用者編號，預設回傳 0
      */
-    public static int getUserNo(Activity activity) {
+    public static int getUserNo(Context activity) {
         int no = 0;
         try {
             no = activity.getSharedPreferences(PREF, MODE_PRIVATE).getInt("user_no", 0);

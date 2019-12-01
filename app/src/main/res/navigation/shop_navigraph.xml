@@ -17,6 +17,9 @@
             android:id="@+id/action_shopMainFragment_to_searchresultsFragment"
             app:destination="@id/searchresultsFragment" />
         <action
+            android:id="@+id/action_shopMainFragment_to_shopServerFragment"
+            app:destination="@id/shopServerFragment" />
+        <action
             android:id="@+id/action_shopMainFragment_to_productsearchFragment"
             app:destination="@id/productsearchFragment" />
     </fragment>
@@ -38,7 +41,11 @@
         android:id="@+id/shopServerFragment"
         android:name="com.g2.runningFront.ShopActivity.Server.ShopServerFragment"
         android:label="fragment_shop_server"
-        tools:layout="@layout/fragment_shop_server" />
+        tools:layout="@layout/fragment_shop_server" >
+        <action
+            android:id="@+id/action_shopServerFragment_to_shopMainFragment"
+            app:destination="@id/shopMainFragment" />
+    </fragment>
     <fragment
         android:id="@+id/productFragment"
         android:name="com.g2.runningFront.ShopActivity.ProductFragment"
@@ -84,11 +91,11 @@
     </fragment>
     <fragment
         android:id="@+id/productsearchFragment"
-        android:name="com.g2.runningFront.ShopActivity.productsearchFragment"
+        android:name="com.g2.runningFront.ShopActivity.ProductsearchFragment"
         android:label="fragment_productsearch"
         tools:layout="@layout/fragment_productsearch" >
         <action
-            android:id="@+id/action_productsearchFragment_to_productFragment"
+            android:id="@+id/action_productsearchFragment_to_productFragment2"
             app:destination="@id/productFragment" />
     </fragment>
 </navigation>

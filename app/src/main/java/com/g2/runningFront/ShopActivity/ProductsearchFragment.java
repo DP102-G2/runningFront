@@ -174,7 +174,7 @@ public class ProductsearchFragment extends Fragment {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("commodity", commodity);
                     Navigation.findNavController(v)
-                            .navigate(R.id.action_productsearchFragment_to_productFragment, bundle);
+                            .navigate(R.id.action_productsearchFragment_to_productFragment2, bundle);
 
                 }
             });

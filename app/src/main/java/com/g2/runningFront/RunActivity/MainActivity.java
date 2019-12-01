@@ -18,6 +18,7 @@ import android.view.View;
 import com.g2.runningFront.Common.Common;
 import com.g2.runningFront.R;
 import com.g2.runningFront.SettingActivity.SettingActivity;
+import com.g2.runningFront.ShopActivity.Server.CommonServer.CustomerService;
 import com.g2.runningFront.ShopActivity.ShopActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         holdNavigraph();
         setTitle(R.string.run_name);
+        Intent intent =new Intent(this, CustomerService.class);
+        startService(intent);
 
     }
 

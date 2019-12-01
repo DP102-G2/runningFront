@@ -19,6 +19,8 @@ import com.g2.runningFront.Common.ImageTask;
 import com.g2.runningFront.R;
 import com.g2.runningFront.RunActivity.Run.Run;
 
+import java.text.SimpleDateFormat;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -70,7 +72,8 @@ public class RunDetailFragment extends Fragment {
 
         Run run = (Run) bundle.getSerializable("Run");
 
-        tvDate.setText("運動日期： " + String.format("%1$tm 月 %1$td 日", run.getRun_date()));
+        String formatTS = new SimpleDateFormat("時間: yyyy年 MM月 dd日, HH點 mm分").format(run.getRun_date());
+        tvDate.setText(formatTS);
         tvCalorie.setText("消耗卡路里： " + (run.getCalorie()+"  (卡)"));
         tvDistance.setText("跑步距離： " + (run.getDistance())+"  (公尺)");
         tvTime.setText("累計時間： " + Common.secondToString((int)run.getTime()));
