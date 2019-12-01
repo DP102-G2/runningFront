@@ -1,4 +1,4 @@
-package com.g2.runningFront.ShopActivity.Server;
+package com.g2.runningFront.ShopActivity.Service;
 
 import java.sql.Timestamp;
 

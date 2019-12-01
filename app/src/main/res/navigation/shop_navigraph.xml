@@ -39,9 +39,9 @@
     </fragment>
     <fragment
         android:id="@+id/shopServerFragment"
-        android:name="com.g2.runningFront.ShopActivity.Server.ShopServerFragment"
+        android:name="com.g2.runningFront.ShopActivity.Service.ShopServiceFragment"
         android:label="fragment_shop_server"
-        tools:layout="@layout/fragment_shop_server" >
+        tools:layout="@layout/fragment_shop_service" >
         <action
             android:id="@+id/action_shopServerFragment_to_shopMainFragment"
             app:destination="@id/shopMainFragment" />

@@ -3,6 +3,7 @@ package com.g2.runningFront.RunActivity.Run;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -38,7 +39,8 @@ public class BmiResultFragment extends Fragment {
     Button btConfirm;
 
     UserBasic userBasic;
-    int bmi, height, weight, gender, age;
+    double bmi;
+    int height, weight, gender, age;
     SeekBar seekBar;
     String bmiSuggest;
 
@@ -83,7 +85,7 @@ public class BmiResultFragment extends Fragment {
         tvSuggest.setText(bmiSuggest);
 
         seekBar = view.findViewById(R.id.bmi_sb);
-        seekBar.setProgress(userBasic.getBmi());
+        seekBar.setProgress(((int)userBasic.getBMI()));
         seekBar.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -128,7 +130,7 @@ public class BmiResultFragment extends Fragment {
         age = userBasic.getAge();
         weight = userBasic.getWeight();
         gender = userBasic.getGender();
-        bmi = userBasic.getBmi();
+        bmi = userBasic.getBMI();
         bmiSuggest = userBasic.getBMISuggest();
 
 

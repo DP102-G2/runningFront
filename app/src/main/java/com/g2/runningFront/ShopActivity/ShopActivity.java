@@ -7,11 +7,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,9 +20,7 @@ import com.g2.runningFront.Common.Common;
 import com.g2.runningFront.R;
 import com.g2.runningFront.RunActivity.MainActivity;
 import com.g2.runningFront.SettingActivity.SettingActivity;
-import com.g2.runningFront.ShopActivity.Server.CommonServer.CustomerService;
 
-import com.g2.runningFront.ShopActivity.Server.ShopServerFragment;
 import com.g2.runningFront.ShopActivity.ShopCart.TapPay.ShopCartAcpayFragment;
 import com.google.android.gms.wallet.PaymentData;
 import com.google.android.material.bottomnavigation.BottomNavigationView;

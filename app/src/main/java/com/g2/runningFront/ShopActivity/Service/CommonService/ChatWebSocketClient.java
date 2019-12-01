@@ -1,4 +1,4 @@
-package com.g2.runningFront.ShopActivity.Server.CommonServer;
+package com.g2.runningFront.ShopActivity.Service.CommonService;
 
 import android.content.Context;
 import android.content.Intent;

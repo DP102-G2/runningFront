@@ -1,6 +1,5 @@
-package com.g2.runningFront.ShopActivity.Server.CommonServer;
+package com.g2.runningFront.ShopActivity.Service.CommonService;
 
-import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -12,7 +11,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
@@ -23,8 +21,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.g2.runningFront.Common.Common;
 import com.g2.runningFront.R;
-import com.g2.runningFront.RunActivity.MainActivity;
-import com.g2.runningFront.ShopActivity.Server.Message;
+import com.g2.runningFront.ShopActivity.Service.Message;
 import com.g2.runningFront.ShopActivity.ShopActivity;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;

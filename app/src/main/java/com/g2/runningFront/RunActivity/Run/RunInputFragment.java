@@ -36,6 +36,7 @@ public class RunInputFragment extends Fragment {
     RadioButton rbMan, rbWoman;
 
     int height, weight, age, gender = 1;
+    int user_no = 0;
 
     SharedPreferences pref;
     final private static String PREFERENCES_NAME = "preference";
@@ -44,6 +45,7 @@ public class RunInputFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = getActivity();
+        user_no = Common.getUserNo(activity);
         pref = activity.getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE);
     }
 
@@ -126,7 +128,7 @@ public class RunInputFragment extends Fragment {
                 weight = Integer.parseInt(etWeight.getText().toString().trim());
                 age = Integer.parseInt(etAge.getText().toString().trim());
 
-                userBasic = new UserBasic(height, weight, age, gender);
+                userBasic = new UserBasic(user_no,height, weight, age, gender);
 
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("UserBasic", userBasic);

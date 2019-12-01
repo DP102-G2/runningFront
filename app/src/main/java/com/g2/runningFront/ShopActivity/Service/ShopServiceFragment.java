@@ -1,4 +1,4 @@
-package com.g2.runningFront.ShopActivity.Server;
+package com.g2.runningFront.ShopActivity.Service;
 
 
 import android.app.Activity;
@@ -28,8 +28,8 @@ import android.widget.TextView;
 import com.g2.runningFront.Common.Common;
 import com.g2.runningFront.Common.CommonTask;
 import com.g2.runningFront.R;
-import com.g2.runningFront.ShopActivity.Server.CommonServer.CustomerService;
-import com.g2.runningFront.ShopActivity.Server.CommonServer.ServiceCommon;
+import com.g2.runningFront.ShopActivity.Service.CommonService.CustomerService;
+import com.g2.runningFront.ShopActivity.Service.CommonService.ServiceCommon;
 import com.g2.runningFront.ShopActivity.ShopActivity;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -46,7 +46,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ShopServerFragment extends Fragment {
+public class ShopServiceFragment extends Fragment {
 
     private static final String TAG = "TAG_ChatFragment";
     private LocalBroadcastManager broadcastManager;
@@ -66,7 +66,7 @@ public class ShopServerFragment extends Fragment {
     int user_no;
 
     CommonTask commonTask;
-    private static final String url = Common.URL_SERVER + "ServerServlet";
+    private static final String url = Common.URL_SERVER + "ServiceServlet";
 
     Gson gson;
 
@@ -94,7 +94,7 @@ public class ShopServerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_shop_server, container, false);
+        return inflater.inflate(R.layout.fragment_shop_service, container, false);
     }
 
     @Override
@@ -128,7 +128,7 @@ public class ShopServerFragment extends Fragment {
         @NonNull
         @Override
         public mesAdapter.messageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View itemView = layoutInflater.inflate(R.layout.item_view_server, parent, false);
+            View itemView = layoutInflater.inflate(R.layout.item_view_service, parent, false);
 
             return new messageViewHolder(itemView);
         }

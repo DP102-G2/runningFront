@@ -4,7 +4,12 @@ import java.io.Serializable;
 
 public class UserBasic implements Serializable {
 
+
     int user_no;
+    int height;
+    int weight;
+    int age;
+    int gender;
 
     public int getUser_no() {
         return user_no;
@@ -14,47 +19,15 @@ public class UserBasic implements Serializable {
         this.user_no = user_no;
     }
 
-    public String getBmiSuggest() {
-        return bmiSuggest;
-    }
 
-    public void setBmiSuggest(String bmiSuggest) {
-        this.bmiSuggest = bmiSuggest;
-    }
 
-    public UserBasic(int user_no, int height, int weight, int age, int gender, int bmi, String bmiSuggest) {
+    public UserBasic(int user_no, int height, int weight, int age, int gender) {
+        super();
         this.user_no = user_no;
         this.height = height;
         this.weight = weight;
         this.age = age;
         this.gender = gender;
-        this.bmi = bmi;
-        this.bmiSuggest = bmiSuggest;
-    }
-
-    int height;
-    int weight;
-    int age;
-    int gender;
-    int bmi;
-    String bmiSuggest;
-
-    public int getBmi() {
-        return bmi;
-    }
-
-    public void setBmi(int bmi) {
-        this.bmi = bmi;
-    }
-
-
-
-    public UserBasic(int height, int weight, int age, int gender) {
-        this.height = height;
-        this.weight = weight;
-        this.age = age;
-        this.gender = gender;
-        bmi = weight / (height * height / 10000);
     }
 
     public int getHeight() {
@@ -89,7 +62,16 @@ public class UserBasic implements Serializable {
         this.gender = gender;
     }
 
+    public double getBMI(){
+
+        double bmi = Double.valueOf(weight) / Double.valueOf(height * height / 10000);
+        return bmi;
+    }
+
     public String getBMISuggest(){
+
+        double bmi = Double.valueOf(weight) / Double.valueOf(height * height / 10000);
+        String bmiSuggest = "";
         if (bmi > 24) {
             bmiSuggest = "BMI偏重，建議您可以調整飲食";
         } else if (bmi <= 24 & bmi > 18.5) {
@@ -99,6 +81,7 @@ public class UserBasic implements Serializable {
         }
         return bmiSuggest;
     }
+
 
 
 }

@@ -27,7 +27,7 @@
         android:usesCleartextTraffic="true">
 
         <service
-            android:name=".ShopActivity.Server.CommonServer.CustomerService"
+            android:name=".ShopActivity.Service.CommonService.CustomerService"
             android:enabled="true"
             android:exported="false"
             />
