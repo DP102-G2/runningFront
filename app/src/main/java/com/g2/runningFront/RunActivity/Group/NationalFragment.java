@@ -84,12 +84,11 @@ public class NationalFragment extends Fragment {
         na_rv = view.findViewById(R.id.na_rv);
         na_rv.setLayoutManager(new LinearLayoutManager(activity));
 //        List<National> nationals = getNational();
-      nationals = getNational();
+        nationals = getNational();
         showNationalList(nationals);
 
         na_btFriend = view.findViewById(R.id.na_btFriend);
         na_btAll = view.findViewById(R.id.na_btAll);
-
 
 
         na_btFriend.setOnClickListener(new View.OnClickListener() {
@@ -194,8 +193,8 @@ public class NationalFragment extends Fragment {
             String url = Common.URL_SERVER + "NationalServlet";
 
             /* 索取追蹤會員大頭貼 */
-            int rkuser_no = national.getNo();
-            //Log.e(TAG, "rkuser_no = " + rkuser_no);
+            int rkuser_no = national.getRkuser_no();
+            Log.e(TAG, "rkuser_no = " + rkuser_no);
             NationalImageTask = new ImageTask_Rk(url, rkuser_no, IMAGE_SIZE, myViewHolder.gp_ivFriend);
             NationalImageTask.execute();
 
@@ -270,7 +269,7 @@ public class NationalFragment extends Fragment {
                         }
 
                     } else if(follow_inner == 0){
-                        national.setfollow_no(national.getNo());
+                        national.setfollow_no(national.getRkuser_no());
 
                         myViewHolder.btyes.setBackgroundDrawable(getResources().getDrawable(R.drawable.nobt_style));
                         myViewHolder.btyes.setText("已追蹤");
@@ -283,7 +282,8 @@ public class NationalFragment extends Fragment {
                             jo.addProperty("user_no",
                                     activity.getSharedPreferences(Common.PREF, MODE_PRIVATE)
                                             .getInt("user_no",0));
-                            jo.addProperty("follow_no", national.getNo());
+                            //jo.addProperty("follow_no", national.getNo());
+                            jo.addProperty("follow_no", national.getRkuser_no());
 
                             int count = 0;
 
@@ -350,8 +350,8 @@ public class NationalFragment extends Fragment {
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "NationalServlet";
             JsonObject jo = new JsonObject();
-            jo.addProperty("action", "getAll");
 
+            jo.addProperty("action", "getAll");
             jo.addProperty("user_no", no);
 
             /* 查詢當前月份，設為跑步期間的條件 */
@@ -396,8 +396,6 @@ public class NationalFragment extends Fragment {
     }
 
 }
-
-
 
 
 

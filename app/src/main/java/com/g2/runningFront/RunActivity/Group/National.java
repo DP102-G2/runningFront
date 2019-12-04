@@ -18,6 +18,10 @@ public class National {
         this.rkuser_no = rkuser_no;
     }
 
+//    public int getUser_no() {
+//        return rkuser_no;
+//    }
+
     public int getUser_no() {
         return user_no;
     }
@@ -58,12 +62,20 @@ public class National {
         this.month = month;
     }
 
-    public int getNo() {
+    public int getRkuser_no() {
         return rkuser_no;
     }
 
-    public void setNo(int rkuser_no) {
+    public void setRkuser_no(int rkuser_no) {
         this.rkuser_no = rkuser_no;
+    }
+
+//    public int getNo() {
+//        return rkuser_no;
+//    }
+//
+//    public void setNo(int rkuser_no) {
+//        this.rkuser_no = rkuser_no;
     }
 
     //{"user_no":0,"follow_no":0,"name":"Joeman","distance":1452.0,"isFollow":false,"month":"1910","rkuser_no":1}
@@ -115,4 +127,4 @@ public class National {
 //    public void setRank_userno(int rank_userno) {
 //        this.rank_userno = rank_userno;
 //    }
-}
+
