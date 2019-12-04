@@ -1,14 +1,12 @@
-package com.g2.runningFront.ShopActivity.Server.serviceCommon;
+package com.g2.runningFront.ShopActivity.Service.CommonService;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.g2.runningFront.Common.Common;
-import com.g2.runningFront.ShopActivity.Server.Message;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -17,10 +15,7 @@ import org.java_websocket.drafts.Draft_17;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Locale;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class ChatWebSocketClient extends WebSocketClient {
     private static final String TAG = "ChatWebSocketClient";
@@ -47,9 +42,14 @@ public class ChatWebSocketClient extends WebSocketClient {
     public void onMessage(String message) {
         // type: 訊息種類，有open(有user連線), close(有user離線), chat(其他user傳送來的聊天訊息)
         // 確認文字訊息的種類，只負責轉發，這邊就不判斷要做什麼事情
-        sendMessageBroadcast("new Message", message);
-        // 發廣播囉，在訊息列表跟訊息頁面都提示有人登入/登出
-        Log.d(TAG, "onMessage: " + message);
+
+        JsonObject jsonObject = gson.fromJson(message, JsonObject.class);
+        String action = jsonObject.get("action").getAsString();
+        if (action.trim().equals("new Message")) {
+
+            sendMessageBroadcast("new Message", message);
+            Log.d(TAG, "onMessage: " + message);
+        }
     }
 
     @Override

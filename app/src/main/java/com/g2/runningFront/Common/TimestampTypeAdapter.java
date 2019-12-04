@@ -16,7 +16,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 public class TimestampTypeAdapter implements JsonSerializer<Timestamp>, JsonDeserializer<Timestamp> {
-    private final DateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+    private final DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.S Z");
 
     public JsonElement serialize(Timestamp ts, Type t, JsonSerializationContext jsc) {
         String dfString = format.format(new Date(ts.getTime()));

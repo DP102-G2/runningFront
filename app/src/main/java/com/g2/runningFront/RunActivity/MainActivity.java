@@ -2,26 +2,21 @@ package com.g2.runningFront.RunActivity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
-import com.g2.runningFront.Common.Common;
 import com.g2.runningFront.R;
 import com.g2.runningFront.SettingActivity.SettingActivity;
+import com.g2.runningFront.ShopActivity.Service.CommonService.CustomerService;
 import com.g2.runningFront.ShopActivity.ShopActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     public BottomNavigationView btbRun;
@@ -33,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         holdNavigraph();
         setTitle(R.string.run_name);
+        Intent intent =new Intent(this, CustomerService.class);
+        startService(intent);
 
     }
 

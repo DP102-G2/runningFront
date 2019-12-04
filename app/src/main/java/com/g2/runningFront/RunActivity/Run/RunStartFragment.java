@@ -408,8 +408,8 @@ public class RunStartFragment extends Fragment {
 
             if (Common.networkConnected(activity)) {
                 JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("action", "InsertRun");
-                jsonObject.addProperty("Run", new Gson().toJson(run));
+                jsonObject.addProperty("action", "insertRun");
+                jsonObject.addProperty("run", new Gson().toJson(run));
 
                 if (route != null) {
                     jsonObject.addProperty("imageBase64", Base64.encodeToString(route, Base64.DEFAULT));
