@@ -18,6 +18,10 @@ public class National {
         this.rkuser_no = rkuser_no;
     }
 
+//    public int getUser_no() {
+//        return rkuser_no;
+//    }
+
     public int getUser_no() {
         return user_no;
     }
@@ -46,8 +50,8 @@ public class National {
         return follow_no;
     }
 
-    public void setfollow_no(int follow_no) {
-        follow_no = follow_no;
+    public void setFollow_no(int follow_no) {
+        this.follow_no = follow_no;
     }
 
     public String getMonth() {
@@ -58,17 +62,25 @@ public class National {
         this.month = month;
     }
 
-    public int getNo() {
+    public int getRkuser_no() {
         return rkuser_no;
     }
 
-    public void setNo(int rkuser_no) {
+    public void setRkuser_no(int rkuser_no) {
         this.rkuser_no = rkuser_no;
     }
 
-    //{"user_no":0,"follow_no":0,"name":"Joeman","distance":1452.0,"isFollow":false,"month":"1910","rkuser_no":1}
+//    public int getNo() {
+//        return rkuser_no;
+//    }
+//
+//    public void setNo(int rkuser_no) {
+//        this.rkuser_no = rkuser_no;
+}
 
-    //    public National(int user_no, String name, double distance, boolean isFollow,String month,int rank_userno) {
+//{"user_no":0,"follow_no":0,"name":"Joeman","distance":1452.0,"isFollow":false,"month":"1910","rkuser_no":1}
+
+//    public National(int user_no, String name, double distance, boolean isFollow,String month,int rank_userno) {
 //        super();
 //        this.user_no = user_no;
 //        this.name = name;
@@ -115,4 +127,4 @@ public class National {
 //    public void setRank_userno(int rank_userno) {
 //        this.rank_userno = rank_userno;
 //    }
-}
+
