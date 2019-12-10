@@ -328,6 +328,7 @@ public class NationalFragment extends Fragment {
 
 
                                 Common.toastShow(activity,"已追蹤");
+
                             }
                         } else {
                             Common.toastShow(activity,"連不到");
@@ -372,8 +373,8 @@ public class NationalFragment extends Fragment {
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "NationalServlet";
             JsonObject jo = new JsonObject();
-
             jo.addProperty("action", "getAll");
+
             jo.addProperty("user_no", no);
 
             /* 查詢當前月份，設為跑步期間的條件 */
@@ -418,6 +419,8 @@ public class NationalFragment extends Fragment {
     }
 
 }
+
+
 
 
 
